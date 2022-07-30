@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="559.0" prefWidth="544.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddUserController">
+   <children>
+      <TextField id="citizenID" fx:id="citizenID" layoutX="128.0" layoutY="143.0" prefHeight="36.0" prefWidth="323.0" promptText="Citizen ID">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <TextField id="fullName" fx:id="fullName" layoutX="128.0" layoutY="192.0" prefHeight="36.0" prefWidth="323.0" promptText="Full Name">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label layoutX="162.0" layoutY="14.0" text="Add User">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <TextField id="roomNumber" fx:id="roomNumber" layoutX="128.0" layoutY="291.0" prefHeight="36.0" prefWidth="323.0" promptText="Room Number">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <TextField id="username" fx:id="username" layoutX="128.0" layoutY="89.0" prefHeight="36.0" prefWidth="323.0" promptText="Username">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <TextField id="phoneNumber" fx:id="phoneNumber" layoutX="128.0" layoutY="406.0" prefHeight="36.0" prefWidth="323.0" promptText="Phone Number">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/user.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/padlock.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="295.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/key-chain.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="410.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/phone-call.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="196.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/name.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="147.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/id.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="456.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/gender.png" />
+         </image>
+      </ImageView>
+      <Button id="signUp" fx:id="signUp" layoutX="161.0" layoutY="497.0" mnemonicParsing="false" onMouseClicked="#ActionSignUp" prefHeight="36.0" prefWidth="225.0" text="Sign Up">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="62.0" fitWidth="82.0" layoutX="310.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/add-user-icon-profile-avatar-sign-vector-person-silhouette-symbol-yellow-circles-pattern-classi.jpg" />
+         </image>
+      </ImageView>
+      <Label fx:id="close" layoutX="517.0" layoutY="5.0" onMouseClicked="#handleClose" prefHeight="30.0" prefWidth="26.0" text=" X">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="minimize" layoutX="497.0" layoutY="4.0" onMouseClicked="#handleMinimize" prefHeight="32.0" prefWidth="19.0" text=" -" textAlignment="CENTER">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="back" fitHeight="36.0" fitWidth="42.0" layoutX="26.0" layoutY="23.0" onMouseClicked="#goBack" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/back.png" />
+         </image>
+      </ImageView>
+      <PasswordField id="password" fx:id="password" layoutX="128.0" layoutY="242.0" prefHeight="36.0" prefWidth="323.0" promptText="Password">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </PasswordField>
+      <RadioButton id="male" fx:id="male" layoutX="171.0" layoutY="460.0" mnemonicParsing="false" onMouseClicked="#maleClicked" text="Male">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </RadioButton>
+      <RadioButton id="female" fx:id="female" layoutX="316.0" layoutY="460.0" mnemonicParsing="false" onMouseClicked="#femaleClicked" text="Female">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </RadioButton>
+      <TextField layoutX="451.0" layoutY="94.0" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" text="(*)">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="451.0" layoutY="148.0" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" text="(*)">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="451.0" layoutY="197.0" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" text="(*)">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="451.0" layoutY="250.0" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" text="(*)">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="451.0" layoutY="296.0" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" text="(*)">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </TextField>
+      <TextField id="roomNumber" fx:id="email" layoutX="128.0" layoutY="349.0" prefHeight="36.0" prefWidth="323.0" promptText="Email">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="353.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/email.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
