@@ -16,3 +16,8 @@
 	-fx-background-color: #F5F5DC;
 	-fx-background-radius: 15;
 }
+
+.root {
+    -fx-border-width: 2px;
+    -fx-border-color: #FAEBD7;
+}

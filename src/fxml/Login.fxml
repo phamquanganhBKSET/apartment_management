@@ -32,9 +32,9 @@
             <Image url="@../../icon/apartment.gif" />
          </image>
       </ImageView>
-      <Label fx:id="loginLabel" layoutX="158.0" layoutY="26.0" prefHeight="42.0" prefWidth="99.0" text="Login">
+      <Label fx:id="loginLabel" layoutX="173.0" layoutY="26.0" prefHeight="42.0" prefWidth="89.0" text="Login">
          <font>
-            <Font name="Trebuchet MS Bold" size="36.0" />
+            <Font name="Trebuchet MS" size="36.0" />
          </font></Label>
       <JFXCheckBox fx:id="rememberMe" layoutX="92.0" layoutY="239.0" text="Remember me">
          <font>
@@ -55,5 +55,15 @@
          <font>
             <Font size="14.0" />
          </font></PasswordField>
+      <Label fx:id="close" layoutX="590.0" layoutY="2.0" onMouseClicked="#handleClose" prefHeight="30.0" prefWidth="26.0" text=" X">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="minimize" layoutX="552.0" onMouseClicked="#handleMinimize" prefHeight="32.0" prefWidth="19.0" text=" -" textAlignment="CENTER">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
