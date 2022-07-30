@@ -37,7 +37,7 @@
             <Font size="14.0" />
          </font>
       </JFXCheckBox>
-      <Button fx:id="login" layoutX="252.0" layoutY="234.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="77.0" text="Login">
+      <Button fx:id="login" layoutX="252.0" layoutY="234.0" mnemonicParsing="false" onAction="#handleLogin" prefHeight="29.0" prefWidth="77.0" text="Login">
          <font>
             <Font size="14.0" />
          </font>
@@ -61,6 +61,6 @@
             <Font size="22.0" />
          </font>
       </Label>
-      <Hyperlink fx:id="forgotPassword" layoutX="158.0" layoutY="295.0" text="Forgot Password?" />
+      <Hyperlink fx:id="forgotPassword" layoutX="158.0" layoutY="295.0" onAction="#handleForgotPassword" text="Forgot Password?" />
    </children>
 </AnchorPane>

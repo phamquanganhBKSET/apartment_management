@@ -3,8 +3,11 @@ package controller;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -12,9 +15,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class ForgotPassword implements Initializable {
-	
-	@FXML
+public class VerifyEmailFGPController implements Initializable {
+	Scene loginScene;
+
+    @FXML
     private ResourceBundle resources;
 
     @FXML
@@ -27,9 +31,6 @@ public class ForgotPassword implements Initializable {
     private Label close;
 
     @FXML
-    private TextField email;
-
-    @FXML
     private Label loginLabel;
 
     @FXML
@@ -37,6 +38,9 @@ public class ForgotPassword implements Initializable {
 
     @FXML
     private Button requestReset;
+
+    @FXML
+    private TextField verifyCode;
 
     @FXML
     void handleClose(MouseEvent event) {
@@ -53,5 +57,22 @@ public class ForgotPassword implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
+	}
+    
+	@FXML
+	public void handleBack(ActionEvent e) {
+		try {
+			Scene currScene = (Scene)((Node) e.getSource()).getScene();
+			Stage currStage = (Stage)currScene.getWindow();
+			currStage.setScene(loginScene);
+			currStage.centerOnScreen();
+			currStage.show();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	public void setLoginScene(Scene loginScene) {
+		this.loginScene = loginScene;
 	}
 }

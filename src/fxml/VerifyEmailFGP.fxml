@@ -9,18 +9,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="311.0" prefWidth="436.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ForgotPasswordController">
+<AnchorPane prefHeight="449.0" prefWidth="436.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VerifyEmailFGPController">
    <children>
-      <Label fx:id="loginLabel" layoutX="85.0" layoutY="77.0" prefHeight="42.0" prefWidth="272.0" text="Forgot Password">
+      <Label fx:id="loginLabel" layoutX="70.0" layoutY="196.0" prefHeight="42.0" prefWidth="297.0" text="Email Verification">
          <font>
             <Font name="Trebuchet MS" size="36.0" />
          </font></Label>
-      <Button fx:id="requestReset" layoutX="82.0" layoutY="226.0" mnemonicParsing="false" onAction="#handleRequestReset" prefHeight="29.0" prefWidth="272.0" text="Request password reset">
+      <Button fx:id="requestReset" layoutX="82.0" layoutY="344.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="272.0" text="Verify">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <TextField id="username" fx:id="email" layoutX="82.0" layoutY="170.0" prefHeight="29.0" prefWidth="272.0" promptText="Email address">
+      <TextField id="username" fx:id="verifyCode" layoutX="82.0" layoutY="288.0" prefHeight="29.0" prefWidth="272.0" promptText="Verification Code">
          <font>
             <Font size="14.0" />
          </font>
@@ -35,12 +35,13 @@
             <Font size="22.0" />
          </font>
       </Label>
-      <Label layoutX="155.0" layoutY="134.0" text="Enter your email address" />
-      <ImageView fitHeight="63.0" fitWidth="83.0" layoutX="12.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+      <Label layoutX="82.0" layoutY="256.0" prefHeight="17.0" prefWidth="272.0" text="Please check your email and enter verification code" />
+      <Hyperlink fx:id="sendBack" layoutX="155.0" layoutY="387.0" text="Send me another code" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="144.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../icon/forgot-password.png" />
+            <Image url="@../../icon/paper-airplane.png" />
          </image>
       </ImageView>
-      <Hyperlink fx:id="back" layoutX="174.0" layoutY="273.0" onAction="#handleBack" text="&lt; Back to Login" />
+      <Hyperlink fx:id="back" layoutX="173.0" layoutY="411.0" onAction="#handleBack" text="&lt; Back to Login" />
    </children>
 </AnchorPane>
