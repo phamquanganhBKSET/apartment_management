@@ -1,6 +1,5 @@
 package controller;
 
-import com.jfoenix.controls.JFXCheckBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -9,24 +8,26 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class LoginController implements Initializable {
-
-    @FXML
+public class ForgotPassword implements Initializable {
+	
+	@FXML
     private ResourceBundle resources;
 
     @FXML
     private URL location;
 
     @FXML
+    private Hyperlink back;
+
+    @FXML
     private Label close;
 
     @FXML
-    private Hyperlink forgotPassword;
+    private TextField email;
 
     @FXML
     private Label loginLabel;
@@ -35,32 +36,22 @@ public class LoginController implements Initializable {
     private Label minimize;
 
     @FXML
-    private Button login;
-    
-    @FXML
-    private PasswordField password;
+    private Button requestReset;
 
     @FXML
-    private JFXCheckBox rememberMe;
-
-    @FXML
-    private TextField username;
-    
-    @FXML
-    private void handleClose(MouseEvent event) {
+    void handleClose(MouseEvent event) {
     	System.exit(0);
     }
-    
+
     @FXML
-    private void handleMinimize(MouseEvent event) {
+    void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
         stage.setIconified(true);
     }
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		// TODO Auto-generated method stub
 		
 	}
-	
 }
