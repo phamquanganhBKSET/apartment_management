@@ -86,7 +86,7 @@ public class AddAdminController implements Initializable {
     		try {
     			String query = "select ID_admin from admin where ID_admin = \'" + username.getText() + "\'";
     			ResultSet rs = stmt.executeQuery(query);
-    			if (rs.next() == true) {
+    			if (rs.next()) {
     				Alert alert = new Alert(AlertType.WARNING);
     				alert.setHeaderText("Username already exists!");
     				alert.showAndWait();
@@ -103,6 +103,7 @@ public class AddAdminController implements Initializable {
     				alert.showAndWait();
     				
     				// Go back
+    				System.out.println("goback");
     			}
 
 			} catch (SQLException e) {
