@@ -1,7 +1,18 @@
 package controller;
 
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Date;
+import java.util.Properties;
+import java.util.Random;
 import java.util.ResourceBundle;
+
+import javax.mail.*;
+import javax.mail.internet.*;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +21,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -20,7 +32,11 @@ import javafx.stage.Stage;
 public class ForgotPasswordController implements Initializable {
 	private double offset_x;
     private double offset_y;
-    Scene loginScene;
+    private final String emailFrom = "amanagement20212@gmail.com";
+    private final String emailPass = "iwhfaqgtnghalsln";
+    private Scene loginScene;
+    private Connection connection;
+	private Statement statement;
 	
     @FXML
     private ResourceBundle resources;
@@ -35,7 +51,7 @@ public class ForgotPasswordController implements Initializable {
     private Label close;
 
     @FXML
-    private TextField email;
+    private TextField username;
 
     @FXML
     private Label loginLabel;
@@ -59,7 +75,17 @@ public class ForgotPasswordController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		requestReset.setDisable(true);
+		username.textProperty().addListener((observable, oldValue, newValue) -> {
+			requestReset.setDisable(newValue.trim().isEmpty());
+		});
 		
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
+			statement = connection.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@FXML
@@ -76,39 +102,106 @@ public class ForgotPasswordController implements Initializable {
 	}
 	
 	@FXML
-	public void handleRequestReset(ActionEvent e) {
+	public void handleRequestReset(MouseEvent e) {
+		Random verificationCode = new Random();
+		String userID= username.getText();
+		String emailTo = "";
+		String sqlString = "select * from apartment_manager.admin where ID_admin = \'" + userID + "\'";
+		
 		try {
-			Stage currStage = (Stage)((Node) e.getSource()).getScene().getWindow();
-			
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("/fxml/VerifyEmailFGP.fxml"));
-			Parent root = loader.load();
-			
-			VerifyEmailFGPController controller = loader.getController();
-			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/css/verifyEmailFGP.css").toExternalForm());
-			
-			// Drag scene
-			scene.setOnMousePressed(event -> {
-	            offset_x = event.getSceneX();
-	            offset_y = event.getSceneY();
-	        });
-	        scene.setOnMouseDragged(event -> {
-	        	currStage.setX(event.getScreenX() - offset_x);
-	        	currStage.setY(event.getScreenY() - offset_y);
-	        });
-	        
-			currStage.setScene(scene);
-			currStage.centerOnScreen();
-			currStage.setResizable(false);
-			controller.setLoginScene(loginScene);
-			currStage.show();
-		} catch(Exception ex) {
-			ex.printStackTrace();
+			ResultSet rs = statement.executeQuery(sqlString);
+			if (rs.next()) {
+				emailTo = rs.getString(3);
+				
+				int vcode = verificationCode.nextInt((10000 - 100) + 1) + 100;
+				String subject = "Apartment Management - Reset password";
+				String body = "Your verification code is " + vcode;
+				this.sendEmail(this.emailFrom, this.emailPass, emailTo, subject, body);
+				
+				try {
+					Stage currStage = (Stage)((Node) e.getSource()).getScene().getWindow();
+					
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/fxml/VerifyEmailFGP.fxml"));
+					Parent root = loader.load();
+					
+					VerifyEmailFGPController controller = loader.getController();
+					Scene scene = new Scene(root);
+					scene.getStylesheets().add(getClass().getResource("/css/verifyEmailFGP.css").toExternalForm());
+					
+					// Drag scene
+					scene.setOnMousePressed(event -> {
+			            offset_x = event.getSceneX();
+			            offset_y = event.getSceneY();
+			        });
+			        scene.setOnMouseDragged(event -> {
+			        	currStage.setX(event.getScreenX() - offset_x);
+			        	currStage.setY(event.getScreenY() - offset_y);
+			        });
+			        
+					currStage.setScene(scene);
+					currStage.centerOnScreen();
+					currStage.setResizable(false);
+					controller.setLoginScene(loginScene);
+					controller.setVerificationCode(vcode);
+					controller.setEmail(emailFrom, emailTo, emailPass);
+					controller.setUsername(userID);
+					currStage.show();
+				} catch(Exception ex) {
+					ex.printStackTrace();
+				}
+			} else {
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Request reset password");
+				alert.setHeaderText("Username " + userID + " doesn't exist or isn't admin account!");
+				alert.showAndWait();
+			}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
 	}
 	
 	public void setLoginScene(Scene loginScene) {
 		this.loginScene = loginScene;
+	}
+	
+	public void sendEmail(String emailFrom, String pass, String emailTo, String subject, String body) {
+		Properties properties = new Properties();
+		properties.put("mail.smtp.host", "smtp.gmail.com"); // SMTP host
+		properties.put("mail.smtp.port", "587"); //TLS Port
+		properties.put("mail.smtp.auth", "true"); //enable authentication
+		properties.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+		Authenticator auth = new Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(emailFrom, pass);
+            }
+        };
+        Session session = Session.getInstance(properties, auth);
+        
+        try {
+        	MimeMessage msg = new MimeMessage(session);
+        	msg.addHeader("Content-type", "text/HTML; charset=UTF-8");
+            msg.addHeader("format", "flowed");
+            msg.addHeader("Content-Transfer-Encoding", "8bit");
+            msg.setFrom(new InternetAddress(emailFrom, "Apartment Management"));
+            msg.setReplyTo(InternetAddress.parse(emailFrom, false));
+            msg.setSubject(subject, "UTF-8");
+            msg.setText(body, "UTF-8");
+            msg.setSentDate(new Date());
+            msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailTo, false));
+            Transport.send(msg);
+            System.out.println("Gui mail thanh cong: " + body);
+            
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Request reset password");
+			alert.setHeaderText("We have sent the verification code to your email. Let's check!");
+			alert.showAndWait();
+        } catch(Exception ex) {
+        	Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Request reset password");
+			alert.setHeaderText("Send email failed!");
+			alert.showAndWait();
+        	ex.printStackTrace();
+        }
 	}
 }

@@ -15,7 +15,7 @@
          <font>
             <Font name="Trebuchet MS" size="36.0" />
          </font></Label>
-      <Button fx:id="requestReset" layoutX="82.0" layoutY="344.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="272.0" text="Verify">
+      <Button fx:id="requestReset" layoutX="82.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleVerify" prefHeight="29.0" prefWidth="272.0" text="Verify">
          <font>
             <Font size="14.0" />
          </font>
@@ -36,7 +36,7 @@
          </font>
       </Label>
       <Label layoutX="82.0" layoutY="256.0" prefHeight="17.0" prefWidth="272.0" text="Please check your email and enter verification code" />
-      <Hyperlink fx:id="sendBack" layoutX="155.0" layoutY="387.0" text="Send me another code" />
+      <Hyperlink fx:id="sendBack" layoutX="155.0" layoutY="387.0" onAction="#handleSendAgain" text="Send me another code" />
       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="144.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../icon/paper-airplane.png" />
