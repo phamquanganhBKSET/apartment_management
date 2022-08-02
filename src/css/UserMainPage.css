@@ -1,0 +1,54 @@
+.profile-layout-male{
+	-fx-background-color: #EBC95E;
+	-fx-background-radius: 0 0 50 50;
+}
+
+.button{
+	-fx-background-color: #EBC95E;
+	-fx-background-radius: 50;
+}
+
+.button:hover {
+	-fx-background-color: #F0E68C;
+	-fx-background-radius: 50;
+}
+
+.button_layout1 { 
+	-fx-background-color: #54D39D;
+	-fx-background-radius: 0 50 50 50;
+}
+.button_layout1:hover {
+	-fx-background-color: #90EE90;
+	-fx-background-radius: 0 50 50 50;
+}
+
+.button_layout2 { 
+	-fx-background-color: #70B8D9;
+	-fx-background-radius: 0 50 50 50;
+}
+.button_layout2:hover {
+	-fx-background-color: #90EE90;
+	-fx-background-radius: 0 50 50 50;
+}
+
+.button_layout3 { 
+	-fx-background-color: #F9A885;
+	-fx-background-radius: 0 50 50 50;
+}
+.button_layout3:hover {
+	-fx-background-color: #90EE90;
+	-fx-background-radius: 0 50 50 50;
+}
+
+.button_layout4 { 
+	-fx-background-color: #E37A7A;
+	-fx-background-radius: 0 50 50 50;
+}
+.button_layout4:hover {
+	-fx-background-color: #90EE90;
+	-fx-background-radius: 0 50 50 50;
+}
+
+.transparent{
+	-fx-background-color: rgba(0, 0, 0, 0);
+}

@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="1000.0" style="-fx-background-color: #ffffff;" stylesheets="@../css/UserMainPage.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.UserMainPageController">
+   <left>
+      <VBox prefHeight="620.0" prefWidth="237.0" style="-fx-background-color: #F8F8FF;" BorderPane.alignment="CENTER">
+         <children>
+            <VBox fx:id="male_layout" alignment="CENTER" prefHeight="230.0" prefWidth="250.0" styleClass="profile-layout-male">
+               <children>
+                  <ImageView fx:id="avt_male" fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../icon/man.png" />
+                     </image>
+                  </ImageView>
+                  <Label text="quangnd1" textFill="WHITE" wrapText="true">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="System Bold" size="22.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Pane prefHeight="46.0" prefWidth="250.0" VBox.vgrow="ALWAYS" />
+            <VBox alignment="CENTER" prefHeight="392.0" prefWidth="250.0">
+               <children>
+                  <Label prefHeight="27.0" prefWidth="230.0" text="Full name">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="fullname" prefHeight="27.0" prefWidth="230.0" text="Nguyễn Đức Quang" wrapText="true">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="27.0" prefWidth="230.0" text="Room Number">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="room" prefHeight="27.0" prefWidth="230.0" text="309">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="29.0" prefWidth="230.0" text="Email">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label fx:id="email" alignment="TOP_LEFT" prefHeight="51.0" prefWidth="240.0" text="quangnguyenduc1212@gmail.com" wrapText="true">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="30.0" prefWidth="230.0" text="Mobile Phone">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="phone" prefHeight="27.0" prefWidth="230.0" text="0384564492">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+                  <Button fx:id="edit" mnemonicParsing="false" onMouseClicked="#editProfile" prefHeight="31.0" prefWidth="140.0" text="Edit" textFill="WHITE">
+                     <VBox.margin>
+                        <Insets top="20.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <Hyperlink fx:id="change_password" onMouseClicked="#changePass" text="Change password">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Hyperlink>
+               </children>
+            </VBox>
+            <Pane prefHeight="56.0" prefWidth="250.0" VBox.vgrow="ALWAYS" />
+         </children>
+      </VBox>
+   </left>
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="158.0" prefWidth="763.0" spacing="10.0">
+               <children>
+                  <Label fx:id="electricity" alignment="CENTER" onMouseClicked="#viewElec" prefHeight="175.0" prefWidth="175.0" styleClass="button_layout1" text="Electricity">
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font name="Corbel" size="28.0" />
+                     </font>
+                  </Label>
+                  <Pane prefHeight="158.0" prefWidth="10.0" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="water" alignment="CENTER" onMouseClicked="#viewWater" prefHeight="175.0" prefWidth="175.0" styleClass="button_layout2" text="Water">
+                     <font>
+                        <Font name="Corbel" size="28.0" />
+                     </font>
+                  </Label>
+                  <Pane prefHeight="158.0" prefWidth="10.0" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="envi_charge" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#viewEnvi" prefHeight="175.0" prefWidth="175.0" styleClass="button_layout3" text="Envi charges" wrapText="true">
+                     <font>
+                        <Font name="Corbel" size="28.0" />
+                     </font>
+                  </Label>
+                  <Pane prefHeight="158.0" prefWidth="10.0" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="vehicle" alignment="CENTER" onMouseClicked="#viewVeh" prefHeight="175.0" prefWidth="175.0" styleClass="button_layout4" text="Vehicle">
+                     <font>
+                        <Font name="Corbel" size="28.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Label alignment="CENTER" prefHeight="67.0" prefWidth="753.0" text="Statistical table">
+               <font>
+                  <Font name="System Bold" size="28.0" />
+               </font>
+            </Label>
+            <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <TableView prefHeight="395.0" prefWidth="799.0">
+                    <columns>
+                        <TableColumn fx:id="col_month" prefWidth="75.0" text="Month" />
+                      <TableColumn fx:id="col_room" prefWidth="51.333351135253906" text="Room" />
+                      <TableColumn fx:id="col_name" prefWidth="100.66665649414062" text="Name" />
+                        <TableColumn fx:id="col_old_elec" prefWidth="75.0" text="Old Electricity index" />
+                        <TableColumn fx:id="col_new_elec" prefWidth="75.0" text="New Electricity index" />
+                        <TableColumn fx:id="col_elec_bill" prefWidth="75.0" text="Electricty bill" />
+                        <TableColumn fx:id="col_water" prefWidth="75.0" text="Water bill" />
+                        <TableColumn fx:id="col_envi" prefWidth="75.0" text="Envi charges" />
+                        <TableColumn fx:id="col_veh" prefWidth="75.0" text="Vehicle" />
+                        <TableColumn fx:id="col_total" prefWidth="55.99995930989587" text="Total" />
+                    </columns>
+                  </TableView>
+                  <Pane prefHeight="362.0" prefWidth="75.0" HBox.hgrow="ALWAYS" />
+               </children>
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets right="10.0" />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+</BorderPane>

@@ -162,7 +162,7 @@ public class AddUserController implements Initializable{
     public void initialize(URL arg0, ResourceBundle arg1) {
     	// TODO Auto-generated method stub
 		try {
-			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", "123456");
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			stmt = conn.createStatement();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
