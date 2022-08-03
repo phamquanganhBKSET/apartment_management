@@ -1,5 +1,9 @@
 package controller;
 
+import java.io.File;
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -9,12 +13,21 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class UserMainPageController {
+	
+	private String gender = "male";
+	private String transUser = "";
+	
+	public void setTransUser(String transUser) {
+		this.transUser = transUser;
+	}
+
 
 	private double offset_x;
     private double offset_y;
@@ -57,6 +70,9 @@ public class UserMainPageController {
 
     @FXML
     private Button edit;
+    
+    @FXML
+    private Label username;
 
     @FXML
     private Label electricity;
@@ -151,6 +167,20 @@ public class UserMainPageController {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+    }
+    
+    @FXML
+    void holdButton(MouseEvent event) {
+    	if (gender.equals("female")) {
+        	edit.setStyle("	-fx-background-color: #FFE4E1;");
+		}
+    }
+    
+    @FXML
+    void exitButton(MouseEvent event) {
+    	if (gender.equals("female")) {
+    		edit.setStyle("	-fx-background-color: #FFB6C1;");
+    	}
     }
 
     @FXML
@@ -287,6 +317,23 @@ public class UserMainPageController {
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
+    }
+    
+    @FXML
+    void initialize() {
+    	Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
+    	
+        if (gender.equals("male")) {
+        	Image im = new Image(String.valueOf(new File(path + "\\icon\\man" + ".png")));
+        	avt_male.setImage(im);
+        	male_layout.setStyle("	-fx-background-color: #EBC95E;");
+		}
+        else {
+        	Image im = new Image(String.valueOf(new File(path + "\\icon\\beauty" + ".png")));
+        	avt_male.setImage(im);
+        	male_layout.setStyle("	-fx-background-color: #FFE4E1;");
+        	edit.setStyle("	-fx-background-color: #FFB6C1;");
+        }
     }
 
 }

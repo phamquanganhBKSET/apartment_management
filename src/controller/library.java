@@ -1,5 +1,5 @@
 package controller;
 
 public class library {
-	public static String password = "root";
+	public static String password = "123456";
 }
