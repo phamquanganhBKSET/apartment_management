@@ -14,14 +14,17 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.WaterController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ElectricityController">
    <children>
       <ScrollPane layoutY="254.0" prefHeight="147.0" prefWidth="600.0">
          <content>
-            <TableView prefHeight="196.0" prefWidth="599.0">
+            <TableView prefHeight="128.0" prefWidth="599.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                  <TableColumn fx:id="month" prefWidth="132.66665661334991" text="Month" />
+                <TableColumn fx:id="oldNum" prefWidth="131.99998474121094" text="Old Water Number" />
+                <TableColumn fx:id="newNum" prefWidth="126.66670227050781" text="New Water Number" />
+                  <TableColumn fx:id="total" prefWidth="75.0" text="Total" />
+                  <TableColumn fx:id="paid" prefWidth="131.33333333333337" text="Paid" />
               </columns>
             </TableView>
          </content>
@@ -31,12 +34,12 @@
             <AnchorPane prefHeight="76.0" prefWidth="609.0">
                <children>
                   <Hyperlink fx:id="back" layoutX="14.0" layoutY="14.0" onMouseClicked="#goBack" text="&lt; Go back" />
-                  <Label layoutX="242.0" layoutY="11.0" text="Water">
+                  <Label layoutX="234.0" layoutY="5.0" text="Water">
                      <font>
                         <Font name="System Bold" size="36.0" />
                      </font>
                   </Label>
-                  <ImageView fitHeight="44.0" fitWidth="40.0" layoutX="369.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="44.0" fitWidth="40.0" layoutX="352.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../icon/water-tap.png" />
                      </image>

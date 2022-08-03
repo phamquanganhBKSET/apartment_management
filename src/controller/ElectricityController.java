@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.TableColumn;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -25,6 +26,23 @@ public class ElectricityController {
 
     @FXML
     private Hyperlink back;
+    
+
+    @FXML
+    private TableColumn<?, ?> month;
+
+    @FXML
+    private TableColumn<?, ?> newNum;
+
+    @FXML
+    private TableColumn<?, ?> oldNum;
+
+    @FXML
+    private TableColumn<?, ?> paid;
+
+    @FXML
+    private TableColumn<?, ?> total;
+
 
     @FXML
     void goBack(MouseEvent event) {

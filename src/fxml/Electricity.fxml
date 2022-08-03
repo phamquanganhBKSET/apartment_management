@@ -18,10 +18,13 @@
    <children>
       <ScrollPane layoutY="254.0" prefHeight="147.0" prefWidth="600.0">
          <content>
-            <TableView prefHeight="196.0" prefWidth="599.0">
+            <TableView prefHeight="128.0" prefWidth="599.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                  <TableColumn fx:id="month" prefWidth="132.66665661334991" text="Month" />
+                <TableColumn fx:id="oldNum" prefWidth="131.99998474121094" text="Old Electric Number" />
+                <TableColumn fx:id="newNum" prefWidth="126.66670227050781" text="New Electric Number" />
+                  <TableColumn fx:id="total" prefWidth="75.0" text="Total" />
+                  <TableColumn fx:id="paid" prefWidth="131.33333333333337" text="Paid" />
               </columns>
             </TableView>
          </content>

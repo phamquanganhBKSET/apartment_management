@@ -21,7 +21,12 @@ import javafx.stage.Stage;
 
 public class UserMainPageController {
 	
-	private String gender = "female";
+	private String gender = "male";
+	private String transUser = "";
+	
+	public void setTransUser(String transUser) {
+		this.transUser = transUser;
+	}
 
 
 	private double offset_x;
@@ -65,6 +70,9 @@ public class UserMainPageController {
 
     @FXML
     private Button edit;
+    
+    @FXML
+    private Label username;
 
     @FXML
     private Label electricity;
@@ -326,11 +334,6 @@ public class UserMainPageController {
         	male_layout.setStyle("	-fx-background-color: #FFE4E1;");
         	edit.setStyle("	-fx-background-color: #FFB6C1;");
         }
-//        edit.setOnMouseMoved(event -> {
-//        	System.out.println(hold);
-//        	edit.setStyle("	-fx-background-color: #FFE4E1;");
-//        });
-        //edit.setOnMouse(event -> edit.setStyle("	-fx-background-color: #FFB6C1;"));
     }
 
 }
