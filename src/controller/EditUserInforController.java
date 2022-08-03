@@ -98,5 +98,11 @@ public class EditUserInforController {
 	public void setScene(Scene EditUserIn4) {
 		this.EditUserIn4 = EditUserIn4;
 	}
+	
+
+    @FXML
+    void initialize() {
+        roomNumber.setEditable(false);
+    }
 
 }

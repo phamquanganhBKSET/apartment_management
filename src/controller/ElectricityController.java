@@ -42,7 +42,7 @@ public class ElectricityController {
     @FXML
     void initialize() {
         assert back != null : "fx:id=\"back\" was not injected: check your FXML file 'Electricity.fxml'.";
-
+       
     }
 
 }

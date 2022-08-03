@@ -84,7 +84,7 @@
                         <Font size="15.0" />
                      </font>
                   </Label>
-                  <Button fx:id="edit" mnemonicParsing="false" onMouseClicked="#editProfile" prefHeight="31.0" prefWidth="140.0" text="Edit" textFill="WHITE">
+                  <Button fx:id="edit" mnemonicParsing="false" onMouseClicked="#editProfile" onMouseEntered="#holdButton" onMouseExited="#exitButton" prefHeight="31.0" prefWidth="140.0" text="Edit" textFill="WHITE">
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>
