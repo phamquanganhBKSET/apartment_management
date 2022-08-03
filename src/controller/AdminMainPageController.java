@@ -53,6 +53,9 @@ public class AdminMainPageController implements Initializable {
     private URL location;
 
     @FXML
+    private ImageView addUser;
+
+    @FXML
     private VBox chosenRoomCard;
 
     @FXML
@@ -63,7 +66,7 @@ public class AdminMainPageController implements Initializable {
 
     @FXML
     private GridPane gridPane;
-    
+
     @FXML
     private GridPane gridPaneHH;
 
@@ -74,34 +77,49 @@ public class AdminMainPageController implements Initializable {
     private Label minimize;
 
     @FXML
+    private Hyperlink myAccount;
+
+    @FXML
+    private Label notify;
+
+    @FXML
+    private Label numPeople;
+
+    @FXML
+    private Label ownerID;
+
+    @FXML
+    private Label ownerIDLabel;
+
+    @FXML
+    private Label peopleLabel;
+
+    @FXML
     private ImageView roomImage;
 
     @FXML
-    private Label typeName;
-    
-    @FXML
     private Label roomName;
+
+    @FXML
+    private Label roomType;
 
     @FXML
     private HBox roomsManage;
 
     @FXML
     private ScrollPane scrollPane;
-    
+
     @FXML
     private Button searchButton;
-    
-    @FXML
-    private ImageView addUser;
-    
-    @FXML
-    private Hyperlink myAccount;
-    
-    @FXML
-    private Label notify;
-    
+
     @FXML
     private TextField searchText;
+
+    @FXML
+    private Label typeLabel;
+
+    @FXML
+    private Label typeName;
     
     ObservableList<String> filterList = FXCollections.observableArrayList("All", "Empty Rooms", "Full Rooms");
     
@@ -193,38 +211,41 @@ public class AdminMainPageController implements Initializable {
     private List<Room> getData() throws SQLException {
     	List<Room> listRoom = new ArrayList<>();
     	Room room;
+    	int i = 1;
     	
-    	for (int i = 1; i <= 5; i++) {
-    		for (int j = 1; j <= 4; j++) {
-    			String sqlString = "select * from apartment_manager.phong where ma_phong = \'" + Integer.toString(i * 100 + j) + "\'";
-    			ResultSet rs = statement.executeQuery(sqlString);
+    	String sqlString = "select * from apartment_manager.phong";
+		ResultSet rs = statement.executeQuery(sqlString);
+    	while(rs.next()) {
     			room = new Room();
-    			room.setRoomName(Integer.toString(i * 100 + j));
+    			room.setRoomName(rs.getString(1));
     			room.setStatus(rs.getBoolean(5));
     			room.setPeople(rs.getInt(3));
     			String type = rs.getString(4);
     			room.setType(Character.toString(type.charAt(0)));
-    			if (rs.getBoolean(5)) {
+    			if (rs.getInt(5) == 0) {
     				room.setColor("00CED1");
     			} else {
-    				room.setColor("FFFFFF");
+    				room.setColor("F08080");
     			}
+    			room.setOwnerID(rs.getString(2));
     			Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-    			room.setImgSrc(path + "\\icon\\room" + Integer.toString(j) + ".png");
+    			room.setImgSrc(path + "\\icon\\room" + Integer.toString(i) + ".png");
     			listRoom.add(room);
-    		}
+    			i = (i + 1) % 4;
     	}
     	
     	return listRoom;
     }
     
-    private List<HouseHolder> getDataHH() {
+    private List<HouseHolder> getDataHH() throws SQLException {
     	List<HouseHolder> listHouseHolder = new ArrayList<>();
     	HouseHolder houseHolder;
     	
-    	for (int i = 1; i <= 20; i++) {
+    	String sqlString = "select * from apartment_manager.chu_so_huu";
+		ResultSet rs = statement.executeQuery(sqlString);
+    	while(rs.next()) {
     		houseHolder = new HouseHolder();
-    		houseHolder.setUserName("anhpq" + Integer.toString(i));
+    		houseHolder.setUserName(rs.getString(1));
     		Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
     		houseHolder.setImgSrc(path + "\\icon\\user_male.png");
     		listHouseHolder.add(houseHolder);
@@ -237,12 +258,17 @@ public class AdminMainPageController implements Initializable {
     	roomName.setText(room.getRoomName());
     	Image image = new Image(String.valueOf(new File(room.getImgSrc())));
     	roomImage.setImage(image);
+    	chosenRoomCard.setStyle("-fx-background-color: #" + room.getColor());
+    	roomType.setText(room.getType() + " beds");
+    	ownerID.setText(room.getOwnerID());
+    	numPeople.setText(Integer.toString(room.getPeople()));
     }
     
     private void setChoosenUser(HouseHolder houseHolder) {
     	roomName.setText(houseHolder.getUserName());
     	Image image = new Image(String.valueOf(new File(houseHolder.getImgSrc())));
     	roomImage.setImage(image);
+    	chosenRoomCard.setStyle("-fx-background-color: #" + houseHolder.getColor());
     }
     
 	@Override
@@ -251,6 +277,13 @@ public class AdminMainPageController implements Initializable {
     	gridPane.setVisible(true);
     	gridPane.setDisable(false);
 		
+    	try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
+			statement = connection.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    	
 		filter.setItems(filterList);
 		try {
 			listRoom.addAll(getData());
@@ -259,7 +292,11 @@ public class AdminMainPageController implements Initializable {
 		}
 		setChoosenRoom(listRoom.get(0));
 		
-		listHouseHolder.addAll(getDataHH());
+		try {
+			listHouseHolder.addAll(getDataHH());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 		
 		int column = 0;
 		int row = 1;
@@ -279,6 +316,7 @@ public class AdminMainPageController implements Initializable {
 					row++;
 				}
 				
+				anchorPane.setStyle("-fx-background-color: #" + listRoom.get(i).getColor());
 				gridPane.add(anchorPane, column++, row);
 				
 				// Set grid width
@@ -338,11 +376,4 @@ public class AdminMainPageController implements Initializable {
 		this.loginScene = loginScene;
 	}
 	
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
-	
-	public void setStatement(Statement statement) {
-		this.statement = statement;
-	}
 }

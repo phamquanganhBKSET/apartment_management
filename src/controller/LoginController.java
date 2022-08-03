@@ -215,8 +215,6 @@ public class LoginController implements Initializable {
 					currStage.setScene(scene);
 					currStage.centerOnScreen();
 					controller.setLoginScene(currScene);
-					controller.setConnection(connection);
-					controller.setStatement(statement);
 					currStage.show();
 					
 					// Remember me
