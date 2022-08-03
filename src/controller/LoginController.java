@@ -28,7 +28,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class LoginController implements Initializable {
 	private Connection connection;
@@ -192,11 +191,6 @@ public class LoginController implements Initializable {
 			if (rs.next()) {
 				String passw = rs.getString(4);
 				if (pass.equals(passw)) {
-					Alert alert = new Alert(Alert.AlertType.INFORMATION);
-					alert.setTitle("Login Information");
-					alert.setHeaderText("Login successed!");
-					alert.showAndWait();
-					
 					
 					Scene currScene = (Scene)((Node) e.getSource()).getScene();
 					Stage currStage = (Stage)currScene.getWindow();

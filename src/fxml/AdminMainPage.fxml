@@ -44,7 +44,7 @@
                         <Insets left="22.5" right="22.5" />
                      </VBox.margin>
                      <children>
-                        <TextField prefHeight="30.0" prefWidth="173.0" promptText="Type here to search" styleClass="transparent" stylesheets="@../css/admin.css">
+                        <TextField prefHeight="30.0" prefWidth="173.0" promptText="Type ID here to search" styleClass="transparent" stylesheets="@../css/admin.css">
                            <HBox.margin>
                               <Insets left="15.0" />
                            </HBox.margin>
@@ -52,7 +52,7 @@
                               <Font name="Cambria" size="13.5" />
                            </font>
                         </TextField>
-                        <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="75.0" styleClass="search-button" stylesheets="@../css/admin.css" text="Search" textFill="WHITE" />
+                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#handleSearch" prefHeight="30.0" prefWidth="75.0" styleClass="search-button" stylesheets="@../css/admin.css" text="Search" textFill="WHITE" />
                      </children>
                      <styleClass>
                         <String fx:value="search-box" />
@@ -67,7 +67,7 @@
                      <children>
                         <HBox prefHeight="41.0" prefWidth="253.0">
                            <children>
-                              <Label prefHeight="39.0" prefWidth="242.0" text="Room ID" textFill="WHITE">
+                              <Label fx:id="typeName" prefHeight="39.0" prefWidth="189.0" text="Room ID" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="27.0" />
                                  </font>
@@ -75,7 +75,7 @@
                                     <Insets left="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <Label fx:id="roomName" prefHeight="39.0" prefWidth="158.0" text="101" textFill="WHITE">
+                              <Label fx:id="roomName" alignment="CENTER" prefHeight="39.0" prefWidth="216.0" text="101" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="27.0" />
                                  </font>
@@ -212,7 +212,7 @@
                   <HBox prefHeight="82.0" prefWidth="630.0">
                      <children>
                         <Pane prefHeight="90.0" prefWidth="76.0" HBox.hgrow="ALWAYS" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="337.0" styleClass="room-card" stylesheets="@../css/admin.css">
+                        <HBox fx:id="roomsManage" alignment="CENTER" onMouseClicked="#handleRoomsManage" prefHeight="100.0" prefWidth="337.0" styleClass="room-card" stylesheets="@../css/admin.css">
                            <children>
                               <VBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="174.0">
                                  <children>
@@ -236,7 +236,7 @@
                            </children>
                         </HBox>
                         <Pane prefHeight="100.0" prefWidth="72.0" HBox.hgrow="ALWAYS" />
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="337.0" styleClass="householer-card" stylesheets="@../css/admin.css">
+                        <HBox fx:id="houseHoldersManage" alignment="CENTER" onMouseClicked="#handleHouseHoldersManage" prefHeight="100.0" prefWidth="337.0" styleClass="householer-card" stylesheets="@../css/admin.css">
                            <children>
                               <VBox alignment="CENTER_LEFT" prefHeight="82.0" prefWidth="174.0">
                                  <children>
@@ -284,16 +284,25 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                      <children>
-                        <ScrollPane fx:id="scrollPane" prefHeight="427.5" prefWidth="588.75" styleClass="transparent" stylesheets="@../css/admin.css">
+                        <ScrollPane fx:id="scrollPane" prefHeight="439.0" prefWidth="610.0" styleClass="transparent" stylesheets="@../css/admin.css">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                            <content>
-                              <GridPane fx:id="gridPane" prefHeight="0.0" prefWidth="0.0">
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                              </GridPane>
+                              <AnchorPane prefHeight="434.0" prefWidth="589.0">
+                                 <children>
+                                    <GridPane fx:id="gridPane" prefHeight="0.0" prefWidth="0.0">
+                                      <rowConstraints>
+                                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                      </rowConstraints>
+                                    </GridPane>
+                                    <GridPane fx:id="gridPaneHH" prefHeight="1.0" prefWidth="0.0">
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
                            </content>
                         </ScrollPane>
                      </children>
