@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -19,8 +24,10 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -34,6 +41,8 @@ import model.HouseHolder;
 import model.Room;
 
 public class AdminMainPageController implements Initializable {
+	private Connection connection;
+	private Statement statement;
 	Scene loginScene;
 	boolean inRoomPage = true;
 	
@@ -81,6 +90,18 @@ public class AdminMainPageController implements Initializable {
     
     @FXML
     private Button searchButton;
+    
+    @FXML
+    private ImageView addUser;
+    
+    @FXML
+    private Hyperlink myAccount;
+    
+    @FXML
+    private Label notify;
+    
+    @FXML
+    private TextField searchText;
     
     ObservableList<String> filterList = FXCollections.observableArrayList("All", "Empty Rooms", "Full Rooms");
     
@@ -141,18 +162,53 @@ public class AdminMainPageController implements Initializable {
     
     @FXML
     void handleSearch(ActionEvent event) {
-    	
+    	String searchString = searchText.getText();
+    	if (inRoomPage) {
+    		
+    	} else {
+    		
+    	}
     }
-
     
-    private List<Room> getData() {
+    @FXML
+    void handleAddUser(MouseEvent event) {
+
+    }
+    
+    @FXML
+    void handleEditMyAccount(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void handleNotify(MouseEvent event) {
+
+    }
+    
+    @FXML
+    void handleViewInfo(MouseEvent event) {
+
+    }
+    
+    private List<Room> getData() throws SQLException {
     	List<Room> listRoom = new ArrayList<>();
     	Room room;
     	
     	for (int i = 1; i <= 5; i++) {
     		for (int j = 1; j <= 4; j++) {
+    			String sqlString = "select * from apartment_manager.phong where ma_phong = \'" + Integer.toString(i * 100 + j) + "\'";
+    			ResultSet rs = statement.executeQuery(sqlString);
     			room = new Room();
     			room.setRoomName(Integer.toString(i * 100 + j));
+    			room.setStatus(rs.getBoolean(5));
+    			room.setPeople(rs.getInt(3));
+    			String type = rs.getString(4);
+    			room.setType(Character.toString(type.charAt(0)));
+    			if (rs.getBoolean(5)) {
+    				room.setColor("00CED1");
+    			} else {
+    				room.setColor("FFFFFF");
+    			}
     			Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
     			room.setImgSrc(path + "\\icon\\room" + Integer.toString(j) + ".png");
     			listRoom.add(room);
@@ -192,12 +248,15 @@ public class AdminMainPageController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		gridPaneHH.setVisible(false);
-//    	gridPaneHH.setDisable(true);
     	gridPane.setVisible(true);
     	gridPane.setDisable(false);
 		
 		filter.setItems(filterList);
-		listRoom.addAll(getData());
+		try {
+			listRoom.addAll(getData());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 		setChoosenRoom(listRoom.get(0));
 		
 		listHouseHolder.addAll(getDataHH());
@@ -273,9 +332,17 @@ public class AdminMainPageController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-}
+	}
 	
 	public void setLoginScene(Scene loginScene) {
 		this.loginScene = loginScene;
+	}
+	
+	public void setConnection(Connection connection) {
+		this.connection = connection;
+	}
+	
+	public void setStatement(Statement statement) {
+		this.statement = statement;
 	}
 }
