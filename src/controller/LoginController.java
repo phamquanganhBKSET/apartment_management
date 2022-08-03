@@ -2,6 +2,8 @@ package controller;
 
 import java.util.prefs.*;
 import com.jfoenix.controls.JFXCheckBox;
+
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -26,6 +28,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class LoginController implements Initializable {
 	private Connection connection;
@@ -174,7 +177,7 @@ public class LoginController implements Initializable {
 	}
 	
 	@FXML
-	public void handleLogin(ActionEvent e) {
+	public void handleLogin(ActionEvent e) throws IOException {
 		String userID = username.getText();
 		String pass;
 		if (showPass) {
@@ -193,6 +196,35 @@ public class LoginController implements Initializable {
 					alert.setTitle("Login Information");
 					alert.setHeaderText("Login successed!");
 					alert.showAndWait();
+					
+					
+					Scene currScene = (Scene)((Node) e.getSource()).getScene();
+					Stage currStage = (Stage)currScene.getWindow();
+					
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/fxml/AdminMainPage.fxml"));
+					Parent root = loader.load();
+					
+					AdminMainPageController controller = loader.getController();
+					Scene scene = new Scene(root);
+					scene.getStylesheets().add(getClass().getResource("/css/admin.css").toExternalForm());
+					
+					// Drag scene
+					scene.setOnMousePressed(event -> {
+			            offset_x = event.getSceneX();
+			            offset_y = event.getSceneY();
+			        });
+			        scene.setOnMouseDragged(event -> {
+			        	currStage.setX(event.getScreenX() - offset_x);
+			        	currStage.setY(event.getScreenY() - offset_y);
+			        });
+			        
+					currStage.setScene(scene);
+					currStage.centerOnScreen();
+					controller.setLoginScene(currScene);
+					currStage.show();
+					
+					// Remember me
 					if(rememberMe.isSelected()) {
 				        // Let's validate the username field isn't empty (Optional)
 				        if(!username.getText().isEmpty()){

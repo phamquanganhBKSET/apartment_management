@@ -1,0 +1,55 @@
+.search-box {
+	-fx-background-color: #FFFFFF;
+	-fx-background-radius: 100;
+}
+
+.transparent {
+	-fx-background-color: rgba(0, 0, 0, 0);
+}
+
+.search-button {
+	-fx-background-color: #828282;
+	-fx-background-radius: 30;
+}
+
+.right-bar {
+	-fx-background-color: #D3D3D3;
+}
+
+.shadow {
+	-fx-effect: dropShadow(three-pass-box,rgba(0, 0, 0, 0.1), 10.0, 0.0, 0.0, 10.0);
+}
+
+.chosen-room {
+	-fx-background-color: #00CED1;
+	-fx-background-radius: 30;
+}
+
+.delete-btn {
+	-fx-background-color: #FFFFFF;
+	-fx-background-radius: 100;
+}
+
+.room-card {
+	-fx-background-color: #BAEAC3;
+	-fx-background-radius: 20;
+}
+
+.room-card:hover {
+	-fx-background-color: #D3D3D3;
+	-fx-background-radius: 20;
+}
+
+.householer-card {
+	-fx-background-color: #BAEAC3;
+	-fx-background-radius: 20;
+}
+
+.householer-card:hover {
+	-fx-background-color: #D3D3D3;
+	-fx-background-radius: 20;
+}
+
+.comboBox {
+	-fx-background-radius: 30;
+}
