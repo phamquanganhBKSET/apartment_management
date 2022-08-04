@@ -18,7 +18,7 @@
    <children>
       <ScrollPane layoutY="254.0" prefHeight="147.0" prefWidth="600.0">
          <content>
-            <TableView prefHeight="196.0" prefWidth="599.0">
+            <TableView prefHeight="146.0" prefWidth="599.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="C1" />
                 <TableColumn prefWidth="75.0" text="C2" />

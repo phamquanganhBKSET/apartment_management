@@ -3,6 +3,11 @@ package controller;
 import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,14 +25,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class UserMainPageController {
+	private Connection connection;
+	private Statement statement;
 	
 	private String gender = "male";
-	private String transUser = "";
-	
-	public void setTransUser(String transUser) {
-		this.transUser = transUser;
-	}
-
 
 	private double offset_x;
     private double offset_y;
@@ -100,6 +101,10 @@ public class UserMainPageController {
 
     @FXML
     private Label water;
+    
+	public void setUsername(String username) {
+		this.username.setText(username);
+	}
 
     @FXML
     void changePass(MouseEvent e) {
@@ -171,14 +176,14 @@ public class UserMainPageController {
     
     @FXML
     void holdButton(MouseEvent event) {
-    	if (gender.equals("female")) {
+    	if (gender != null && gender.equals("Nu")) {
         	edit.setStyle("	-fx-background-color: #FFE4E1;");
 		}
     }
     
     @FXML
     void exitButton(MouseEvent event) {
-    	if (gender.equals("female")) {
+    	if (gender != null && gender.equals("Nu")) {
     		edit.setStyle("	-fx-background-color: #FFB6C1;");
     	}
     }
@@ -319,21 +324,47 @@ public class UserMainPageController {
 		}
     }
     
+    public void load (String transUser) {
+    	
+        try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
+			statement = connection.createStatement();
+			String query = "select apartment_manager.chu_so_huu.Id_chu_so_huu, apartment_manager.chu_so_huu.Ten, apartment_manager.chu_so_huu.Email, apartment_manager.chu_so_huu.So_dien_thoai, apartment_manager.chu_so_huu.Gioi_tinh ,apartment_manager.phong.Ma_phong "
+					+ "from apartment_manager.chu_so_huu, apartment_manager.phong "
+					+ "where apartment_manager.chu_so_huu.Id_chu_so_huu = apartment_manager.phong.Id_chu_so_huu and apartment_manager.chu_so_huu.Id_chu_so_huu = \'" + transUser + "\'";
+			ResultSet rs = statement.executeQuery(query);
+			if (rs.next()) {
+				username.setText(rs.getString(1));
+				fullname.setText(rs.getString(2));
+				email.setText(rs.getString(3));
+				phone.setText(rs.getString(4));
+				room.setText(rs.getString(6));
+				gender = rs.getString(5);
+				System.out.println(gender);
+		    	Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
+		    	if (gender != null && gender.equals("Nu")) {
+		        	Image im = new Image(String.valueOf(new File(path + "\\icon\\beauty" + ".png")));
+		        	avt_male.setImage(im);
+		        	male_layout.setStyle("	-fx-background-color: #FFE4E1;");
+		        	edit.setStyle("	-fx-background-color: #FFB6C1;");
+		        }
+//		        else {
+//		        	Image im = new Image(String.valueOf(new File(path + "\\icon\\man" + ".png")));
+//		        	avt_male.setImage(im);
+//		        	male_layout.setStyle("	-fx-background-color: #EBC95E;");
+//		        	edit.setStyle("	-fx-background-color: #EBC95E;");
+//		        }
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    }
+    
     @FXML
     void initialize() {
-    	Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
     	
-        if (gender.equals("male")) {
-        	Image im = new Image(String.valueOf(new File(path + "\\icon\\man" + ".png")));
-        	avt_male.setImage(im);
-        	male_layout.setStyle("	-fx-background-color: #EBC95E;");
-		}
-        else {
-        	Image im = new Image(String.valueOf(new File(path + "\\icon\\beauty" + ".png")));
-        	avt_male.setImage(im);
-        	male_layout.setStyle("	-fx-background-color: #FFE4E1;");
-        	edit.setStyle("	-fx-background-color: #FFB6C1;");
-        }
+
     }
 
 }

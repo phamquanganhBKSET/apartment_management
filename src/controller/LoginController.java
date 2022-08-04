@@ -241,10 +241,34 @@ public class LoginController implements Initializable {
 				if (rs.next()) {
 					String passw = rs.getString(7);
 					if (pass.equals(passw)) {
-						Alert alert = new Alert(Alert.AlertType.INFORMATION);
-						alert.setTitle("Login Information");
-						alert.setHeaderText("Login successed!");
-						alert.showAndWait();
+						Scene currScene = (Scene)((Node) e.getSource()).getScene();
+						Stage currStage = (Stage)currScene.getWindow();
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/fxml/UserMainPage.fxml"));
+						Parent root = loader.load();
+
+						UserMainPageController controller = loader.getController();
+						Scene scene = new Scene(root);
+						scene.getStylesheets().add(getClass().getResource("/css/UserMainPage.css").toExternalForm());
+
+						// Drag scene
+						scene.setOnMousePressed(event -> {
+				            offset_x = event.getSceneX();
+				            offset_y = event.getSceneY();
+				        });
+				        scene.setOnMouseDragged(event -> {
+				        	currStage.setX(event.getScreenX() - offset_x);
+				        	currStage.setY(event.getScreenY() - offset_y);
+				        });
+				        
+						currStage.setScene(scene);
+						currStage.centerOnScreen();
+						currStage.setResizable(false);
+						//controller.setUsername(username.getText());
+						controller.load(username.getText());
+						currStage.show();
+						
+						
 						if(rememberMe.isSelected()) {
 					        // Let's validate the username field isn't empty (Optional)
 					        if(!username.getText().isEmpty()){
