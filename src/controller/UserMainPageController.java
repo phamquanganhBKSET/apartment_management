@@ -8,6 +8,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,11 +25,15 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import model.ModelDichVu;
+import model.ModelSummary;
+import model.ModelXe;
 
 public class UserMainPageController {
 	private Connection connection;
 	private Statement statement;
 	
+		
 	private String gender = "male";
 
 	private double offset_x;
@@ -324,11 +330,14 @@ public class UserMainPageController {
 		}
     }
     
-    public void load (String transUser) {
-    	
+    
+	ArrayList<ModelDichVu> listDichVu;
+	ArrayList<ModelXe> listXe;
+	ArrayList<ModelSummary> listSummaries;
+	
+    public void load (String transUser) {    	
         try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
-			statement = connection.createStatement();
+        	// Update display
 			String query = "select apartment_manager.chu_so_huu.Id_chu_so_huu, apartment_manager.chu_so_huu.Ten, apartment_manager.chu_so_huu.Email, apartment_manager.chu_so_huu.So_dien_thoai, apartment_manager.chu_so_huu.Gioi_tinh ,apartment_manager.phong.Ma_phong "
 					+ "from apartment_manager.chu_so_huu, apartment_manager.phong "
 					+ "where apartment_manager.chu_so_huu.Id_chu_so_huu = apartment_manager.phong.Id_chu_so_huu and apartment_manager.chu_so_huu.Id_chu_so_huu = \'" + transUser + "\'";
@@ -340,7 +349,6 @@ public class UserMainPageController {
 				phone.setText(rs.getString(4));
 				room.setText(rs.getString(6));
 				gender = rs.getString(5);
-				System.out.println(gender);
 		    	Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
 		    	if (gender != null && gender.equals("Nu")) {
 		        	Image im = new Image(String.valueOf(new File(path + "\\icon\\beauty" + ".png")));
@@ -350,9 +358,64 @@ public class UserMainPageController {
 		        }
 			}
 			
-			String queryDichVu = "select * from apartment_manager.dich_vu where apartment_manager.dich_vu.Ma_phong = " + room.getText();
-			ResultSet rsDichVu = statement.executeQuery(queryDichVu);
-
+			// Add data to listDichVu and listSummaries		
+			// Just add date and room to listSummaries
+			query = "select * from apartment_manager.dich_vu where apartment_manager.dich_vu.Ma_phong = " + room.getText() + " order by apartment_manager.dich_vu.Thang desc;";
+			rs = statement.executeQuery(query);
+			listDichVu = new ArrayList<>();
+			listSummaries = new ArrayList<>();
+			ArrayList<String> dateArrayList = new ArrayList<>();
+			while (rs.next()) {
+				listDichVu.add(new ModelDichVu(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDate(5), rs.getBoolean(6)));
+				if (!dateArrayList.contains(rs.getDate(5).toString())) {
+					dateArrayList.add(rs.getDate(5).toString());
+					listSummaries.add(new ModelSummary(rs.getDate(5), rs.getInt(1), 0, 0, 0, 0));
+				}
+			}
+			
+			// Add data to listXe
+			query = "SELECT * FROM apartment_manager.xe where apartment_manager.xe.Ma_phong = " + room.getText();
+			rs = statement.executeQuery(query);
+			listXe = new ArrayList<>();
+			while (rs.next()) {
+				listXe.add(new ModelXe(rs.getString(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6), rs.getBoolean(7)));
+			}
+			
+			// Update data for listSummaries
+			for (ModelSummary sum : listSummaries) {
+				for (ModelDichVu dv : listDichVu) {
+					if (sum.getThang().compareTo(dv.getThang()) == 0) {
+						System.out.println("\nthangttt " + sum.getThang());
+						System.out.println(dv.getTien());
+						if (dv.getMaDichVu() == 1) {
+							System.out.println("TIen dien");
+							sum.updateElec(dv.getTien());
+						} else if (dv.getMaDichVu() == 2) {
+							System.out.println("TIen nuoc");
+							sum.updateWater(dv.getTien());
+						} else if (dv.getMaDichVu() == 3) {
+							System.out.println("TIen VS");
+							sum.updateEnvi(dv.getTien());
+						}
+					}
+				}
+				for (ModelXe xe : listXe) {
+					if (sum.getThang().compareTo(xe.getThang()) == 0) {
+						sum.updateVehicle(xe.getTienXe());
+					}
+				}
+				sum.updateTotal();
+				System.out.println("----------------------------");
+				System.out.println("thang " + sum.getThang());
+				System.out.println("phong " + sum.getRoom());
+				System.out.println("dien " +sum.getElectricityBill());
+				System.out.println("vesinh " + sum.getEnviCharges());
+				System.out.println("nuoc " + sum.getWaterBill());
+				System.out.println("xe " + sum.getVehicle());
+				System.out.println("tong " + sum.getTotal());
+			}
+			
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -360,7 +423,13 @@ public class UserMainPageController {
     
     @FXML
     void initialize() {
-    	
+    	try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
+			statement = connection.createStatement();
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 
     }
 
