@@ -348,13 +348,10 @@ public class UserMainPageController {
 		        	male_layout.setStyle("	-fx-background-color: #FFE4E1;");
 		        	edit.setStyle("	-fx-background-color: #FFB6C1;");
 		        }
-//		        else {
-//		        	Image im = new Image(String.valueOf(new File(path + "\\icon\\man" + ".png")));
-//		        	avt_male.setImage(im);
-//		        	male_layout.setStyle("	-fx-background-color: #EBC95E;");
-//		        	edit.setStyle("	-fx-background-color: #EBC95E;");
-//		        }
 			}
+			
+			String queryDichVu = "select * from apartment_manager.dich_vu where apartment_manager.dich_vu.Ma_phong = " + room.getText();
+			ResultSet rsDichVu = statement.executeQuery(queryDichVu);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
