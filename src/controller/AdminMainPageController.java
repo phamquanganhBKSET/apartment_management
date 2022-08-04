@@ -22,14 +22,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -41,6 +45,7 @@ import model.HouseHolder;
 import model.Room;
 
 public class AdminMainPageController implements Initializable {
+	private String username;
 	private Connection connection;
 	private Statement statement;
 	Scene loginScene;
@@ -121,6 +126,24 @@ public class AdminMainPageController implements Initializable {
     @FXML
     private Label typeName;
     
+    @FXML
+    private Separator sep1;
+
+    @FXML
+    private Separator sep2;
+
+    @FXML
+    private Separator sep3;
+    
+    @FXML
+    private Label numRooms;
+    
+    @FXML
+    private Label numHouseHolders;
+    
+    @FXML
+    private Label resultFilter;
+    
     ObservableList<String> filterList = FXCollections.observableArrayList("All", "Empty Rooms", "Full Rooms");
     
     ObservableList<String> filterListHH = FXCollections.observableArrayList("All", "Male", "Female");
@@ -156,6 +179,10 @@ public class AdminMainPageController implements Initializable {
     
     @FXML
     void handleHouseHoldersManage(MouseEvent event) {
+    	filter.setPromptText("Filter");
+    	typeLabel.setText("Citizen ID");
+    	ownerIDLabel.setText("Phone");
+    	peopleLabel.setText("Email");
     	inRoomPage = false;
     	typeName.setText("User ID");
     	filter.setItems(filterListHH);
@@ -163,11 +190,15 @@ public class AdminMainPageController implements Initializable {
     	gridPane.setVisible(false);
     	gridPane.setDisable(true);
     	gridPaneHH.setVisible(true);
-    	gridPane.setDisable(false);
+    	gridPaneHH.setDisable(false);
     }
     
     @FXML
     void handleRoomsManage(MouseEvent event) {
+    	filter.setPromptText("Filter");
+    	typeLabel.setText("Type");
+    	ownerIDLabel.setText("Owner ID");
+    	peopleLabel.setText("People");
     	inRoomPage = true;
     	typeName.setText("Room ID");
     	filter.setItems(filterList);
@@ -182,9 +213,119 @@ public class AdminMainPageController implements Initializable {
     void handleSearch(ActionEvent event) {
     	String searchString = searchText.getText();
     	if (inRoomPage) {
+    		for (Room room : listRoom) {
+    			if (room.getRoomName().equals(searchString)) {
+    				this.setChoosenRoom(room);
+    				return;
+    			}
+    		}
     		
+    		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Searching Information");
+			alert.setHeaderText("Searching failed!");
+			alert.setContentText("There aren't any room has ID: " + searchString + "!");
+			alert.showAndWait();
     	} else {
+    		for (HouseHolder houseHolder : listHouseHolder) {
+    			if (houseHolder.getUserName().equals(searchString)) {
+    				this.setChoosenUser(houseHolder);
+    				return;
+    			}
+    		}
     		
+    		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Searching Information");
+			alert.setHeaderText("Searching failed!");
+			alert.setContentText("There aren't any user has ID: " + searchString + "!");
+			alert.showAndWait();
+    	}
+    }
+    
+    @FXML
+    public void handleEnterSearch(KeyEvent event) {
+    	if (event.getCode() == KeyCode.ENTER) {
+    		String searchString = searchText.getText();
+        	if (inRoomPage) {
+        		for (Room room : listRoom) {
+        			if (room.getRoomName().equals(searchString)) {
+        				this.setChoosenRoom(room);
+        				return;
+        			}
+        		}
+        		
+        		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    			alert.setTitle("Searching Information");
+    			alert.setHeaderText("Searching failed!");
+    			alert.setContentText("There aren't any room has ID: " + searchString + "!");
+    			alert.showAndWait();
+        	} else {
+        		for (HouseHolder houseHolder : listHouseHolder) {
+        			if (houseHolder.getUserName().equals(searchString)) {
+        				this.setChoosenUser(houseHolder);
+        				return;
+        			}
+        		}
+        		
+        		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    			alert.setTitle("Searching Information");
+    			alert.setHeaderText("Searching failed!");
+    			alert.setContentText("There aren't any user has ID: " + searchString + "!");
+    			alert.showAndWait();
+        	}
+    	}
+    }
+    
+    @FXML
+    public void handleFilter(ActionEvent event) {
+    	int result = 0;
+    	String filterValue = filter.getValue();
+    	if (filterValue != null) {
+	    	if (inRoomPage) {
+	    		if (filterValue.equals("All")) {
+	    			resultFilter.setVisible(false);
+	    		}
+	    		else if (filterValue.equals("Empty Rooms")) {
+		    		for (Room room : listRoom) {
+		    			if (room.getStatus() == true) {
+		    				result++;
+		    			}
+		    		}
+		    		resultFilter.setVisible(true);
+		    		resultFilter.setText("Result: " + result);
+	    		} else {
+	    			for (Room room : listRoom) {
+		    			if (room.getStatus() == false) {
+		    				result++;
+		    			}
+		    		}
+	    			resultFilter.setVisible(true);
+		    		resultFilter.setText("Result: " + result);
+	    		}
+	    	} else {
+				if (filterValue.equals("All")) {
+					resultFilter.setVisible(false);
+				}
+	    		else if (filterValue.equals("Male")) {
+	    			for (HouseHolder houseHolder : listHouseHolder) {
+		    			if (houseHolder.getGender().equals("Nam")) {
+		    				result++;
+		    			}
+		    		}
+	    			resultFilter.setVisible(true);
+		    		resultFilter.setText("Result: " + result);
+	    		} else {
+	    			for (HouseHolder houseHolder : listHouseHolder) {
+		    			if (houseHolder.getGender().equals("Nu")) {
+		    				result++;
+		    			}
+		    		}
+	    			resultFilter.setVisible(true);
+		    		resultFilter.setText("Result: " + result);
+	    		}
+	    	}
+    	} else {
+    		resultFilter.setVisible(false);
+    		filter.setPromptText("Filter");
     	}
     }
     
@@ -224,8 +365,10 @@ public class AdminMainPageController implements Initializable {
     			room.setType(Character.toString(type.charAt(0)));
     			if (rs.getInt(5) == 0) {
     				room.setColor("00CED1");
+    				room.setStatus(false);
     			} else {
     				room.setColor("F08080");
+    				room.setStatus(true);
     			}
     			room.setOwnerID(rs.getString(2));
     			Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
@@ -246,8 +389,18 @@ public class AdminMainPageController implements Initializable {
     	while(rs.next()) {
     		houseHolder = new HouseHolder();
     		houseHolder.setUserName(rs.getString(1));
+    		houseHolder.setEmail(rs.getString(5));
+    		houseHolder.setPhoneNumber(rs.getString(4));
+    		houseHolder.setGender(rs.getString(6));
+    		houseHolder.setCitizenID(rs.getString(2));
     		Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-    		houseHolder.setImgSrc(path + "\\icon\\user_male.png");
+    		if (rs.getString(6).equals("Nam")) {
+    			houseHolder.setImgSrc(path + "\\icon\\user_male.png");
+    			houseHolder.setColor("00CED1");
+    		} else {
+    			houseHolder.setImgSrc(path + "\\icon\\user_female.png");
+    			houseHolder.setColor("FFC0CB");
+    		}
     		listHouseHolder.add(houseHolder);
     	}
     	
@@ -268,14 +421,19 @@ public class AdminMainPageController implements Initializable {
     	roomName.setText(houseHolder.getUserName());
     	Image image = new Image(String.valueOf(new File(houseHolder.getImgSrc())));
     	roomImage.setImage(image);
+    	roomType.setText(houseHolder.getCitizenID());
+    	ownerID.setText(houseHolder.getPhoneNumber());
+    	numPeople.setText(houseHolder.getCitizenID());
     	chosenRoomCard.setStyle("-fx-background-color: #" + houseHolder.getColor());
     }
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		resultFilter.setVisible(false);
 		gridPaneHH.setVisible(false);
     	gridPane.setVisible(true);
     	gridPane.setDisable(false);
+    	myAccount.setText("My Account");
 		
     	try {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
@@ -297,6 +455,9 @@ public class AdminMainPageController implements Initializable {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		
+		numRooms.setText("about " + listRoom.size() + " rooms");
+		numHouseHolders.setText("about " + listHouseHolder.size() + " householders");
 		
 		int column = 0;
 		int row = 1;
@@ -352,7 +513,8 @@ public class AdminMainPageController implements Initializable {
 					column = 0;
 					row++;
 				}
-					
+				
+				anchorPane.setStyle("-fx-background-color: #" + listHouseHolder.get(i).getColor());
 				gridPaneHH.add(anchorPane, column++, row);
 					
 				// Set grid width
@@ -376,4 +538,8 @@ public class AdminMainPageController implements Initializable {
 		this.loginScene = loginScene;
 	}
 	
+	public void setUsername(String username) {
+		this.username = new String();
+		this.username = username;
+	}
 }

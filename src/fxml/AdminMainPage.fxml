@@ -45,7 +45,7 @@
                         <Insets left="22.5" right="22.5" />
                      </VBox.margin>
                      <children>
-                        <TextField fx:id="searchText" prefHeight="30.0" prefWidth="173.0" promptText="Type ID here to search" styleClass="transparent" stylesheets="@../css/admin.css">
+                        <TextField fx:id="searchText" onKeyPressed="#handleEnterSearch" prefHeight="30.0" prefWidth="173.0" promptText="Type ID here to search" styleClass="transparent" stylesheets="@../css/admin.css">
                            <HBox.margin>
                               <Insets left="15.0" />
                            </HBox.margin>
@@ -97,7 +97,7 @@
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="253.0" />
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="253.0">
                            <children>
-                              <Label fx:id="typeLabel" prefHeight="27.0" prefWidth="147.0" text="Type" textFill="WHITE">
+                              <Label fx:id="typeLabel" prefHeight="27.0" prefWidth="129.0" text="Type" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
@@ -105,10 +105,13 @@
                                     <Insets left="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <Separator orientation="VERTICAL" prefHeight="200.0">
+                              <Separator fx:id="sep1" orientation="VERTICAL" prefHeight="200.0">
                                  <HBox.margin>
-                                    <Insets right="40.0" />
+                                    <Insets />
                                  </HBox.margin>
+                                 <padding>
+                                    <Insets right="40.0" />
+                                 </padding>
                               </Separator>
                               <Label fx:id="roomType" prefHeight="29.0" prefWidth="129.0" text="Buying" textFill="WHITE">
                                  <font>
@@ -119,7 +122,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="253.0">
                            <children>
-                              <Label fx:id="ownerIDLabel" prefHeight="27.0" prefWidth="147.0" text="Owner ID" textFill="WHITE">
+                              <Label fx:id="ownerIDLabel" prefHeight="27.0" prefWidth="129.0" text="Owner ID" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
@@ -127,10 +130,13 @@
                                     <Insets left="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <Separator orientation="VERTICAL" prefHeight="200.0">
+                              <Separator fx:id="sep2" orientation="VERTICAL" prefHeight="200.0">
                                  <HBox.margin>
-                                    <Insets right="40.0" />
+                                    <Insets />
                                  </HBox.margin>
+                                 <padding>
+                                    <Insets right="40.0" />
+                                 </padding>
                               </Separator>
                               <Label fx:id="ownerID" prefHeight="29.0" prefWidth="129.0" text="anhpq0" textFill="WHITE">
                                  <font>
@@ -141,7 +147,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="253.0">
                            <children>
-                              <Label fx:id="peopleLabel" prefHeight="27.0" prefWidth="147.0" text="People" textFill="WHITE">
+                              <Label fx:id="peopleLabel" prefHeight="27.0" prefWidth="130.0" text="People" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
@@ -149,10 +155,13 @@
                                     <Insets left="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <Separator orientation="VERTICAL" prefHeight="200.0">
+                              <Separator fx:id="sep3" orientation="VERTICAL" prefHeight="200.0">
                                  <HBox.margin>
-                                    <Insets right="40.0" />
+                                    <Insets />
                                  </HBox.margin>
+                                 <padding>
+                                    <Insets right="40.0" />
+                                 </padding>
                               </Separator>
                               <Label fx:id="numPeople" prefHeight="29.0" prefWidth="129.0" text="4" textFill="WHITE">
                                  <font>
@@ -195,7 +204,7 @@
                                  </font>
                               </Label>
                            </children></Pane>
-                        <Hyperlink fx:id="myAccount" onAction="#handleEditMyAccount" prefHeight="45.0" prefWidth="123.0" text="My Account: anhpq0" />
+                        <Hyperlink fx:id="myAccount" alignment="CENTER" onAction="#handleEditMyAccount" prefHeight="45.0" prefWidth="123.0" text="My Account" />
                         <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
                         <Label fx:id="minimize" onMouseClicked="#handleMinimize" prefHeight="43.0" prefWidth="30.0" text=" -">
                            <HBox.margin>
@@ -224,7 +233,7 @@
                                           <Font name="Cambria Bold" size="13.5" />
                                        </font>
                                     </Label>
-                                    <Label prefHeight="36.0" prefWidth="99.0" text="about 20 rooms" textFill="#878787">
+                                    <Label fx:id="numRooms" prefHeight="36.0" prefWidth="99.0" text="about 20 rooms" textFill="#878787">
                                        <font>
                                           <Font name="Cambria" size="13.5" />
                                        </font>
@@ -248,7 +257,7 @@
                                           <Font name="Cambria Bold" size="13.5" />
                                        </font>
                                     </Label>
-                                    <Label prefHeight="36.0" prefWidth="141.0" text="about 100 householders" textFill="#878787">
+                                    <Label fx:id="numHouseHolders" prefHeight="36.0" prefWidth="141.0" text="about 100 householders" textFill="#878787">
                                        <font>
                                           <Font name="Cambria" size="13.5" />
                                        </font>
@@ -278,13 +287,19 @@
                               <Insets left="10.0" top="7.5" />
                            </HBox.margin>
                         </ImageView>
-                        <ComboBox fx:id="filter" prefHeight="9.0" prefWidth="150.0" promptText="Filter" styleClass="comboBox" stylesheets="@../css/admin.css">
+                        <ComboBox fx:id="filter" onAction="#handleFilter" prefHeight="9.0" prefWidth="150.0" promptText="Filter" styleClass="comboBox" stylesheets="@../css/admin.css">
                            <HBox.margin>
                               <Insets left="7.5" top="5.0" />
                            </HBox.margin>
                         </ComboBox>
-                        <Pane prefHeight="31.0" prefWidth="437.0" />
-                        <ImageView fx:id="addUser" fitHeight="29.0" fitWidth="38.0" onMouseClicked="#handleAddUser" pickOnBounds="true" preserveRatio="true">
+                        <Pane prefHeight="31.0" prefWidth="113.0" />
+                        <Label fx:id="resultFilter" alignment="BOTTOM_LEFT" prefHeight="31.0" prefWidth="68.0" text="Result: 10" textFill="DARKTURQUOISE">
+                           <font>
+                              <Font name="Cambria" size="15.0" />
+                           </font>
+                        </Label>
+                        <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                        <ImageView fx:id="addUser" fitHeight="29.0" fitWidth="40.0" onMouseClicked="#handleAddUser" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                            <image>
                               <Image url="@../../icon/add.png" />
                            </image>

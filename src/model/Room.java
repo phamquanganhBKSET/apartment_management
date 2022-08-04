@@ -27,7 +27,7 @@ public class Room {
 	public void setColor(String color) {
 		this.color = color;
 	}
-	public boolean isStatus() {
+	public boolean getStatus() {
 		return status;
 	}
 	public void setStatus(boolean status) {
