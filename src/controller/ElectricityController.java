@@ -111,16 +111,16 @@ public class ElectricityController {
 	    	
 			
 			ObservableList<ModelDichVu> listReverse = FXCollections.observableArrayList();
-						
+			for (ModelDichVu i : listElec) {
+				listReverse.add(i);
+			}
 			Collections.reverse(listReverse);
 			XYChart.Series series = new XYChart.Series();
-//			for(ModelDichVu i : listReverse) {
-//				series.getData().add(new XYChart.Data(i.getThang().toString(), i.getTienDien()));
-//			}
 			
-			series.getData().add(new XYChart.Data("Jan", 1));
-			series.getData().add(new XYChart.Data("Feb", 2));
-			series.getData().add(new XYChart.Data("Mar", 2));
+			for(ModelDichVu i : listReverse) {
+				series.getData().add(new XYChart.Data(i.getThang().toString(), i.getTienDien()));
+			}
+
 			lineChart.getData().addAll(series);
 
     	} catch (SQLException e) {
