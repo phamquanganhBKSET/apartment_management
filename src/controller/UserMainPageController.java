@@ -183,6 +183,7 @@ public class UserMainPageController {
 			currStage.setScene(scene);
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
+			controller.load(username.getText());
 			controller.setScene(currScene);
 			currStage.show();
 		} catch (Exception ex) {
