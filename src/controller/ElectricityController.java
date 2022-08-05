@@ -109,7 +109,7 @@ public class ElectricityController {
 	    	tableElec.setItems(listElec);
 	    	
 	    	
-			
+			// Line chart
 			ObservableList<ModelDichVu> listReverse = FXCollections.observableArrayList();
 			for (ModelDichVu i : listElec) {
 				listReverse.add(i);

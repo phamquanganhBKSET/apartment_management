@@ -302,6 +302,7 @@ public class UserMainPageController {
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
 			controller.setScene(currScene);
+			controller.load(connection, statement, room.getText());
 			currStage.show();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -388,11 +389,15 @@ public class UserMainPageController {
 			}
 			
 			// Add data to listXe
-			query = "SELECT * FROM apartment_manager.xe where apartment_manager.xe.Ma_phong = " + room.getText();
+			query = "SELECT apartment_manager.xe.Ten_chu_xe, apartment_manager.xe.Ma_phong, apartment_manager.xe.Loai_xe, apartment_manager.xe.Bien_so_xe, apartment_manager.xe.Mau_sac, apartment_manager.xe.Thang, apartment_manager.xe.Da_dong, apartment_manager.don_gia_gui_xe.Don_gia"
+					+ " FROM apartment_manager.xe, apartment_manager.don_gia_gui_xe" 
+					+ " where apartment_manager.xe.Ma_phong = "+ room.getText() +" and apartment_manager.xe.Loai_xe = apartment_manager.don_gia_gui_xe.Loai_xe"
+					+ " order by apartment_manager.xe.Thang desc;";
+					
 			rs = statement.executeQuery(query);
 			listXe = new ArrayList<>();
 			while (rs.next()) {
-				listXe.add(new ModelXe(rs.getString(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6), rs.getBoolean(7)));
+				listXe.add(new ModelXe(rs.getString(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6), rs.getBoolean(7), rs.getInt(8)));
 			}
 			
 			// Update data for listSummaries

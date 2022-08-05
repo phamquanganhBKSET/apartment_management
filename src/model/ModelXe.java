@@ -1,12 +1,8 @@
 package model;
 
-import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 
-import controller.library;
+import javafx.scene.control.CheckBox;
 
 public class ModelXe {
 	String tenChuXe;
@@ -17,8 +13,9 @@ public class ModelXe {
 	Date thang;
 	boolean daDong;
 	int tienXe;
+	CheckBox select;
 	
-	public ModelXe(String tenChuXe, int maPhong, String loaiXe, String bienSoXe, String mauSac, Date thang, boolean daDong) {
+	public ModelXe(String tenChuXe, int maPhong, String loaiXe, String bienSoXe, String mauSac, Date thang, boolean daDong, int tienXe) {
 		this.tenChuXe = tenChuXe;
 		this.maPhong = maPhong;
 		this.loaiXe = loaiXe;
@@ -26,21 +23,18 @@ public class ModelXe {
 		this.mauSac = mauSac;
 		this.thang = thang;
 		this.daDong = daDong;
-		try {
-			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
-			Statement statement = connection.createStatement();
-			String query = "SELECT * FROM apartment_manager.don_gia_gui_xe where apartment_manager.don_gia_gui_xe.Loai_xe = \'" + loaiXe + "\'";
-			ResultSet rs = statement.executeQuery(query);
-			rs.next();
-			this.tienXe = rs.getInt(2);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
+		this.tienXe = tienXe;
+		this.select = new CheckBox();
+		select.setSelected(daDong);
+		select.setDisable(true);
 	}
 	
 	public int getTienXe() {
 		return tienXe;
+	}
+	
+	public CheckBox getSelect() {
+		return select;
 	}
 	
 	public void setTenChuXe(String tenChuXe) {

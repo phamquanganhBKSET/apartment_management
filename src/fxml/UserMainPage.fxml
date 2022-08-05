@@ -25,7 +25,7 @@
                         <Image url="@../../icon/man.png" />
                      </image>
                   </ImageView>
-                  <Label fx:id="username" text="quangnd1" textFill="WHITE" wrapText="true">
+                  <Label fx:id="username" textFill="WHITE" wrapText="true">
                      <VBox.margin>
                         <Insets top="20.0" />
                      </VBox.margin>
@@ -43,7 +43,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="fullname" prefHeight="27.0" prefWidth="230.0" text="Nguyễn Đức Quang" wrapText="true">
+                  <Label fx:id="fullname" prefHeight="27.0" prefWidth="230.0" wrapText="true">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -56,7 +56,7 @@
                         <Insets top="20.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="room" prefHeight="27.0" prefWidth="230.0" text="309">
+                  <Label fx:id="room" prefHeight="27.0" prefWidth="230.0">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -69,7 +69,7 @@
                         <Insets top="10.0" />
                      </VBox.margin>
                   </Label>
-                  <Label fx:id="email" alignment="TOP_LEFT" prefHeight="51.0" prefWidth="240.0" text="quangnguyenduc1212@gmail.com" wrapText="true">
+                  <Label fx:id="email" alignment="TOP_LEFT" prefHeight="51.0" prefWidth="240.0" wrapText="true">
                      <font>
                         <Font size="15.0" />
                      </font>
@@ -79,7 +79,7 @@
                         <Font name="System Bold" size="15.0" />
                      </font>
                   </Label>
-                  <Label fx:id="phone" prefHeight="27.0" prefWidth="230.0" text="0384564492">
+                  <Label fx:id="phone" prefHeight="27.0" prefWidth="230.0">
                      <font>
                         <Font size="15.0" />
                      </font>

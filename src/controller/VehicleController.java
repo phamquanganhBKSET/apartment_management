@@ -1,12 +1,29 @@
 package controller;
 
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import model.ModelDichVu;
+import model.ModelSummary;
+import model.ModelXe;
 
 public class VehicleController {
 	
@@ -21,6 +38,36 @@ public class VehicleController {
 
     @FXML
     private Hyperlink back;
+    
+    @FXML
+    private TableColumn<ModelXe, String> col_carOwner;
+
+    @FXML
+    private TableColumn<ModelXe, String> col_color;
+
+    @FXML
+    private TableColumn<ModelXe, String> col_licensePlates;
+
+    @FXML
+    private TableColumn<ModelXe, Integer> col_money;
+
+    @FXML
+    private TableColumn<ModelXe, Date> col_month;
+
+    @FXML
+    private TableColumn<ModelXe, CheckBox> col_paid;
+
+    @FXML
+    private TableColumn<ModelXe, Integer> col_room;
+
+    @FXML
+    private TableColumn<ModelXe, String> col_type;
+
+    @FXML
+    private LineChart<?, ?> lineChart;
+
+    @FXML
+    private TableView<ModelXe> tableXe;
 
     @FXML
     void addVehicle(MouseEvent event) {
@@ -36,6 +83,63 @@ public class VehicleController {
 			currStage.centerOnScreen();
 			currStage.show();
 		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+    }
+    
+    void load (Connection connection, Statement statement, String phong) {
+    	try {
+			// Add data to listXe
+			String query = "SELECT apartment_manager.xe.Ten_chu_xe, apartment_manager.xe.Ma_phong, apartment_manager.xe.Loai_xe, apartment_manager.xe.Bien_so_xe, apartment_manager.xe.Mau_sac, apartment_manager.xe.Thang, apartment_manager.xe.Da_dong, apartment_manager.don_gia_gui_xe.Don_gia"
+					+ " FROM apartment_manager.xe, apartment_manager.don_gia_gui_xe" 
+					+ " where apartment_manager.xe.Ma_phong = "+ phong +" and apartment_manager.xe.Loai_xe = apartment_manager.don_gia_gui_xe.Loai_xe"
+					+ " order by apartment_manager.xe.Thang desc;";
+			ResultSet rs = statement.executeQuery(query);
+			
+			ObservableList<ModelXe> listXe = FXCollections.observableArrayList();
+			ArrayList<ModelSummary> listSummaries = new ArrayList<>();
+			ArrayList<String> dateArrayList = new ArrayList<>();
+
+			while (rs.next()) {
+				listXe.add(new ModelXe(rs.getString(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6), rs.getBoolean(7), rs.getInt(8)));
+				if (!dateArrayList.contains(rs.getDate(6).toString())) {
+					dateArrayList.add(rs.getDate(6).toString());
+					listSummaries.add(new ModelSummary(rs.getDate(6), Integer.valueOf(rs.getString(2)), 0, 0, 0, 0));
+				}
+			}
+			
+			// Update data for listSummaries
+			for (ModelSummary sum : listSummaries) {
+				for (ModelXe xe : listXe) {
+					if (sum.getThang().compareTo(xe.getThang()) == 0) {
+						System.out.println(xe.getTienXe());
+						sum.updateVehicle(xe.getTienXe());
+					}
+				}
+				sum.updateTotal();
+			}
+			
+	    	col_carOwner.setCellValueFactory(new PropertyValueFactory<>("tenChuXe"));
+	    	col_room.setCellValueFactory(new PropertyValueFactory<>("maPhong"));
+	    	col_type.setCellValueFactory(new PropertyValueFactory<>("loaiXe"));
+	    	col_licensePlates.setCellValueFactory(new PropertyValueFactory<>("bienSoXe"));
+	    	col_color.setCellValueFactory(new PropertyValueFactory<>("mauSac"));
+	    	col_month.setCellValueFactory(new PropertyValueFactory<>("thang"));
+	    	col_paid.setCellValueFactory(new PropertyValueFactory<>("select"));
+	    	col_money.setCellValueFactory(new PropertyValueFactory<>("tienXe"));
+	    	tableXe.setItems(listXe);
+	    	
+	    	// Line chart
+			XYChart.Series series = new XYChart.Series();
+			for(ModelSummary i : listSummaries) {
+				series.getData().add(new XYChart.Data(i.getThang().toString(), i.getTotal()));
+			}
+			
+
+			lineChart.getData().addAll(series);
+			
+		} catch (Exception ex) {
+			// TODO: handle exception
 			ex.printStackTrace();
 		}
     }
