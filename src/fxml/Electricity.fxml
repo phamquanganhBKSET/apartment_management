@@ -18,7 +18,7 @@
    <children>
       <ScrollPane layoutY="254.0" prefHeight="147.0" prefWidth="600.0">
          <content>
-            <TableView prefHeight="128.0" prefWidth="599.0">
+            <TableView prefHeight="127.0" prefWidth="593.0">
               <columns>
                   <TableColumn fx:id="month" prefWidth="132.66665661334991" text="Month" />
                 <TableColumn fx:id="oldNum" prefWidth="131.99998474121094" text="Old Electric Number" />

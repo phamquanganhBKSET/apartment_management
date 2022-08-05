@@ -4,13 +4,18 @@ import java.io.File;
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -20,6 +25,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -46,34 +53,37 @@ public class UserMainPageController {
     private Hyperlink change_password;
 
     @FXML
-    private TableColumn<?, ?> col_elec_bill;
+    private TableColumn<ModelSummary, Integer> col_elec_bill;
 
     @FXML
-    private TableColumn<?, ?> col_envi;
+    private TableColumn<ModelSummary, Integer> col_envi;
 
     @FXML
-    private TableColumn<?, ?> col_month;
+    private TableColumn<ModelSummary, Date> col_month;
+
+//    @FXML
+//    private TableColumn<ModelSummary, String> col_name;
 
     @FXML
-    private TableColumn<?, ?> col_name;
+    private TableColumn<ModelSummary, Integer> col_new_elec;
 
     @FXML
-    private TableColumn<?, ?> col_new_elec;
+    private TableColumn<ModelSummary, Integer> col_old_elec;
 
     @FXML
-    private TableColumn<?, ?> col_old_elec;
+    private TableColumn<ModelSummary, Integer> col_room;
 
     @FXML
-    private TableColumn<?, ?> col_room;
+    private TableColumn<ModelSummary, Integer> col_total;
 
     @FXML
-    private TableColumn<?, ?> col_total;
+    private TableColumn<ModelSummary, Integer> col_veh;
 
     @FXML
-    private TableColumn<?, ?> col_veh;
-
+    private TableColumn<ModelSummary, Integer> col_water;
+    
     @FXML
-    private TableColumn<?, ?> col_water;
+    private TableView<ModelSummary> tableSummary;
 
     @FXML
     private Button edit;
@@ -333,7 +343,8 @@ public class UserMainPageController {
     
 	ArrayList<ModelDichVu> listDichVu;
 	ArrayList<ModelXe> listXe;
-	ArrayList<ModelSummary> listSummaries;
+//	ArrayList<ModelSummary> listSummaries;
+	ObservableList<ModelSummary> listSummaries;
 	
     public void load (String transUser) {    	
         try {
@@ -363,7 +374,8 @@ public class UserMainPageController {
 			query = "select * from apartment_manager.dich_vu where apartment_manager.dich_vu.Ma_phong = " + room.getText() + " order by apartment_manager.dich_vu.Thang desc;";
 			rs = statement.executeQuery(query);
 			listDichVu = new ArrayList<>();
-			listSummaries = new ArrayList<>();
+//			listSummaries = new ArrayList<>();
+			listSummaries = FXCollections.observableArrayList();
 			ArrayList<String> dateArrayList = new ArrayList<>();
 			while (rs.next()) {
 				listDichVu.add(new ModelDichVu(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDate(5), rs.getBoolean(6)));
@@ -385,6 +397,7 @@ public class UserMainPageController {
 			for (ModelSummary sum : listSummaries) {
 				for (ModelDichVu dv : listDichVu) {
 					if (sum.getThang().compareTo(dv.getThang()) == 0) {
+						System.out.println("==========================================");
 						System.out.println("\nthangttt " + sum.getThang());
 						System.out.println(dv.getTien());
 						if (dv.getMaDichVu() == 1) {
@@ -402,6 +415,7 @@ public class UserMainPageController {
 				for (ModelXe xe : listXe) {
 					if (sum.getThang().compareTo(xe.getThang()) == 0) {
 						sum.updateVehicle(xe.getTienXe());
+						System.out.println("Tien xe " + xe.getTienXe());
 					}
 				}
 				sum.updateTotal();
@@ -413,11 +427,21 @@ public class UserMainPageController {
 				System.out.println("nuoc " + sum.getWaterBill());
 				System.out.println("xe " + sum.getVehicle());
 				System.out.println("tong " + sum.getTotal());
+				System.out.println("----------------------------");
 			}
-			
+	    	
+	    	col_month.setCellValueFactory(new PropertyValueFactory<>("thang"));
+	    	col_room.setCellValueFactory(new PropertyValueFactory<>("room"));
+	    	col_elec_bill.setCellValueFactory(new PropertyValueFactory<>("electricityBill"));
+	    	col_water.setCellValueFactory(new PropertyValueFactory<>("waterBill"));
+	    	col_envi.setCellValueFactory(new PropertyValueFactory<>("enviCharges"));
+	    	col_veh.setCellValueFactory(new PropertyValueFactory<>("Vehicle"));
+	    	col_total.setCellValueFactory(new PropertyValueFactory<>("Total"));
+		tableSummary.setItems(listSummaries);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			Logger.getLogger(UserMainPageController.class.getName()).log(Level.SEVERE, null, e);
 		}
     }
     
@@ -430,7 +454,6 @@ public class UserMainPageController {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-
     }
 
 }

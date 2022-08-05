@@ -143,7 +143,7 @@
             </Label>
             <HBox prefHeight="100.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
                <children>
-                  <TableView prefHeight="395.0" prefWidth="799.0">
+                  <TableView fx:id="tableSummary" prefHeight="395.0" prefWidth="799.0">
                     <columns>
                         <TableColumn fx:id="col_month" prefWidth="99.99999749660492" text="Month" />
                       <TableColumn fx:id="col_room" prefWidth="64.00000762939453" text="Room" />
