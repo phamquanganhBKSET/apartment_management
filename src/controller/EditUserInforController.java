@@ -204,6 +204,7 @@ public class EditUserInforController {
 			roomNumber.setText(String.valueOf(rs.getInt(7)));
 			email.setText(rs.getString(5));
 			phoneNumber.setText(rs.getString(4));
+			System.out.println(rs.getString(6));
 			if (rs.getString(6).equals("Nam")) {
 				male.setSelected(true);
 			}
@@ -246,7 +247,7 @@ public class EditUserInforController {
     void maleClicked(MouseEvent event) {
     	if (male.isSelected()) {
 			female.setSelected(false);
-			gender = male.getText();
+			gender = "Nam";
 		}
     }
     
@@ -255,7 +256,7 @@ public class EditUserInforController {
     	if (female.isSelected()) {
 			male.setSelected(false);
 		}
-    	gender = female.getText();
+    	gender = "Nu";
     }
     
 	public void setScene(Scene EditUserIn4) {

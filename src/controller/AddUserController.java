@@ -80,7 +80,7 @@ public class AddUserController implements Initializable{
     void maleClicked(MouseEvent event) {
     	if (male.isSelected()) {
 			female.setSelected(false);
-			gender = male.getText();
+			gender = "Nam";
 		}
     }
     
@@ -89,7 +89,7 @@ public class AddUserController implements Initializable{
     	if (female.isSelected()) {
 			male.setSelected(false);
 		}
-    	gender = female.getText();
+    	gender = "Nu";
     }
     
     @FXML
