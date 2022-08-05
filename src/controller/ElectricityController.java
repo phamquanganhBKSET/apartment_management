@@ -97,7 +97,6 @@ public class ElectricityController {
 			ResultSet rs = statement.executeQuery(query);
 			listElec = FXCollections.observableArrayList();
 //			listSummaries = new ArrayList<>();
-			listElec = FXCollections.observableArrayList();
 			while (rs.next()) {
 				listElec.add(new ModelDichVu(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDate(5), rs.getBoolean(6)));
 			}
@@ -111,9 +110,9 @@ public class ElectricityController {
 	    	
 	    	
 			
-			ObservableList<ModelDichVu> listReverse;
-			listReverse = listElec;
-			Collections.reverse(listElec);
+			ObservableList<ModelDichVu> listReverse = FXCollections.observableArrayList();
+						
+			Collections.reverse(listReverse);
 			XYChart.Series series = new XYChart.Series();
 //			for(ModelDichVu i : listReverse) {
 //				series.getData().add(new XYChart.Data(i.getThang().toString(), i.getTienDien()));
