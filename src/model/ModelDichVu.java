@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 import controller.library;
+import javafx.scene.control.CheckBox;
 
 public class ModelDichVu {
 	int maPhong;
@@ -14,9 +15,10 @@ public class ModelDichVu {
 	int soCu, soMoi;
 	Date thang;
 	boolean daDong;
-	int tienDien;
-	int tienNuoc;
-	int tienVS;
+	public int tienDien;
+	public int tienNuoc;
+	public int tienVS;
+	CheckBox select;
 		
 	private ModelDonGiaDichVu dichVu1, dichVu2, dichVu3;
 
@@ -28,6 +30,9 @@ public class ModelDichVu {
 		this.soMoi = soMoi;
 		this.thang = thang;
 		this.daDong = daDong;
+		this.select = new CheckBox();
+		select.setSelected(daDong);
+		select.setDisable(true);
 		try {
 			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			Statement statement = connection.createStatement();
@@ -43,11 +48,11 @@ public class ModelDichVu {
 			rs = statement.executeQuery(queryDonGiaDichVu);
 			rs.next();
 			dichVu3 = new ModelDonGiaDichVu(3, rs.getString(2), rs.getDouble(3), 0, 0, 0, 0, 0);
-			thanhTien(maDichVu, socu, soMoi);
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+		thanhTien(maDichVu, socu, soMoi);
 	}
 	
 	public void thanhTien(int maDichVu,int soCu, int soMoi) {
@@ -96,6 +101,23 @@ public class ModelDichVu {
 			this.tienVS = (int)dichVu3.getDonGiaBac1();
 		}
 	}
+	
+	public int getTienDien() {
+		return tienDien;
+	}
+	
+	public int getTienNuoc() {
+		return tienNuoc;
+	}
+	
+	public int getTienVS() {
+		return tienVS;
+	}
+	
+	public CheckBox getSelect() {
+		return select;
+	}
+	
 	
 	public int getTien() {
 		return tienDien+tienNuoc+tienVS;

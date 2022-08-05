@@ -216,7 +216,7 @@ public class UserMainPageController {
 			
 			ElectricityController controller = loader.getController();
 			Scene scene = new Scene(root);
-			//scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/css/table.css").toExternalForm());
 			
 			// Drag scene
 			scene.setOnMousePressed(event -> {
@@ -232,6 +232,7 @@ public class UserMainPageController {
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
 			controller.setScene(currScene);
+			controller.load(connection, statement, room.getText());
 			currStage.show();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -250,7 +251,7 @@ public class UserMainPageController {
 			
 			EnviController controller = loader.getController();
 			Scene scene = new Scene(root);
-			//scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/css/table.css").toExternalForm());
 			
 			// Drag scene
 			scene.setOnMousePressed(event -> {
@@ -284,7 +285,7 @@ public class UserMainPageController {
 			
 			VehicleController controller = loader.getController();
 			Scene scene = new Scene(root);
-			//scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/css/table.css").toExternalForm());
 			
 			// Drag scene
 			scene.setOnMousePressed(event -> {
@@ -318,7 +319,7 @@ public class UserMainPageController {
 			
 			WaterController controller = loader.getController();
 			Scene scene = new Scene(root);
-			//scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
+			scene.getStylesheets().add(getClass().getResource("/css/table.css").toExternalForm());
 			
 			// Drag scene
 			scene.setOnMousePressed(event -> {
@@ -437,7 +438,7 @@ public class UserMainPageController {
 	    	col_envi.setCellValueFactory(new PropertyValueFactory<>("enviCharges"));
 	    	col_veh.setCellValueFactory(new PropertyValueFactory<>("Vehicle"));
 	    	col_total.setCellValueFactory(new PropertyValueFactory<>("Total"));
-		tableSummary.setItems(listSummaries);
+	    	tableSummary.setItems(listSummaries);
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

@@ -18,13 +18,13 @@
    <children>
       <ScrollPane layoutY="254.0" prefHeight="147.0" prefWidth="600.0">
          <content>
-            <TableView prefHeight="127.0" prefWidth="593.0">
+            <TableView fx:id="tableElec" prefHeight="127.0" prefWidth="588.0" styleClass="tableElec" stylesheets="@../css/table.css">
               <columns>
-                  <TableColumn fx:id="month" prefWidth="132.66665661334991" text="Month" />
-                <TableColumn fx:id="oldNum" prefWidth="131.99998474121094" text="Old Electric Number" />
-                <TableColumn fx:id="newNum" prefWidth="126.66670227050781" text="New Electric Number" />
-                  <TableColumn fx:id="total" prefWidth="75.0" text="Total" />
-                  <TableColumn fx:id="paid" prefWidth="131.33333333333337" text="Paid" />
+                  <TableColumn fx:id="col_month" prefWidth="132.66665661334991" text="Month" />
+                <TableColumn fx:id="col_oldNum" prefWidth="131.99998474121094" text="Old Electric Number" />
+                <TableColumn fx:id="col_newNum" prefWidth="126.66670227050781" text="New Electric Number" />
+                  <TableColumn fx:id="col_total" prefWidth="110.66668701171875" text="Total" />
+                  <TableColumn fx:id="col_paid" prefWidth="97.33331298828125" text="Paid" />
               </columns>
             </TableView>
          </content>
@@ -46,7 +46,7 @@
                   </ImageView>
                </children>
             </AnchorPane>
-            <LineChart>
+            <LineChart fx:id="lineChart" legendVisible="false">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>
