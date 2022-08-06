@@ -25,6 +25,8 @@ public class AddUserController implements Initializable{
 	Connection conn;
 	Statement stmt;
 	String gender = "";
+	
+	private AdminMainPageController mainController;
 
     @FXML
     private ImageView back;
@@ -64,10 +66,18 @@ public class AddUserController implements Initializable{
 
     @FXML
     private TextField username;
+    
+    @FXML
+    private TextField numPeople;
 
+    public void setMainController(AdminMainPageController mainController) {
+    	this.mainController = mainController;
+    }
+    
     @FXML
     private void handleClose(MouseEvent event) {
-    	System.exit(0);
+    	Stage stage = (Stage) minimize.getScene().getWindow();
+    	stage.close();
     }
     
     @FXML
@@ -80,7 +90,7 @@ public class AddUserController implements Initializable{
     void maleClicked(MouseEvent event) {
     	if (male.isSelected()) {
 			female.setSelected(false);
-			gender = male.getText();
+			gender = "Nam";
 		}
     }
     
@@ -89,7 +99,7 @@ public class AddUserController implements Initializable{
     	if (female.isSelected()) {
 			male.setSelected(false);
 		}
-    	gender = female.getText();
+    	gender = "Nu";
     }
     
     @FXML
@@ -124,6 +134,11 @@ public class AddUserController implements Initializable{
 			alert.setHeaderText("Room number is empty!");
 			alert.showAndWait();
 		}
+    	else if (numPeople.getText().isEmpty()) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setHeaderText("Number of people is empty!");
+			alert.showAndWait();
+		}
     	else {
     		// Add data into chu_so_huu
     		try {
@@ -135,23 +150,48 @@ public class AddUserController implements Initializable{
     				alert.showAndWait();
 				}
     			else {
-    				stmt.executeUpdate ("Insert into Chu_so_huu" 
-        		       + "(Id_chu_so_huu, CCCD, Ten, So_dien_thoai, Email, Gioi_tinh, Password)"
-    				   + "Values(\'" + username.getText() + "\',\'" + citizenID.getText() + "\',\'"
-    				   + fullName.getText() + "\',\'" + phoneNumber.getText() + "\',\'" + email.getText() + "\',\'"
-    				   + gender + "\',\'" + password.getText() +"\');");
-    				
-    				// Alert
-    				Alert alert = new Alert(AlertType.INFORMATION);
-    				alert.setHeaderText("Success!");
-    				alert.showAndWait();
-    				
-    				// Go back
-    				System.out.println("goback");
+    				query = "select * from phong where Ma_phong = \'" + roomNumber.getText() + "\'";
+        			rs = stmt.executeQuery(query);
+    				if (rs.next()) {
+    					if (rs.getInt(5) == 0) {
+	    					Alert alert = new Alert(AlertType.WARNING);
+	        				alert.setHeaderText("Room " + roomNumber.getText() + " is full now!");
+	        				alert.showAndWait();
+    					}
+    					else {
+    						stmt.executeUpdate("SET FOREIGN_KEY_CHECKS=0;");
+    						
+    	    				stmt.executeUpdate ("Insert into Chu_so_huu" 
+    	        		       + "(Id_chu_so_huu, CCCD, Ten, So_dien_thoai, Email, Gioi_tinh, Password)"
+    	    				   + "Values(\'" + username.getText() + "\',\'" + citizenID.getText() + "\',\'"
+    	    				   + fullName.getText() + "\',\'" + phoneNumber.getText() + "\',\'" + email.getText() + "\',\'"
+    	    				   + gender + "\',\'" + password.getText() +"\');");
+    	    				
+    	    				stmt.executeUpdate ("Update Phong "
+    	 	        		       + "set Id_chu_so_huu = \'" + username.getText() + "\', So_nguoi = " + numPeople.getText() + ", Trang_thai_phong = 0 "
+    	 	        		       + "where Ma_phong = " + roomNumber.getText());
+    	    				
+    	    				// Alert
+    	    				Alert alert = new Alert(AlertType.INFORMATION);
+    	    				alert.setHeaderText("Success!");
+    	    				alert.showAndWait();
+    	    				
+    	    				mainController.updateDataUser();
+    	    				mainController.updateDataRoom();
+    	    				
+    	    				// Go back
+    	    				System.out.println("goback");
+    	    				
+    	    				Stage stage = (Stage) minimize.getScene().getWindow();
+    	    		    	stage.close();
+        				}
+        			} else {
+        				Alert alert = new Alert(AlertType.WARNING);
+        				alert.setHeaderText("Room number " + roomNumber.getText() + " doesn't exist!");
+        				alert.showAndWait();
+        			}
     			}
-
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -165,7 +205,6 @@ public class AddUserController implements Initializable{
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			stmt = conn.createStatement();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

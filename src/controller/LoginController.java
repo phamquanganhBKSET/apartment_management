@@ -248,10 +248,12 @@ public class LoginController implements Initializable {
 						alert.showAndWait();
 						if(rememberMe.isSelected()) {
 					        // Let's validate the username field isn't empty (Optional)
-					        if(!username.getText().isEmpty()){
+					        if(!username.getText().isEmpty()) {
 					            Preferences pref = Preferences.userRoot();
 					            String userName = username.getText();
+					            String _pass_ = password.getText();
 					            pref.put("userID", userName);
+					            pref.put("pass", _pass_);
 					        }
 					    }
 					} else {
