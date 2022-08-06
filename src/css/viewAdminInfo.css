@@ -1,0 +1,27 @@
+.task-bar {
+	-fx-background-color: #BAEAC3;
+}
+
+.button {
+	-fx-background-color: #BAEAC3;
+	-fx-background-radius: 15;
+}
+
+.button:hover {
+	-fx-background-color: #F5F5DC;
+	-fx-background-radius: 15;
+}
+
+.text-field {
+    -fx-background-color: -fx-text-box-border, -fx-background;
+    -fx-background-insets: 0, 0 0 1 0 ;
+    -fx-background-radius: 0 ;
+}
+.text-field:focused {
+    -fx-background-color: -fx-focus-color, -fx-background;
+}
+
+.root {
+    -fx-border-width: 2px;
+    -fx-border-color: #FAEBD7;
+}

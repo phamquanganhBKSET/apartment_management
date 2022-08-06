@@ -298,8 +298,8 @@
                               <Font name="Cambria" size="15.0" />
                            </font>
                         </Label>
-                        <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                        <ImageView fx:id="addUser" fitHeight="29.0" fitWidth="40.0" onMouseClicked="#handleAddUser" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                        <Pane prefHeight="31.0" prefWidth="253.0" />
+                        <ImageView fx:id="addUser" fitHeight="29.0" fitWidth="70.0" onMouseClicked="#handleAddUser" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                            <image>
                               <Image url="@../../icon/add.png" />
                            </image>
@@ -321,6 +321,16 @@
                                       </rowConstraints>
                                     </GridPane>
                                     <GridPane fx:id="gridPaneHH" prefHeight="1.0" prefWidth="0.0">
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                    <GridPane fx:id="gridFilterRoom" layoutX="1.0" layoutY="1.0" prefHeight="0.0" prefWidth="0.0">
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                    <GridPane fx:id="gridFilterUser" prefHeight="0.0" prefWidth="0.0">
                                        <rowConstraints>
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>

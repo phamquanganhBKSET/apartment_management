@@ -26,6 +26,8 @@ public class NewPasswordController implements Initializable {
 	private Connection connection;
 	private Statement statement;
 	
+	private boolean changePassUser = false;
+	
 	@FXML
     private ResourceBundle resources;
 
@@ -71,43 +73,73 @@ public class NewPasswordController implements Initializable {
     	String newPass = newPassword.getText();
     	String confirmPass = confirmNewPassword.getText();
     	
-    	if (newPass.equals(confirmPass)) {
-    		try {
-    			String sqlString = "update apartment_manager.admin "
-      			 		 		 + "set password = \'" + newPass + "\' "
-      			 		 		 + "where ID_admin = \'" + this.username + "\'";
-				statement.executeUpdate(sqlString);
-				
-				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setTitle("Change password Information");
-				alert.setHeaderText("Change password successed!");
-				alert.showAndWait();
-				
-				try {
+    	if (changePassUser) {
+    		if (newPass.equals(confirmPass)) {
+	    		try {
+	    			String sqlString = "update apartment_manager.chu_so_huu "
+	      			 		 		 + "set password = \'" + newPass + "\' "
+	      			 		 		 + "where ID_chu_so_huu = \'" + this.username + "\' ";
+					statement.executeUpdate(sqlString);
+					
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setTitle("Change password Information");
+					alert.setHeaderText("Change password successed!");
+					alert.showAndWait();
+					
 					Scene currScene = (Scene)((Node) event.getSource()).getScene();
 					Stage currStage = (Stage)currScene.getWindow();
-					currStage.setScene(loginScene);
-					currStage.centerOnScreen();
-					currStage.show();
-				} catch (Exception ex) {
-					ex.printStackTrace();
+					currStage.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
 				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+	    	} else {
+	    		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Change password Information");
+				alert.setHeaderText("Change Password failed!");
+				alert.setContentText("Password and re-entered password do not match!");
+				alert.showAndWait();
+				return;
+	    	}
     	} else {
-    		Alert alert = new Alert(Alert.AlertType.INFORMATION);
-			alert.setTitle("Change password Information");
-			alert.setHeaderText("Change Password failed!");
-			alert.setContentText("Password and re-entered password do not match!");
-			alert.showAndWait();
-			return;
+	    	if (newPass.equals(confirmPass)) {
+	    		try {
+	    			String sqlString = "update apartment_manager.admin "
+	      			 		 		 + "set password = \'" + newPass + "\' "
+	      			 		 		 + "where ID_admin = \'" + this.username + "\' ";
+					statement.executeUpdate(sqlString);
+					
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setTitle("Change password Information");
+					alert.setHeaderText("Change password successed!");
+					alert.showAndWait();
+					
+					try {
+						Scene currScene = (Scene)((Node) event.getSource()).getScene();
+						Stage currStage = (Stage)currScene.getWindow();
+						currStage.setScene(loginScene);
+						currStage.centerOnScreen();
+						currStage.show();
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+	    	} else {
+	    		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Change password Information");
+				alert.setHeaderText("Change Password failed!");
+				alert.setContentText("Password and re-entered password do not match!");
+				alert.showAndWait();
+				return;
+	    	}
     	}
     }
 
     @FXML
     public void handleClose(MouseEvent event) {
-    	System.exit(0);
+    	Stage stage = (Stage) minimize.getScene().getWindow();
+    	stage.close();
     }
 
     @FXML
@@ -122,6 +154,10 @@ public class NewPasswordController implements Initializable {
     
     public void setUsername(String username) {
     	this.username = username;
+    }
+    
+    public void setChangePassUser(boolean changePassUser) {
+    	this.changePassUser = changePassUser;
     }
 
 	@Override

@@ -21,8 +21,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class AddAdminController implements Initializable {
-	Connection conn;
-	Statement stmt;
+	private Connection conn;
+	private Statement stmt;
+	
+	private AdminMainPageController mainController;
 	
     @FXML
     private ImageView back;
@@ -48,9 +50,14 @@ public class AddAdminController implements Initializable {
     @FXML
     private TextField username;
 
+    public void setMainController(AdminMainPageController mainController) {
+    	this.mainController = mainController;
+    }
+    
     @FXML
     private void handleClose(MouseEvent event) {
-    	System.exit(0);
+    	Stage stage = (Stage) minimize.getScene().getWindow();
+    	stage.close();
     }
     
     @FXML
@@ -102,8 +109,13 @@ public class AddAdminController implements Initializable {
     				alert.setHeaderText("Success!");
     				alert.showAndWait();
     				
+    				mainController.updateDataUser();
+    				
     				// Go back
     				System.out.println("goback");
+    				
+    				Stage stage = (Stage) minimize.getScene().getWindow();
+    		    	stage.close();
     			}
 
 			} catch (SQLException e) {
@@ -124,5 +136,4 @@ public class AddAdminController implements Initializable {
 			e.printStackTrace();
 		}
     }
-
 }

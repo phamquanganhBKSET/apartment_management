@@ -1,0 +1,8 @@
+.task-bar {
+	-fx-background-color: #BAEAC3;
+}
+
+.root {
+    -fx-border-width: 2px;
+    -fx-border-color: #FAEBD7;
+}

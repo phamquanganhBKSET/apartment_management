@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -21,9 +22,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -41,6 +46,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.HouseHolder;
 import model.Room;
 
@@ -50,6 +56,9 @@ public class AdminMainPageController implements Initializable {
 	private Statement statement;
 	Scene loginScene;
 	boolean inRoomPage = true;
+	
+	private double offset_x;
+    private double offset_y;
 	
 	@FXML
     private ResourceBundle resources;
@@ -144,9 +153,18 @@ public class AdminMainPageController implements Initializable {
     @FXML
     private Label resultFilter;
     
-    ObservableList<String> filterList = FXCollections.observableArrayList("All", "Empty Rooms", "Full Rooms");
+    @FXML
+    private GridPane gridFilterRoom;
+
+    @FXML
+    private GridPane gridFilterUser;
     
-    ObservableList<String> filterListHH = FXCollections.observableArrayList("All", "Male", "Female");
+    private ObservableList<String> filterList = FXCollections.observableArrayList("All", "Empty Rooms", "Full Rooms");
+    
+    private ObservableList<String> filterListHH = FXCollections.observableArrayList("All", "Male", "Female");
+    
+    private String currRoom;
+    private String currUserID;
     
     private RoomItemListener roomItemListener = new RoomItemListener() {
 		@Override
@@ -191,6 +209,10 @@ public class AdminMainPageController implements Initializable {
     	gridPane.setDisable(true);
     	gridPaneHH.setVisible(true);
     	gridPaneHH.setDisable(false);
+    	gridFilterUser.setVisible(false);
+		gridFilterUser.setDisable(true);
+    	gridFilterRoom.setVisible(false);
+		gridFilterRoom.setDisable(true);
     }
     
     @FXML
@@ -207,6 +229,10 @@ public class AdminMainPageController implements Initializable {
     	gridPaneHH.setDisable(true);
     	gridPane.setVisible(true);
     	gridPane.setDisable(false);
+    	gridFilterUser.setVisible(false);
+		gridFilterUser.setDisable(true);
+		gridFilterRoom.setVisible(false);
+		gridFilterRoom.setDisable(true);
     }
     
     @FXML
@@ -223,7 +249,7 @@ public class AdminMainPageController implements Initializable {
     		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Searching Information");
 			alert.setHeaderText("Searching failed!");
-			alert.setContentText("There aren't any room has ID: " + searchString + "!");
+			alert.setContentText("There aren't any room with ID: " + searchString + "!");
 			alert.showAndWait();
     	} else {
     		for (HouseHolder houseHolder : listHouseHolder) {
@@ -275,6 +301,102 @@ public class AdminMainPageController implements Initializable {
     	}
     }
     
+    public void showFilterRoom(boolean status) {
+    	gridPane.setVisible(false);
+    	gridPane.setDisable(true);
+		gridFilterRoom.setVisible(true);
+		gridFilterRoom.setDisable(false);
+		
+		gridFilterRoom.getChildren().clear();
+    	
+    	int column = 0;
+		int row = 1;
+		
+		try {
+			for (int i = 0; i < listRoom.size(); i++) {
+				if (listRoom.get(i).getStatus() == status) {
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/fxml/RoomItem.fxml"));
+					
+					AnchorPane anchorPane = loader.load();
+					
+					RoomItemController controller = loader.getController();
+					controller.setData(listRoom.get(i), roomItemListener);
+					
+					if (column == 3) {
+						column = 0;
+						row++;
+					}
+					
+					anchorPane.setStyle("-fx-background-color: #" + listRoom.get(i).getColor());
+					gridFilterRoom.add(anchorPane, column++, row);
+					
+					// Set grid width
+					gridFilterRoom.setMinWidth(Region.USE_COMPUTED_SIZE);
+					gridFilterRoom.setPrefWidth(Region.USE_COMPUTED_SIZE);
+					gridFilterRoom.setMaxWidth(Region.USE_PREF_SIZE);
+					
+					// Set grid height
+					gridFilterRoom.setMinHeight(Region.USE_COMPUTED_SIZE);
+					gridFilterRoom.setPrefHeight(Region.USE_COMPUTED_SIZE);
+					gridFilterRoom.setMaxHeight(Region.USE_PREF_SIZE);
+					
+					GridPane.setMargin(anchorPane, new Insets(10));
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public void showFilterUser(String gender) {
+    	gridPaneHH.setVisible(false);
+    	gridPaneHH.setDisable(true);
+		gridFilterUser.setVisible(true);
+		gridFilterUser.setDisable(false);
+		
+		gridFilterUser.getChildren().clear();
+    	
+    	int column = 0;
+		int row = 1;
+		
+		try {
+			for (int i = 0; i < listHouseHolder.size(); i++) {
+				if (listHouseHolder.get(i).getGender().equals(gender)) {
+					FXMLLoader loader = new FXMLLoader();
+					loader.setLocation(getClass().getResource("/fxml/HouseHolderItem.fxml"));
+					
+					AnchorPane anchorPane = loader.load();
+					
+					HouseHolderItemController controller = loader.getController();
+					controller.setData(listHouseHolder.get(i), houseHolderItemListener);
+					
+					if (column == 3) {
+						column = 0;
+						row++;
+					}
+					
+					anchorPane.setStyle("-fx-background-color: #" + listHouseHolder.get(i).getColor());
+					gridFilterUser.add(anchorPane, column++, row);
+					
+					// Set grid width
+					gridFilterUser.setMinWidth(Region.USE_COMPUTED_SIZE);
+					gridFilterUser.setPrefWidth(Region.USE_COMPUTED_SIZE);
+					gridFilterUser.setMaxWidth(Region.USE_PREF_SIZE);
+					
+					// Set grid height
+					gridFilterUser.setMinHeight(Region.USE_COMPUTED_SIZE);
+					gridFilterUser.setPrefHeight(Region.USE_COMPUTED_SIZE);
+					gridFilterUser.setMaxHeight(Region.USE_PREF_SIZE);
+					
+					GridPane.setMargin(anchorPane, new Insets(10));
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
     @FXML
     public void handleFilter(ActionEvent event) {
     	int result = 0;
@@ -283,6 +405,12 @@ public class AdminMainPageController implements Initializable {
 	    	if (inRoomPage) {
 	    		if (filterValue.equals("All")) {
 	    			resultFilter.setVisible(false);
+	    	    	gridPane.setVisible(true);
+	    	    	gridPane.setDisable(false);
+	    	    	gridFilterRoom.setVisible(false);
+	    	    	gridFilterRoom.setDisable(true);
+	    	    	gridFilterUser.setVisible(false);
+	    	    	gridFilterUser.setDisable(true);
 	    		}
 	    		else if (filterValue.equals("Empty Rooms")) {
 		    		for (Room room : listRoom) {
@@ -292,6 +420,7 @@ public class AdminMainPageController implements Initializable {
 		    		}
 		    		resultFilter.setVisible(true);
 		    		resultFilter.setText("Result: " + result);
+		    		this.showFilterRoom(true);
 	    		} else {
 	    			for (Room room : listRoom) {
 		    			if (room.getStatus() == false) {
@@ -300,10 +429,17 @@ public class AdminMainPageController implements Initializable {
 		    		}
 	    			resultFilter.setVisible(true);
 		    		resultFilter.setText("Result: " + result);
+		    		this.showFilterRoom(false);
 	    		}
 	    	} else {
 				if (filterValue.equals("All")) {
 					resultFilter.setVisible(false);
+					gridPaneHH.setVisible(true);
+	    	    	gridPaneHH.setDisable(false);
+	    	    	gridFilterRoom.setVisible(false);
+	    	    	gridFilterRoom.setDisable(true);
+	    	    	gridFilterUser.setVisible(false);
+	    	    	gridFilterUser.setDisable(true);
 				}
 	    		else if (filterValue.equals("Male")) {
 	    			for (HouseHolder houseHolder : listHouseHolder) {
@@ -313,6 +449,7 @@ public class AdminMainPageController implements Initializable {
 		    		}
 	    			resultFilter.setVisible(true);
 		    		resultFilter.setText("Result: " + result);
+		    		this.showFilterUser("Nam");
 	    		} else {
 	    			for (HouseHolder houseHolder : listHouseHolder) {
 		    			if (houseHolder.getGender().equals("Nu")) {
@@ -321,9 +458,14 @@ public class AdminMainPageController implements Initializable {
 		    		}
 	    			resultFilter.setVisible(true);
 		    		resultFilter.setText("Result: " + result);
+		    		this.showFilterUser("Nu");
 	    		}
 	    	}
     	} else {
+    		gridFilterRoom.setVisible(false);
+        	gridFilterRoom.setDisable(false);
+        	gridFilterUser.setVisible(false);
+        	gridFilterUser.setDisable(false);
     		resultFilter.setVisible(false);
     		filter.setPromptText("Filter");
     	}
@@ -331,22 +473,241 @@ public class AdminMainPageController implements Initializable {
     
     @FXML
     void handleAddUser(MouseEvent event) {
+    	try {
+			Stage stage = new Stage();
+			stage.initStyle(StageStyle.UNDECORATED);
+			
+			String file;
 
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Select");
+			alert.setHeaderText("What type of user do you want to add?");
+
+			ButtonType adUser = new ButtonType("Admin");
+			ButtonType baseUser = new ButtonType("Base User");
+			ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+			alert.getButtonTypes().setAll(adUser, baseUser, cancel);
+
+			Optional<ButtonType> option = alert.showAndWait();
+
+			if (option.get() == adUser) {
+				file = "/fxml/AddAdmin.fxml";
+			} else if (option.get() == baseUser) {
+				file = "/fxml/AddUser.fxml";
+			} else {
+				file = null;
+				return;
+			}
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource(file));
+			Parent root = loader.load();
+			
+			if (file.equals("/fxml/AddAdmin.fxml")) {
+				AddAdminController controller = loader.getController();
+				controller.setMainController(this);
+			} else {
+				AddUserController controller = loader.getController();
+				controller.setMainController(this);
+			}
+			
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
+			
+			// Drag scene
+			scene.setOnMousePressed(e -> {
+	            offset_x = e.getSceneX();
+	            offset_y = e.getSceneY();
+	        });
+	        scene.setOnMouseDragged(e -> {
+	        	stage.setX(e.getScreenX() - offset_x);
+	        	stage.setY(e.getScreenY() - offset_y);
+	        });
+	        
+			stage.setScene(scene);
+			stage.setResizable(false);
+			stage.centerOnScreen();
+			stage.show();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    
+    public void updateDataUser() {
+    	listHouseHolder.clear();
+		
+		try {
+			listHouseHolder.addAll(getDataHH());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+		numHouseHolders.setText("about " + listHouseHolder.size() + " householders");
+		
+		int column = 0;
+		int row = 1;
+		
+		try {
+			for (int i = 0; i < listHouseHolder.size(); i++) {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/fxml/HouseHolderItem.fxml"));
+					
+				AnchorPane anchorPane = loader.load();
+					
+				HouseHolderItemController controller = loader.getController();
+				controller.setData(listHouseHolder.get(i), houseHolderItemListener);
+					
+				if (column == 3) {
+					column = 0;
+					row++;
+				}
+				
+				anchorPane.setStyle("-fx-background-color: #" + listHouseHolder.get(i).getColor());
+				gridPaneHH.add(anchorPane, column++, row);
+					
+				// Set grid width
+				gridPaneHH.setMinWidth(Region.USE_COMPUTED_SIZE);
+				gridPaneHH.setPrefWidth(Region.USE_COMPUTED_SIZE);
+				gridPaneHH.setMaxWidth(Region.USE_PREF_SIZE);
+					
+				// Set grid height
+				gridPaneHH.setMinHeight(Region.USE_COMPUTED_SIZE);
+				gridPaneHH.setPrefHeight(Region.USE_COMPUTED_SIZE);
+				gridPaneHH.setMaxHeight(Region.USE_PREF_SIZE);
+					
+				GridPane.setMargin(anchorPane, new Insets(10));
+			} 
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public void updateDataRoom() {
+    	listRoom.clear();
+    	
+    	try {
+			listRoom.addAll(getData());
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		
+    	numRooms.setText("about " + listRoom.size() + " rooms");
+		
+		int column = 0;
+		int row = 1;
+		
+		try {
+			for (int i = 0; i < listRoom.size(); i++) {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/fxml/RoomItem.fxml"));
+				
+				AnchorPane anchorPane = loader.load();
+				
+				RoomItemController controller = loader.getController();
+				controller.setData(listRoom.get(i), roomItemListener);
+				
+				if (column == 3) {
+					column = 0;
+					row++;
+				}
+				
+				anchorPane.setStyle("-fx-background-color: #" + listRoom.get(i).getColor());
+				gridPane.add(anchorPane, column++, row);
+				
+				// Set grid width
+				gridPane.setMinWidth(Region.USE_COMPUTED_SIZE);
+				gridPane.setPrefWidth(Region.USE_COMPUTED_SIZE);
+				gridPane.setMaxWidth(Region.USE_PREF_SIZE);
+				
+				// Set grid height
+				gridPane.setMinHeight(Region.USE_COMPUTED_SIZE);
+				gridPane.setPrefHeight(Region.USE_COMPUTED_SIZE);
+				gridPane.setMaxHeight(Region.USE_PREF_SIZE);
+				
+				GridPane.setMargin(anchorPane, new Insets(10));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
     }
     
     @FXML
-    void handleEditMyAccount(ActionEvent event) {
-
+    void handleEditMyAccount(ActionEvent e) {
+    	try {
+    		Stage stage = new Stage();
+    		stage.initStyle(StageStyle.UNDECORATED);
+    		
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/fxml/ViewAdminInfo.fxml"));
+			Parent root = loader.load();
+			
+			ViewAdminInfoController controller = loader.getController();
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/css/viewAdminInfo.css").toExternalForm());
+			
+			// Drag scene
+			scene.setOnMousePressed(event -> {
+	            offset_x = event.getSceneX();
+	            offset_y = event.getSceneY();
+	        });
+	        scene.setOnMouseDragged(event -> {
+	        	stage.setX(event.getScreenX() - offset_x);
+	        	stage.setY(event.getScreenY() - offset_y);
+	        });
+	        
+			stage.setScene(scene);
+			stage.centerOnScreen();
+			stage.setResizable(false);
+			controller.setUsername(username);
+			stage.show();
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    	}
     }
     
     @FXML
     void handleNotify(MouseEvent event) {
-
+    	
     }
     
     @FXML
-    void handleViewInfo(MouseEvent event) {
-
+    void handleViewInfo(MouseEvent e) {
+    	if (inRoomPage) {
+    		
+    	} else {
+    		try {
+	    		Stage stage = new Stage();
+		    	stage.initStyle(StageStyle.UNDECORATED);
+		    	
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/fxml/ViewUserInfo.fxml"));
+				Parent root = loader.load();
+				
+				ViewUserInfoController controller = loader.getController();
+				Scene scene = new Scene(root);
+				scene.getStylesheets().add(getClass().getResource("/css/viewUserInfo.css").toExternalForm());
+				
+				// Drag scene
+				scene.setOnMousePressed(event -> {
+		            offset_x = event.getSceneX();
+		            offset_y = event.getSceneY();
+		        });
+		        scene.setOnMouseDragged(event -> {
+		        	stage.setX(event.getScreenX() - offset_x);
+		        	stage.setY(event.getScreenY() - offset_y);
+		        });
+		        
+				stage.setScene(scene);
+				stage.centerOnScreen();
+				stage.setResizable(false);
+				controller.setUsername(currUserID);
+				stage.show();
+    		} catch(Exception ex) {
+    			ex.printStackTrace();
+    		}
+    	}
     }
     
     private List<Room> getData() throws SQLException {
@@ -408,6 +769,7 @@ public class AdminMainPageController implements Initializable {
     }
     
     private void setChoosenRoom(Room room) {
+    	currRoom = room.getRoomName();
     	roomName.setText(room.getRoomName());
     	Image image = new Image(String.valueOf(new File(room.getImgSrc())));
     	roomImage.setImage(image);
@@ -418,12 +780,13 @@ public class AdminMainPageController implements Initializable {
     }
     
     private void setChoosenUser(HouseHolder houseHolder) {
+    	currUserID = houseHolder.getUserName();
     	roomName.setText(houseHolder.getUserName());
     	Image image = new Image(String.valueOf(new File(houseHolder.getImgSrc())));
     	roomImage.setImage(image);
     	roomType.setText(houseHolder.getCitizenID());
     	ownerID.setText(houseHolder.getPhoneNumber());
-    	numPeople.setText(houseHolder.getCitizenID());
+    	numPeople.setText(houseHolder.getEmail());
     	chosenRoomCard.setStyle("-fx-background-color: #" + houseHolder.getColor());
     }
     
@@ -433,6 +796,10 @@ public class AdminMainPageController implements Initializable {
 		gridPaneHH.setVisible(false);
     	gridPane.setVisible(true);
     	gridPane.setDisable(false);
+    	gridFilterRoom.setVisible(false);
+    	gridFilterRoom.setDisable(true);
+    	gridFilterUser.setVisible(false);
+    	gridFilterUser.setDisable(true);
     	myAccount.setText("My Account");
 		
     	try {

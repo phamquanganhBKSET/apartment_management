@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="559.0" prefWidth="544.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddUserController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="598.0" prefWidth="544.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddUserController">
    <children>
       <TextField id="citizenID" fx:id="citizenID" layoutX="128.0" layoutY="143.0" prefHeight="36.0" prefWidth="323.0" promptText="Citizen ID">
          <font>
@@ -37,7 +37,7 @@
             <Font size="14.0" />
          </font>
       </TextField>
-      <TextField id="phoneNumber" fx:id="phoneNumber" layoutX="128.0" layoutY="406.0" prefHeight="36.0" prefWidth="323.0" promptText="Phone Number">
+      <TextField id="phoneNumber" fx:id="phoneNumber" layoutX="128.0" layoutY="447.0" prefHeight="36.0" prefWidth="323.0" promptText="Phone Number">
          <font>
             <Font size="14.0" />
          </font>
@@ -57,7 +57,7 @@
             <Image url="@../../icon/key-chain.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="410.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="451.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../icon/phone-call.png" />
          </image>
@@ -72,12 +72,12 @@
             <Image url="@../../icon/id.png" />
          </image>
       </ImageView>
-      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="456.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="497.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../icon/gender.png" />
          </image>
       </ImageView>
-      <Button id="signUp" fx:id="signUp" layoutX="161.0" layoutY="497.0" mnemonicParsing="false" onMouseClicked="#ActionSignUp" prefHeight="36.0" prefWidth="225.0" text="Sign Up">
+      <Button id="signUp" fx:id="signUp" layoutX="161.0" layoutY="538.0" mnemonicParsing="false" onMouseClicked="#ActionSignUp" prefHeight="36.0" prefWidth="225.0" text="Sign Up">
          <font>
             <Font size="14.0" />
          </font>
@@ -107,12 +107,12 @@
             <Font size="14.0" />
          </font>
       </PasswordField>
-      <RadioButton id="male" fx:id="male" layoutX="171.0" layoutY="460.0" mnemonicParsing="false" onMouseClicked="#maleClicked" text="Male">
+      <RadioButton id="male" fx:id="male" layoutX="171.0" layoutY="501.0" mnemonicParsing="false" onMouseClicked="#maleClicked" text="Male">
          <font>
             <Font size="14.0" />
          </font>
       </RadioButton>
-      <RadioButton id="female" fx:id="female" layoutX="316.0" layoutY="460.0" mnemonicParsing="false" onMouseClicked="#femaleClicked" text="Female">
+      <RadioButton id="female" fx:id="female" layoutX="316.0" layoutY="501.0" mnemonicParsing="false" onMouseClicked="#femaleClicked" text="Female">
          <font>
             <Font size="14.0" />
          </font>
@@ -142,15 +142,30 @@
             <Font size="10.0" />
          </font>
       </TextField>
-      <TextField id="roomNumber" fx:id="email" layoutX="128.0" layoutY="349.0" prefHeight="36.0" prefWidth="323.0" promptText="Email">
+      <TextField id="roomNumber" fx:id="email" layoutX="128.0" layoutY="391.0" prefHeight="36.0" prefWidth="323.0" promptText="Email">
          <font>
             <Font size="14.0" />
          </font>
       </TextField>
-      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="353.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="395.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../icon/email.png" />
          </image>
       </ImageView>
+      <TextField id="roomNumber" fx:id="numPeople" layoutX="128.0" layoutY="340.0" prefHeight="36.0" prefWidth="323.0" promptText="Number of People">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="32.0" fitWidth="36.0" layoutX="81.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/team.png" />
+         </image>
+      </ImageView>
+      <TextField layoutX="451.0" layoutY="346.0" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" text="(*)">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </TextField>
    </children>
 </AnchorPane>
