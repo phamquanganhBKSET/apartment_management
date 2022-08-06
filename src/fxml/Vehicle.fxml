@@ -17,17 +17,23 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.VehicleController">
    <children>
-      <ScrollPane layoutY="254.0" prefHeight="147.0" prefWidth="600.0">
+      <ScrollPane layoutY="187.0" prefHeight="214.0" prefWidth="593.0">
          <content>
-            <TableView prefHeight="196.0" prefWidth="599.0">
+            <TableView fx:id="tableXe" prefHeight="205.0" prefWidth="586.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn fx:id="col_carOwner" prefWidth="86.66665661334991" text="Car owner" />
+                <TableColumn fx:id="col_room" prefWidth="44.0" text="Room" />
+                  <TableColumn fx:id="col_type" prefWidth="86.0" text="Type" />
+                  <TableColumn fx:id="col_licensePlates" prefWidth="86.6666259765625" text="License plates" />
+                  <TableColumn fx:id="col_color" prefWidth="75.0" text="Color" />
+                  <TableColumn fx:id="col_month" prefWidth="75.0" text="Month" />
+                  <TableColumn fx:id="col_paid" prefWidth="44.00006103515625" text="Paid" />
+                  <TableColumn fx:id="col_money" prefWidth="106.6666259765625" text="Money" />
               </columns>
             </TableView>
          </content>
       </ScrollPane>
-      <VBox layoutX="-2.0" layoutY="-7.0" prefHeight="262.0" prefWidth="609.0">
+      <VBox layoutX="-2.0" layoutY="-7.0" prefHeight="214.0" prefWidth="609.0">
          <children>
             <AnchorPane prefHeight="76.0" prefWidth="609.0">
                <children>
@@ -45,7 +51,7 @@
                   <Button fx:id="add" layoutX="557.0" layoutY="36.0" mnemonicParsing="false" onMouseClicked="#addVehicle" text="Add" />
                </children>
             </AnchorPane>
-            <LineChart>
+            <LineChart fx:id="lineChart" prefWidth="609.0">
               <xAxis>
                 <CategoryAxis side="BOTTOM" />
               </xAxis>

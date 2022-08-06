@@ -52,3 +52,7 @@
 .transparent{
 	-fx-background-color: rgba(0, 0, 0, 0);
 }
+
+.table-column {
+  -fx-alignment: CENTER;
+}
