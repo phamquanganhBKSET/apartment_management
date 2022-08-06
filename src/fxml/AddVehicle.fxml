@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="416.0" prefWidth="544.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddVehicleController">
+   <children>
+      <TextField id="fullName" fx:id="vehicleType" layoutX="128.0" layoutY="192.0" prefHeight="36.0" prefWidth="323.0" promptText="Vehicle Type">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <Label layoutX="139.0" layoutY="14.0" text="Add Vehicle">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <TextField id="username" fx:id="owner" layoutX="128.0" layoutY="89.0" prefHeight="36.0" prefWidth="323.0" promptText="Owner">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/user.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="32.0" fitWidth="36.0" layoutX="81.0" layoutY="246.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/license-plate.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="196.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/veh.png" />
+         </image>
+      </ImageView>
+      <Button id="signUp" fx:id="add" layoutX="161.0" layoutY="357.0" mnemonicParsing="false" onMouseClicked="#actionAddVehicle" prefHeight="36.0" prefWidth="225.0" text="Add">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <ImageView fitHeight="62.0" fitWidth="82.0" layoutX="335.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/pluscar.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="close" layoutX="517.0" layoutY="5.0" onMouseClicked="#handleClose" prefHeight="30.0" prefWidth="26.0" text=" X">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Label>
+      <Label fx:id="minimize" layoutX="497.0" layoutY="4.0" onMouseClicked="#handleMinimize" prefHeight="32.0" prefWidth="19.0" text=" -" textAlignment="CENTER">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="back" fitHeight="36.0" fitWidth="42.0" layoutX="26.0" layoutY="23.0" onMouseClicked="#goBack" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/back.png" />
+         </image>
+      </ImageView>
+      <TextField layoutX="451.0" layoutY="94.0" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" text="(*)">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </TextField>
+      <TextField layoutX="451.0" layoutY="197.0" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" text="(*)">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </TextField>
+      <TextField id="roomNumber" fx:id="color" layoutX="128.0" layoutY="299.0" prefHeight="36.0" prefWidth="323.0" promptText="Color">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="303.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/color-palette.png" />
+         </image>
+      </ImageView>
+      <TextField id="roomNumber" fx:id="roomNumber" layoutX="128.0" layoutY="142.0" prefHeight="36.0" prefWidth="323.0" promptText="Room Number">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/key-chain.png" />
+         </image>
+      </ImageView>
+      <TextField layoutX="451.0" layoutY="147.0" prefHeight="25.0" prefWidth="28.0" style="-fx-background-color: #ffffff;" text="(*)">
+         <font>
+            <Font size="10.0" />
+         </font>
+      </TextField>
+      <TextField id="fullName" fx:id="licensePlates" layoutX="128.0" layoutY="245.0" prefHeight="36.0" prefWidth="323.0" promptText="License Plates">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+   </children>
+</AnchorPane>

@@ -5,11 +5,14 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.XYChart;
@@ -28,6 +31,9 @@ import model.ModelXe;
 public class VehicleController {
 	
 	private Scene vehicleScene;
+	
+	private double offset_x;
+    private double offset_y;
 	
 	public void setScene(Scene vehicleScene) {
 		this.vehicleScene = vehicleScene;
@@ -70,9 +76,38 @@ public class VehicleController {
     private TableView<ModelXe> tableXe;
 
     @FXML
-    void addVehicle(MouseEvent event) {
-
-    }
+    void addVehicle(MouseEvent e) {
+    	try {
+	    	Scene currScene = (Scene)((Node) e.getSource()).getScene();
+			Stage currStage = (Stage)currScene.getWindow();
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/fxml/AddVehicle.fxml"));
+			Parent root = loader.load();
+			
+			AddVehicleController controller = loader.getController();
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
+			
+			// Drag scene
+			scene.setOnMousePressed(event -> {
+	            offset_x = event.getSceneX();
+	            offset_y = event.getSceneY();
+	        });
+	        scene.setOnMouseDragged(event -> {
+	        	currStage.setX(event.getScreenX() - offset_x);
+	        	currStage.setY(event.getScreenY() - offset_y);
+	        });
+	        
+			currStage.setScene(scene);
+			currStage.centerOnScreen();
+			currStage.setResizable(false);
+			controller.setScene(currScene);
+			currStage.show();
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    	}
+   }
 
     @FXML
     void goBack(MouseEvent event) {
@@ -130,8 +165,15 @@ public class VehicleController {
 	    	tableXe.setItems(listXe);
 	    	
 	    	// Line chart
+			
+			ArrayList<ModelSummary> listReverse = new ArrayList<>();
+			for (ModelSummary i : listSummaries) {
+				listReverse.add(i);
+			}
+			
+			Collections.reverse(listReverse);
 			XYChart.Series series = new XYChart.Series();
-			for(ModelSummary i : listSummaries) {
+			for(ModelSummary i : listReverse) {
 				series.getData().add(new XYChart.Data(i.getThang().toString(), i.getTotal()));
 			}
 			
