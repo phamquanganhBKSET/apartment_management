@@ -163,7 +163,7 @@ public class AdminMainPageController implements Initializable {
     
     private ObservableList<String> filterListHH = FXCollections.observableArrayList("All", "Male", "Female");
     
-    private String currRoom;
+    private Room currRoom;
     private String currUserID;
     
     private RoomItemListener roomItemListener = new RoomItemListener() {
@@ -675,7 +675,39 @@ public class AdminMainPageController implements Initializable {
     @FXML
     void handleViewInfo(MouseEvent e) {
     	if (inRoomPage) {
-    		
+    		try {
+	    		Stage stage = new Stage();
+		    	stage.initStyle(StageStyle.UNDECORATED);
+		    	
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("/fxml/ViewRoomInfo.fxml"));
+				Parent root = loader.load();
+				
+				ViewRoomInfoController controller = loader.getController();
+				Scene scene = new Scene(root);
+				scene.getStylesheets().add(getClass().getResource("/css/viewUserInfo.css").toExternalForm());
+				
+				// Drag scene
+				scene.setOnMousePressed(event -> {
+		            offset_x = event.getSceneX();
+		            offset_y = event.getSceneY();
+		        });
+		        scene.setOnMouseDragged(event -> {
+		        	stage.setX(event.getScreenX() - offset_x);
+		        	stage.setY(event.getScreenY() - offset_y);
+		        });
+		        
+				stage.setScene(scene);
+				stage.centerOnScreen();
+				stage.setResizable(false);
+				controller.setImgSrc(currRoom.getImgSrc());
+				controller.setColor(currRoom.getColor());
+				controller.setRoomName(currRoom.getRoomName());
+				controller.setMainController(this);
+				stage.show();
+    		} catch(Exception ex) {
+    			ex.printStackTrace();
+    		}
     	} else {
     		try {
 	    		Stage stage = new Stage();
@@ -703,6 +735,7 @@ public class AdminMainPageController implements Initializable {
 				stage.centerOnScreen();
 				stage.setResizable(false);
 				controller.setUsername(currUserID);
+				controller.setMainController(this);
 				stage.show();
     		} catch(Exception ex) {
     			ex.printStackTrace();
@@ -769,7 +802,7 @@ public class AdminMainPageController implements Initializable {
     }
     
     private void setChoosenRoom(Room room) {
-    	currRoom = room.getRoomName();
+    	currRoom = room;
     	roomName.setText(room.getRoomName());
     	Image image = new Image(String.valueOf(new File(room.getImgSrc())));
     	roomImage.setImage(image);

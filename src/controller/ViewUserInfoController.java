@@ -40,6 +40,8 @@ public class ViewUserInfoController implements Initializable {
 	
 	private double offset_x;
     private double offset_y;
+    
+    private AdminMainPageController mainController;
 	
     @FXML
     private ResourceBundle resources;
@@ -70,6 +72,9 @@ public class ViewUserInfoController implements Initializable {
 
     @FXML
     private Label close;
+
+    @FXML
+    private Button delete;
 
     @FXML
     private Button editID;
@@ -135,7 +140,7 @@ public class ViewUserInfoController implements Initializable {
     		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Error");
 			alert.setHeaderText("Edit failed!");
-			alert.setContentText("ID field is empty");
+			alert.setContentText("ID field is empty!");
 			alert.showAndWait();
 			return;
     	}
@@ -176,13 +181,44 @@ public class ViewUserInfoController implements Initializable {
 			ID.setText(newName);
 			ID.setDisable(true);
 			
+			editID.setText("Edit");
+			
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Update information");
 			alert.setHeaderText("Successfully update!");
 			alert.showAndWait();
+			
+			mainController.updateDataUser();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+    }
+    
+    @FXML
+    public void handleDelete(ActionEvent e) {
+    	try {
+	    	String sqlString = "SET FOREIGN_KEY_CHECKS=0;";
+			statement.executeUpdate(sqlString);
+			
+			sqlString = "delete from chu_so_huu where ID_chu_so_huu = \'" + username + "\'";
+			statement.executeUpdate(sqlString);
+			
+			sqlString = "update apartment_manager.phong "
+					 + "set ID_chu_so_huu = null, "
+					 + "So_nguoi = null, "
+					 + "Trang_thai_phong = 1 "
+					 + "where ID_chu_so_huu = \'" + username + "\'";
+			
+			statement.executeUpdate(sqlString);
+			
+			mainController.updateDataUser();
+			mainController.updateDataRoom();
+			
+			Stage stage = (Stage) minimize.getScene().getWindow();
+			stage.close();
+    	} catch(Exception ex) {
+    		ex.printStackTrace();
+    	}
     }
 
     @FXML
@@ -222,6 +258,7 @@ public class ViewUserInfoController implements Initializable {
 
     @FXML
     public void handleEditID(ActionEvent event) {
+    	apply.setDisable(false);
     	if (editID.getText().equals("Edit")) {
 	    	ID.setDisable(false);
 	    	ID.setText("");
@@ -230,6 +267,7 @@ public class ViewUserInfoController implements Initializable {
     		ID.setDisable(true);
 	    	ID.setText(username);
 	    	editID.setText("Edit");
+	    	apply.setDisable(true);
     	}
     }
     
@@ -269,6 +307,7 @@ public class ViewUserInfoController implements Initializable {
 		    	Image img = new Image(String.valueOf(new File(imgSrc)));
 		    	image.setImage(img);
 		    	chosenUserCard.setStyle("-fx-background-color: #" + color);
+		    	phoneText.setText(rs.getString(4));
 			}
 			ID.setDisable(true);
 			citizenID.setDisable(true);
@@ -297,12 +336,13 @@ public class ViewUserInfoController implements Initializable {
 			e.printStackTrace();
 		}
     }
+	
+	public void setMainController(AdminMainPageController mainController) {
+		this.mainController = mainController;
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		apply.setDisable(true);
-		ID.textProperty().addListener((observable, oldValue, newValue) -> {
-			apply.setDisable(newValue.trim().isEmpty());
-		});
 	}
 }

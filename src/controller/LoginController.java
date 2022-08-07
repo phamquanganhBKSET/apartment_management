@@ -244,6 +244,7 @@ public class LoginController implements Initializable {
 					if (pass.equals(passw)) {
 						Scene currScene = (Scene)((Node) e.getSource()).getScene();
 						Stage currStage = (Stage)currScene.getWindow();
+						Stage newstage = new Stage();
 						FXMLLoader loader = new FXMLLoader();
 						loader.setLocation(getClass().getResource("/fxml/UserMainPage.fxml"));
 						Parent root = loader.load();
@@ -262,13 +263,13 @@ public class LoginController implements Initializable {
 				        	currStage.setY(event.getScreenY() - offset_y);
 				        });
 				        
-						currStage.setScene(scene);
-						currStage.centerOnScreen();
-						currStage.setResizable(false);
+				        newstage.setScene(scene);
+				        newstage.centerOnScreen();
+				        newstage.setResizable(false);
 						//controller.setUsername(username.getText());
 						controller.load(username.getText());
-						currStage.show();
-						
+						currStage.close();
+						newstage.show();
 						
 						if(rememberMe.isSelected()) {
 					        // Let's validate the username field isn't empty (Optional)

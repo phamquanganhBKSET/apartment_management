@@ -1,8 +1,335 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="987.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ViewRoomInfoController">
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <left>
+            <VBox prefHeight="416.0" prefWidth="327.0" styleClass="right-bar" stylesheets="@../css/admin.css" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane prefHeight="38.0" prefWidth="327.0" VBox.vgrow="ALWAYS" />
+                  <VBox fx:id="chosenUserCard" alignment="CENTER" prefHeight="400.0" prefWidth="253.0" stylesheets="@../css/admin.css">
+                     <VBox.margin>
+                        <Insets left="37.5" right="37.5" />
+                     </VBox.margin>
+                     <children>
+                        <HBox prefHeight="41.0" prefWidth="253.0">
+                           <children>
+                              <Label fx:id="typeName" prefHeight="39.0" prefWidth="189.0" text="Room" textFill="WHITE">
+                                 <font>
+                                    <Font name="Cambria" size="27.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="userIDText" alignment="CENTER" prefHeight="39.0" prefWidth="216.0" text="101" textFill="WHITE">
+                                 <font>
+                                    <Font name="Cambria" size="27.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets top="22.5" />
+                           </VBox.margin>
+                        </HBox>
+                        <ImageView fx:id="image" fitHeight="207.0" fitWidth="214.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../icon/room0.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="253.0" />
+                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="253.0">
+                           <children>
+                              <Label fx:id="typeLabel" prefHeight="27.0" prefWidth="221.0" text="Type" textFill="WHITE">
+                                 <font>
+                                    <Font name="Cambria" size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Separator fx:id="sep1" orientation="VERTICAL" prefHeight="200.0">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets right="40.0" />
+                                 </padding>
+                              </Separator>
+                              <Label fx:id="typeText" prefHeight="28.0" prefWidth="201.0" text="3 beds" textFill="WHITE">
+                                 <font>
+                                    <Font name="Cambria" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="253.0">
+                           <children>
+                              <Label fx:id="ownerIDLabel" prefHeight="27.0" prefWidth="206.0" text="Owner ID" textFill="WHITE">
+                                 <font>
+                                    <Font name="Cambria" size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Separator fx:id="sep2" orientation="VERTICAL" prefHeight="200.0">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets right="40.0" />
+                                 </padding>
+                              </Separator>
+                              <Label fx:id="ownerIDText" prefHeight="28.0" prefWidth="185.0" text="anhnq10" textFill="WHITE">
+                                 <font>
+                                    <Font name="Cambria" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="29.0" prefWidth="253.0">
+                           <children>
+                              <Label fx:id="peopleLabel" prefHeight="27.0" prefWidth="205.0" text="People" textFill="WHITE">
+                                 <font>
+                                    <Font name="Cambria" size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="15.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Separator fx:id="sep21" orientation="VERTICAL" prefHeight="200.0">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <padding>
+                                    <Insets right="40.0" />
+                                 </padding>
+                              </Separator>
+                              <Label fx:id="peopleText" prefHeight="28.0" prefWidth="185.0" text="4" textFill="WHITE">
+                                 <font>
+                                    <Font name="Cambria" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <Pane prefHeight="29.0" prefWidth="253.0" />
+                     </children>
+                     <styleClass>
+                        <String fx:value="chosen-room" />
+                        <String fx:value="shadow" />
+                     </styleClass>
+                  </VBox>
+                  <Pane prefHeight="37.0" prefWidth="327.0" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+         </left>
+         <center>
+            <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="475.0" prefWidth="660.0">
+                     <children>
+                        <HBox prefHeight="22.0" prefWidth="660.0" styleClass="task-bar" stylesheets="@../css/viewUserInfo.css">
+                           <children>
+                              <Label prefHeight="27.0" prefWidth="121.0" text="Room Information" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font name="Cambria" size="15.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="274.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="minimize" alignment="CENTER" onMouseClicked="#handleMinimize" prefHeight="27.0" prefWidth="24.0" text="-" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="210.0" />
+                                 </HBox.margin>
+                              </Label>
+                              <Label fx:id="close" alignment="CENTER" onMouseClicked="#handleClose" prefHeight="27.0" prefWidth="24.0" text="X" HBox.hgrow="ALWAYS">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <Pane prefHeight="47.0" prefWidth="660.0" />
+                        <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="600.0">
+                           <children>
+                              <Label prefHeight="36.0" prefWidth="74.0" text="Room">
+                                 <HBox.margin>
+                                    <Insets left="80.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Cambria" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Pane prefHeight="39.0" prefWidth="30.0" />
+                              <TextField fx:id="room" prefHeight="25.0" prefWidth="293.0" stylesheets="@../css/viewAdminInfo.css" />
+                              <Pane prefHeight="39.0" prefWidth="27.0" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="600.0">
+                           <children>
+                              <Label prefHeight="36.0" prefWidth="74.0" text="Status">
+                                 <HBox.margin>
+                                    <Insets left="80.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Cambria" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Pane prefHeight="39.0" prefWidth="30.0" />
+                              <Pane prefHeight="39.0" prefWidth="36.0" />
+                              <RadioButton fx:id="empty" mnemonicParsing="false" onMouseClicked="#handleEmpty" prefHeight="17.0" prefWidth="63.0" text="Empty" />
+                              <Pane prefHeight="39.0" prefWidth="91.0" />
+                              <RadioButton fx:id="full" mnemonicParsing="false" onMouseClicked="#handleFull" text="Full" />
+                              <Pane prefHeight="39.0" prefWidth="89.0" />
+                              <Button fx:id="editStatus" mnemonicParsing="false" onAction="#handleEditStatus" prefHeight="25.0" prefWidth="51.0" stylesheets="@../css/viewAdminInfo.css" text="Edit">
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="600.0">
+                           <children>
+                              <Label prefHeight="36.0" prefWidth="74.0" text="Type">
+                                 <HBox.margin>
+                                    <Insets left="80.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Cambria" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Pane prefHeight="39.0" prefWidth="30.0" />
+                              <TextField fx:id="type" prefHeight="25.0" prefWidth="293.0" stylesheets="@../css/viewAdminInfo.css" />
+                              <Pane prefHeight="39.0" prefWidth="27.0" />
+                              <Button fx:id="editType" mnemonicParsing="false" onAction="#handleEditType" prefHeight="25.0" prefWidth="51.0" stylesheets="@../css/viewAdminInfo.css" text="Edit">
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="600.0">
+                           <children>
+                              <Label prefHeight="36.0" prefWidth="74.0" text="Owner ID">
+                                 <HBox.margin>
+                                    <Insets left="80.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Cambria" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Pane prefHeight="39.0" prefWidth="30.0" />
+                              <TextField fx:id="ownerID" prefHeight="25.0" prefWidth="293.0" stylesheets="@../css/viewAdminInfo.css" />
+                              <Pane prefHeight="39.0" prefWidth="27.0" />
+                              <Button fx:id="editOwnerID" mnemonicParsing="false" onAction="#handleEditOwnerID" prefHeight="25.0" prefWidth="51.0" stylesheets="@../css/viewAdminInfo.css" text="Edit">
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="600.0">
+                           <children>
+                              <Label prefHeight="36.0" prefWidth="74.0" text="People">
+                                 <HBox.margin>
+                                    <Insets left="80.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Cambria" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Pane prefHeight="39.0" prefWidth="30.0" />
+                              <TextField fx:id="people" prefHeight="25.0" prefWidth="293.0" stylesheets="@../css/viewAdminInfo.css" />
+                              <Pane prefHeight="39.0" prefWidth="27.0" />
+                              <Button fx:id="editPeople" mnemonicParsing="false" onAction="#handleEditPeople" prefHeight="25.0" prefWidth="51.0" stylesheets="@../css/viewAdminInfo.css" text="Edit">
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="600.0">
+                           <children>
+                              <Label prefHeight="36.0" prefWidth="74.0" text="Service">
+                                 <HBox.margin>
+                                    <Insets left="80.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Cambria" size="15.0" />
+                                 </font>
+                              </Label>
+                              <Pane prefHeight="39.0" prefWidth="12.0" />
+                              <Pane prefHeight="39.0" prefWidth="15.0" />
+                              <Button fx:id="electricity" mnemonicParsing="false" onAction="#handleElectricity" prefHeight="25.0" prefWidth="78.0" stylesheets="@../css/viewAdminInfo.css" text="Electricity">
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Pane prefHeight="39.0" prefWidth="24.0" />
+                              <Button fx:id="water" mnemonicParsing="false" onAction="#handleWater" prefHeight="25.0" prefWidth="78.0" stylesheets="@../css/viewAdminInfo.css" text="Water">
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Pane prefHeight="39.0" prefWidth="24.0" />
+                              <Button fx:id="envi" mnemonicParsing="false" onAction="#handleEnvi" prefHeight="25.0" prefWidth="78.0" stylesheets="@../css/viewAdminInfo.css" text="Envi">
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Pane prefHeight="39.0" prefWidth="24.0" />
+                              <Button fx:id="vehicle" mnemonicParsing="false" onAction="#handleVehicle" prefHeight="25.0" prefWidth="78.0" stylesheets="@../css/viewAdminInfo.css" text="Vehicle">
+                                 <font>
+                                    <Font name="Cambria" size="12.0" />
+                                 </font>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="39.0" prefWidth="600.0">
+                           <children>
+                              <Pane prefHeight="39.0" prefWidth="30.0" />
+                              <Pane prefHeight="39.0" prefWidth="27.0" />
+                           </children>
+                        </HBox>
+                        <Pane prefHeight="17.0" prefWidth="660.0" />
+                        <Pane prefHeight="15.0" prefWidth="660.0" />
+                        <Button fx:id="apply" mnemonicParsing="false" onAction="#handleApply" prefHeight="25.0" prefWidth="265.0" stylesheets="@../css/viewAdminInfo.css" text="Apply">
+                           <font>
+                              <Font name="Cambria" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
 </AnchorPane>
-
