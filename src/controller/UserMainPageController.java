@@ -10,7 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
+//import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -149,7 +149,7 @@ public class UserMainPageController {
 			currStage.setScene(scene);
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
-			controller.setScene(currScene);
+//			controller.setScene(currScene);
 			currStage.show();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -268,6 +268,7 @@ public class UserMainPageController {
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
 			controller.setScene(currScene);
+			controller.load(connection, statement, room.getText());
 			currStage.show();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -337,6 +338,7 @@ public class UserMainPageController {
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
 			controller.setScene(currScene);
+			controller.load(connection, statement, room.getText());
 			currStage.show();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -405,16 +407,16 @@ public class UserMainPageController {
 				for (ModelDichVu dv : listDichVu) {
 					if (sum.getThang().compareTo(dv.getThang()) == 0) {
 						System.out.println("==========================================");
-						System.out.println("\nthangttt " + sum.getThang());
+						System.out.println("\nThang " + sum.getThang());
 						System.out.println(dv.getTien());
 						if (dv.getMaDichVu() == 1) {
-							System.out.println("TIen dien");
+							System.out.println("Tien dien");
 							sum.updateElec(dv.getTien());
 						} else if (dv.getMaDichVu() == 2) {
-							System.out.println("TIen nuoc");
+							System.out.println("Tien nuoc");
 							sum.updateWater(dv.getTien());
 						} else if (dv.getMaDichVu() == 3) {
-							System.out.println("TIen VS");
+							System.out.println("Tien VS");
 							sum.updateEnvi(dv.getTien());
 						}
 					}
