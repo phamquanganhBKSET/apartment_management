@@ -14,44 +14,59 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.EnviController">
-   <children>
-      <ScrollPane layoutY="254.0" prefHeight="147.0" prefWidth="600.0">
-         <content>
-            <TableView prefHeight="146.0" prefWidth="599.0">
-              <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
-              </columns>
-            </TableView>
-         </content>
-      </ScrollPane>
-      <VBox layoutX="-2.0" layoutY="-7.0" prefHeight="262.0" prefWidth="609.0">
-         <children>
-            <AnchorPane prefHeight="76.0" prefWidth="609.0">
-               <children>
-                  <Hyperlink fx:id="back" layoutX="14.0" layoutY="14.0" onMouseClicked="#goBack" text="&lt; Go back" />
-                  <Label layoutX="187.0" layoutY="11.0" text="Envi Charge">
-                     <font>
-                        <Font name="System Bold" size="36.0" />
-                     </font>
-                  </Label>
-                  <ImageView fitHeight="44.0" fitWidth="40.0" layoutX="394.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../icon/planet-earth.png" />
-                     </image>
-                  </ImageView>
-               </children>
-            </AnchorPane>
-            <LineChart>
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
-            </LineChart>
-         </children>
-      </VBox>
-   </children>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity"
+	minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+	prefWidth="494.0" xmlns="http://javafx.com/javafx/18"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="controller.EnviController">
+	<children>
+		<ScrollPane layoutY="254.0" prefHeight="147.0"
+			prefWidth="494.0">
+			<content>
+				<TableView fx:id="tableEnvi" prefHeight="153.0"
+					prefWidth="493.0" styleClass="tableEnvi"
+					stylesheets="@../css/table.css">
+					<columns>
+						<TableColumn fx:id="col_month" prefWidth="163.0"
+							text="Month" />
+						<TableColumn fx:id="col_total" prefWidth="172.0"
+							text="Total" />
+						<TableColumn fx:id="col_paid" prefWidth="144.0"
+							text="Paid" />
+					</columns>
+				</TableView>
+			</content>
+		</ScrollPane>
+		<VBox layoutX="-2.0" layoutY="-7.0" prefHeight="262.0"
+			prefWidth="494.0">
+			<children>
+				<AnchorPane prefHeight="64.0" prefWidth="483.0">
+					<children>
+						<Hyperlink fx:id="back" layoutX="14.0" layoutY="22.0"
+							onMouseClicked="#goBack" text="&lt; Go back" />
+						<Label layoutX="127.0" layoutY="13.0" text="Envi Charge">
+							<font>
+								<Font name="System Bold" size="36.0" />
+							</font>
+						</Label>
+						<ImageView fitHeight="44.0" fitWidth="40.0"
+							layoutX="364.0" layoutY="19.0" pickOnBounds="true"
+							preserveRatio="true">
+							<image>
+								<Image url="@../../icon/planet-earth.png" />
+							</image>
+						</ImageView>
+					</children>
+				</AnchorPane>
+				<LineChart fx:id="lineChart" legendVisible="false">
+					<xAxis>
+						<CategoryAxis side="BOTTOM" />
+					</xAxis>
+					<yAxis>
+						<NumberAxis side="LEFT" />
+					</yAxis>
+				</LineChart>
+			</children>
+		</VBox>
+	</children>
 </AnchorPane>
