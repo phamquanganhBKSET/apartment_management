@@ -788,7 +788,7 @@ public class AdminMainPageController implements Initializable {
     		houseHolder.setGender(rs.getString(6));
     		houseHolder.setCitizenID(rs.getString(2));
     		Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-    		if (rs.getString(6).equals("Nam")) {
+    		if (rs.getString(6) != null && rs.getString(6).equals("Nam")) {
     			houseHolder.setImgSrc(path + "\\icon\\user_male.png");
     			houseHolder.setColor("00CED1");
     		} else {
