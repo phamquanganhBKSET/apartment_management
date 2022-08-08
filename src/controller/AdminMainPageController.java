@@ -362,7 +362,7 @@ public class AdminMainPageController implements Initializable {
 		
 		try {
 			for (int i = 0; i < listHouseHolder.size(); i++) {
-				if (listHouseHolder.get(i).getGender().equals(gender)) {
+				if (listHouseHolder.get(i).getGender() != null && listHouseHolder.get(i).getGender().equals(gender)) {
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/fxml/HouseHolderItem.fxml"));
 					
@@ -443,7 +443,7 @@ public class AdminMainPageController implements Initializable {
 				}
 	    		else if (filterValue.equals("Male")) {
 	    			for (HouseHolder houseHolder : listHouseHolder) {
-		    			if (houseHolder.getGender().equals("Nam")) {
+		    			if (houseHolder.getGender() != null && houseHolder.getGender().equals("Nam")) {
 		    				result++;
 		    			}
 		    		}
@@ -452,7 +452,7 @@ public class AdminMainPageController implements Initializable {
 		    		this.showFilterUser("Nam");
 	    		} else {
 	    			for (HouseHolder houseHolder : listHouseHolder) {
-		    			if (houseHolder.getGender().equals("Nu")) {
+		    			if (houseHolder.getGender() != null && houseHolder.getGender().equals("Nu")) {
 		    				result++;
 		    			}
 		    		}
