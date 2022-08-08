@@ -10,12 +10,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-//import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -32,11 +32,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import model.ModelDichVu;
 import model.ModelSummary;
 import model.ModelXe;
 
 public class UserMainPageController {
+	private String username;
 	private Connection connection;
 	private Statement statement;
 	
@@ -61,8 +63,8 @@ public class UserMainPageController {
     @FXML
     private TableColumn<ModelSummary, Date> col_month;
 
-//    @FXML
-//    private TableColumn<ModelSummary, String> col_name;
+    @FXML
+    private TableColumn<ModelSummary, String> col_name;
 
     @FXML
     private TableColumn<ModelSummary, Integer> col_new_elec;
@@ -87,9 +89,6 @@ public class UserMainPageController {
 
     @FXML
     private Button edit;
-    
-    @FXML
-    private Label username;
 
     @FXML
     private Label electricity;
@@ -117,16 +116,12 @@ public class UserMainPageController {
 
     @FXML
     private Label water;
-    
-	public void setUsername(String username) {
-		this.username.setText(username);
-	}
 
     @FXML
-    void changePass(MouseEvent e) {
+    public void changePass(ActionEvent e) {
     	try {
-			Scene currScene = (Scene)((Node) e.getSource()).getScene();
-			Stage currStage = (Stage)currScene.getWindow();
+    		Stage stage = new Stage();
+	    	stage.initStyle(StageStyle.UNDECORATED);
 			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/fxml/ChangePassword.fxml"));
@@ -138,26 +133,26 @@ public class UserMainPageController {
 			
 			// Drag scene
 			scene.setOnMousePressed(event -> {
-	            offset_x = event.getSceneX();
-	            offset_y = event.getSceneY();
-	        });
-	        scene.setOnMouseDragged(event -> {
-	        	currStage.setX(event.getScreenX() - offset_x);
-	        	currStage.setY(event.getScreenY() - offset_y);
-	        });
-	        
-			currStage.setScene(scene);
-			currStage.centerOnScreen();
-			currStage.setResizable(false);
-//			controller.setScene(currScene);
-			currStage.show();
+				offset_x = event.getSceneX();
+				offset_y = event.getSceneY();
+			});
+			scene.setOnMouseDragged(event -> {
+				stage.setX(event.getScreenX() - offset_x);
+				stage.setY(event.getScreenY() - offset_y);
+			});
+				        
+			stage.setScene(scene);
+			stage.centerOnScreen();
+			stage.setResizable(false);
+			controller.setUsername(username);
+			stage.show();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
     }
 
     @FXML
-    void editProfile(MouseEvent e) {
+    void editProfile(ActionEvent e) {
     	try {
 			Scene currScene = (Scene)((Node) e.getSource()).getScene();
 			Stage currStage = (Stage)currScene.getWindow();
@@ -183,7 +178,7 @@ public class UserMainPageController {
 			currStage.setScene(scene);
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
-			controller.load(username.getText());
+			controller.load(username);
 			controller.setScene(currScene);
 			currStage.show();
 		} catch (Exception ex) {
@@ -359,7 +354,7 @@ public class UserMainPageController {
 					+ "where apartment_manager.chu_so_huu.Id_chu_so_huu = apartment_manager.phong.Id_chu_so_huu and apartment_manager.chu_so_huu.Id_chu_so_huu = \'" + transUser + "\'";
 			ResultSet rs = statement.executeQuery(query);
 			if (rs.next()) {
-				username.setText(rs.getString(1));
+				username = rs.getString(1);
 				fullname.setText(rs.getString(2));
 				email.setText(rs.getString(3));
 				phone.setText(rs.getString(4));
