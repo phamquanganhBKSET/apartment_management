@@ -38,7 +38,7 @@ import model.ModelSummary;
 import model.ModelXe;
 
 public class UserMainPageController {
-	private String username;
+
 	private Connection connection;
 	private Statement statement;
 	
@@ -50,6 +50,9 @@ public class UserMainPageController {
     
     @FXML
     private ImageView avt_male;
+    
+    @FXML
+    private Label username;
 
     @FXML
     private Hyperlink change_password;
@@ -116,6 +119,10 @@ public class UserMainPageController {
 
     @FXML
     private Label water;
+    
+	public void setUsername(String username) {
+		this.username.setText(username);
+	}
 
     @FXML
     public void changePass(ActionEvent e) {
@@ -144,7 +151,7 @@ public class UserMainPageController {
 			stage.setScene(scene);
 			stage.centerOnScreen();
 			stage.setResizable(false);
-			controller.setUsername(username);
+			controller.setUsername(username.getText());
 			stage.show();
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -178,7 +185,7 @@ public class UserMainPageController {
 			currStage.setScene(scene);
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
-			controller.load(username);
+			controller.load(username.getText());
 			controller.setScene(currScene);
 			currStage.show();
 		} catch (Exception ex) {
@@ -354,7 +361,7 @@ public class UserMainPageController {
 					+ "where apartment_manager.chu_so_huu.Id_chu_so_huu = apartment_manager.phong.Id_chu_so_huu and apartment_manager.chu_so_huu.Id_chu_so_huu = \'" + transUser + "\'";
 			ResultSet rs = statement.executeQuery(query);
 			if (rs.next()) {
-				username = rs.getString(1);
+				username.setText(rs.getString(1));
 				fullname.setText(rs.getString(2));
 				email.setText(rs.getString(3));
 				phone.setText(rs.getString(4));
