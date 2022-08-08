@@ -205,10 +205,10 @@ public class EditUserInforController {
 			email.setText(rs.getString(5));
 			phoneNumber.setText(rs.getString(4));
 			System.out.println(rs.getString(6));
-			if (rs.getString(6).equals("Nam")) {
+			if (rs.getString(6)!=null &&  rs.getString(6).equals("Nam")) {
 				male.setSelected(true);
 			}
-			else if (rs.getString(6).equals("Nu")) {
+			else if (rs.getString(6)!=null && rs.getString(6).equals("Nu")) {
 				female.setSelected(true);
 			}
 			this.oldUsername = passUser;

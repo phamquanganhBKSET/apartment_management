@@ -201,6 +201,7 @@ public class ViewRoomInfoController implements Initializable {
 				alert.setTitle("Update information");
 				alert.setHeaderText("Update failed!");
 				alert.setContentText("Username " + newOwnerID + " doesn't exist!");
+				alert.showAndWait();
 			}
 			
 			else {
