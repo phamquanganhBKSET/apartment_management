@@ -1,22 +1,33 @@
 package controller;
 
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.Scene;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class ChangePasswordController {
-	
-	private Scene changePassScene;
+public class ChangePasswordController implements Initializable{
+	private String username;
+	private Connection connection;
+	private Statement statement;
+
+	@FXML
+    private ResourceBundle resources;
 
     @FXML
-    private Hyperlink back;
+    private URL location;
 
     @FXML
     private Button changePassword;
@@ -37,29 +48,63 @@ public class ChangePasswordController {
     private PasswordField newPassword;
 
     @FXML
-    private PasswordField newPassword1;
+    private PasswordField oldPassword;
 
     @FXML
-    void handleBack(ActionEvent event) {
+    public void handleChangePassword(ActionEvent event) {
+    	String oldPass = oldPassword.getText();
+    	String newPass = newPassword.getText();
+    	String confirmPass = confirmNewPassword.getText();
+    	
+    	String sqlString = "select * from chu_so_huu where ID_chu_so_huu = \'" + username + "\' ";
     	try {
-			Scene currScene = (Scene)((Node) event.getSource()).getScene();
-			Stage currStage = (Stage)currScene.getWindow();
-			currStage.setScene(changePassScene);
-			currStage.centerOnScreen();
-			currStage.show();
-		} catch (Exception ex) {
-			ex.printStackTrace();
+    		ResultSet rs = statement.executeQuery(sqlString);
+    		rs.next();
+    		String currPass = rs.getString(7);
+    		
+    		if (!currPass.equals(oldPass)) {
+    			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    			alert.setTitle("Error");
+    			alert.setHeaderText("Change password failed!");
+    			alert.setContentText("Old password is not true!");
+    			alert.showAndWait();
+    			return;
+    		}
+		} catch (SQLException e1) {
+			e1.printStackTrace();
 		}
-    }
-
-    @FXML
-    void handleChangePassword(ActionEvent event) {
-
+    	
+    	if (newPass.equals(confirmPass)) {
+    		try {
+    			sqlString = "update apartment_manager.chu_so_huu "
+      			 		  + "set password = \'" + newPass + "\' "
+      			 		  + "where ID_chu_so_huu = \'" + this.username + "\' ";
+				statement.executeUpdate(sqlString);
+				
+				Alert alert = new Alert(Alert.AlertType.INFORMATION);
+				alert.setTitle("Change password Information");
+				alert.setHeaderText("Change password successed!");
+				alert.showAndWait();
+				
+				Stage stage = (Stage) minimize.getScene().getWindow();
+				stage.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+    	} else {
+    		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+			alert.setTitle("Change password Information");
+			alert.setHeaderText("Change Password failed!");
+			alert.setContentText("Password and re-entered password do not match!");
+			alert.showAndWait();
+			return;
+    	}
     }
 
     @FXML
     public void handleClose(MouseEvent event) {
-    	System.exit(0);
+    	Stage stage = (Stage) minimize.getScene().getWindow();
+    	stage.close();
     }
 
     @FXML
@@ -68,8 +113,26 @@ public class ChangePasswordController {
         stage.setIconified(true);
     }
     
-	public void setScene(Scene changePassScene) {
-		this.changePassScene = changePassScene;
+    public void setUsername(String username) {
+    	this.username = username;
+    }
+
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		changePassword.setDisable(true);
+		newPassword.textProperty().addListener((observable, oldValue, newValue) -> {
+			changePassword.setDisable(newValue.trim().isEmpty());
+		});
+		oldPassword.textProperty().addListener((observable, oldValue, newValue) -> {
+			changePassword.setDisable(newValue.trim().isEmpty());
+		});
+		
+		try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
+			statement = connection.createStatement();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
