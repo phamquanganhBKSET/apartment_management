@@ -16,7 +16,7 @@ public class AdminClient {
 		this.clientName = clientName;
 	}
 	
-	private void execute() {
+	public void execute() {
 		try {
 			Socket clientUser = new Socket(host, port);
 			ReadAdminClient read = new ReadAdminClient(clientUser, clientName);
