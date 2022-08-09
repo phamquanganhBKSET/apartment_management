@@ -74,6 +74,8 @@ public class VehicleController {
 
     @FXML
     private TableView<ModelXe> tableXe;
+    
+    String room;
 
     @FXML
     void addVehicle(MouseEvent e) {
@@ -103,6 +105,7 @@ public class VehicleController {
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
 			controller.setScene(currScene);
+			controller.setRoom(room);
 			currStage.show();
     	} catch (Exception ex) {
     		ex.printStackTrace();
@@ -124,6 +127,7 @@ public class VehicleController {
     
     void load (Connection connection, Statement statement, String phong) {
     	try {
+    		this.room = phong;
 			// Add data to listXe
 			String query = "SELECT apartment_manager.xe.Ten_chu_xe, apartment_manager.xe.Ma_phong, apartment_manager.xe.Loai_xe, apartment_manager.xe.Bien_so_xe, apartment_manager.xe.Mau_sac, apartment_manager.xe.Thang, apartment_manager.xe.Da_dong, apartment_manager.don_gia_gui_xe.Don_gia"
 					+ " FROM apartment_manager.xe, apartment_manager.don_gia_gui_xe" 

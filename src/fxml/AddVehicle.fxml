@@ -2,6 +2,7 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -10,11 +11,6 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="416.0" prefWidth="544.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddVehicleController">
    <children>
-      <TextField id="fullName" fx:id="vehicleType" layoutX="128.0" layoutY="192.0" prefHeight="36.0" prefWidth="323.0" promptText="Vehicle Type">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </TextField>
       <Label layoutX="139.0" layoutY="14.0" text="Add Vehicle">
          <font>
             <Font size="36.0" />
@@ -105,5 +101,8 @@
             <Font size="14.0" />
          </font>
       </TextField>
+      <RadioButton fx:id="car" layoutX="149.0" layoutY="201.0" mnemonicParsing="false" onMouseClicked="#setCar" text="Car" />
+      <RadioButton fx:id="bicycle" layoutX="357.0" layoutY="201.0" mnemonicParsing="false" onMouseClicked="#setBicycle" text="Bicycle" />
+      <RadioButton fx:id="motorcycle" layoutX="233.0" layoutY="201.0" mnemonicParsing="false" onMouseClicked="#setMotor" text="Motorcycle" />
    </children>
 </AnchorPane>
