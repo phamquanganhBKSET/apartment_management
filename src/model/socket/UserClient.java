@@ -16,7 +16,7 @@ public class UserClient {
 		this.clientName = clientName;
 	}
 	
-	private void execute() {
+	public void execute() {
 		try {
 			Socket clientUser = new Socket(host, port);
 			ReadUserClient read = new ReadUserClient(clientUser, clientName);
