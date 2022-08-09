@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="416.0" prefWidth="544.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddVehicleController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="455.0" prefWidth="544.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddVehicleController">
    <children>
       <Label layoutX="139.0" layoutY="14.0" text="Add Vehicle">
          <font>
@@ -36,7 +36,7 @@
             <Image url="@../../icon/veh.png" />
          </image>
       </ImageView>
-      <Button id="signUp" fx:id="add" layoutX="161.0" layoutY="357.0" mnemonicParsing="false" onMouseClicked="#actionAddVehicle" prefHeight="36.0" prefWidth="225.0" text="Add">
+      <Button id="signUp" fx:id="add" layoutX="161.0" layoutY="407.0" mnemonicParsing="false" onMouseClicked="#actionAddVehicle" prefHeight="36.0" prefWidth="225.0" text="Add">
          <font>
             <Font size="14.0" />
          </font>
@@ -104,5 +104,15 @@
       <RadioButton fx:id="car" layoutX="149.0" layoutY="201.0" mnemonicParsing="false" onMouseClicked="#setCar" text="Car" />
       <RadioButton fx:id="bicycle" layoutX="357.0" layoutY="201.0" mnemonicParsing="false" onMouseClicked="#setBicycle" text="Bicycle" />
       <RadioButton fx:id="motorcycle" layoutX="233.0" layoutY="201.0" mnemonicParsing="false" onMouseClicked="#setMotor" text="Motorcycle" />
+      <TextField id="roomNumber" fx:id="ticket" layoutX="128.0" layoutY="352.0" prefHeight="36.0" prefWidth="323.0" promptText="Ticket">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="28.0" fitWidth="28.0" layoutX="81.0" layoutY="356.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/ticket.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

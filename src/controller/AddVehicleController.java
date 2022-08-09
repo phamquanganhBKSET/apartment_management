@@ -73,6 +73,9 @@ public class AddVehicleController {
     @FXML
     private RadioButton car;
     
+    @FXML
+    private TextField ticket;
+    
 
     @FXML
     void setBicycle(MouseEvent event) {
@@ -101,8 +104,24 @@ public class AddVehicleController {
 		}
     }
     
+    int ticketMax;
+    
 	public void setRoom(String room) {
 		roomNumber.setText(room);
+		try {
+			String s = "select MAX(Ve_xe) from apartment_manager.xe";
+			ResultSet rs = statement.executeQuery(s);
+			if (rs.next()) {
+				ticketMax = rs.getInt(1) + 1;
+			}
+			else {
+				ticketMax = 1;
+			}
+			ticket.setText(String.valueOf(ticketMax));
+		} catch (Exception ex) {
+			// TODO: handle exception
+			ex.printStackTrace();
+		}
 	}
 
     @FXML
@@ -128,10 +147,10 @@ public class AddVehicleController {
     			LocalDate currentime = LocalDate.now();
     			int month = currentime.getMonthValue();
     			int year = currentime.getYear();
-    			String s = "insert into apartment_manager.xe (Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong) "
+    			String s = "insert into apartment_manager.xe (Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong, Ve_xe) "
     					+ "values (\'" + owner.getText() + "\', " + roomNumber.getText() + ",\'" + vehicleType + "\', \'"
     					+ licensePlates.getText() + "\', \'" + color.getText() + "\', \'" + String.valueOf(year)+"-"
-    					+ String.valueOf(month)+"-01\', 0)";
+    					+ String.valueOf(month)+"-01\', 0," + ticket.getText() + ");";
     			statement.executeUpdate (s);
     			// Alert
     			Alert alert = new Alert(AlertType.INFORMATION);
@@ -183,6 +202,7 @@ public class AddVehicleController {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			statement = connection.createStatement();
 			roomNumber.setDisable(true);
+			ticket.setDisable(true);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
