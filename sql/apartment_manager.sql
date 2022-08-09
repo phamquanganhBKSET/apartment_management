@@ -62,6 +62,7 @@ create table Don_Gia_Gui_Xe (
 );
 
 create table Xe(
+	Ve_xe int not null,
 	Ten_chu_xe varchar(40) not null,
     Ma_phong int not null,
     Loai_xe varchar(20),
@@ -69,7 +70,7 @@ create table Xe(
     Mau_sac varchar(20),
     Thang date,
     Da_dong bool,
-    primary key (Ten_chu_xe, Ma_phong, Loai_xe, Thang),
+    primary key (Ve_xe, Thang),
     foreign key (Ma_phong) references Phong(Ma_phong),
     foreign key (Loai_xe) references Don_Gia_Gui_Xe (Loai_xe)
 );
