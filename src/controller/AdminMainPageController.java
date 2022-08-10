@@ -60,6 +60,9 @@ public class AdminMainPageController implements Initializable {
 	private double offset_x;
     private double offset_y;
 	
+    @FXML
+    private Button edit;
+    
 	@FXML
     private ResourceBundle resources;
 
