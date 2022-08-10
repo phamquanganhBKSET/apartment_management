@@ -84,7 +84,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="253.0">
                            <children>
-                              <Label fx:id="ownerIDLabel" prefHeight="27.0" prefWidth="206.0" text="Owner ID" textFill="WHITE">
+                              <Label fx:id="ownerIDLabel" prefHeight="27.0" prefWidth="205.0" text="Owner ID" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>

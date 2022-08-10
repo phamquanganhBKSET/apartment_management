@@ -61,7 +61,7 @@
                      </styleClass>
                   </HBox>
                   <Pane prefHeight="38.0" prefWidth="327.0" VBox.vgrow="ALWAYS" />
-                  <VBox fx:id="chosenRoomCard" alignment="CENTER" onMouseClicked="#handleViewInfo" prefHeight="401.25" prefWidth="100.0" stylesheets="@../css/admin.css">
+                  <VBox fx:id="chosenRoomCard" alignment="CENTER" prefHeight="401.25" prefWidth="100.0" stylesheets="@../css/admin.css">
                      <VBox.margin>
                         <Insets left="37.5" right="37.5" />
                      </VBox.margin>
@@ -147,7 +147,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="253.0">
                            <children>
-                              <Label fx:id="peopleLabel" prefHeight="27.0" prefWidth="130.0" text="People" textFill="WHITE">
+                              <Label fx:id="peopleLabel" prefHeight="27.0" prefWidth="128.0" text="People" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>
@@ -155,7 +155,7 @@
                                     <Insets left="15.0" />
                                  </HBox.margin>
                               </Label>
-                              <Separator fx:id="sep3" orientation="VERTICAL" prefHeight="200.0">
+                              <Separator fx:id="sep3" orientation="VERTICAL" prefHeight="29.0" prefWidth="74.0">
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
@@ -170,7 +170,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <Button mnemonicParsing="false" prefHeight="37.5" prefWidth="202.5" styleClass="delete-btn" stylesheets="@../css/admin.css" text="Edit Information" textFill="#828282">
+                        <Button fx:id="edit" mnemonicParsing="false" onMouseClicked="#handleViewInfo" prefHeight="37.5" prefWidth="202.5" styleClass="delete-btn" stylesheets="@../css/admin.css" text="Edit Information" textFill="#828282">
                            <VBox.margin>
                               <Insets bottom="15.0" top="22.5" />
                            </VBox.margin>
