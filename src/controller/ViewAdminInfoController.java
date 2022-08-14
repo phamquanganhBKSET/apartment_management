@@ -204,6 +204,9 @@ public class ViewAdminInfoController implements Initializable {
 			phone.setText(newPhone);
 			phone.setDisable(true);
 			
+			editEmail.setText("Edit");
+			editName.setText("Edit");
+			editPhone.setText("Edit");
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Update information");
 			alert.setHeaderText("Successfully update!");

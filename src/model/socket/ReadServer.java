@@ -22,59 +22,67 @@ public class ReadServer extends Thread {
 			dis = new DataInputStream(serverSocket.getInputStream());
 			while(true) {
 				if (Server.adminCount != 0) {
-//					while (Server.toAdmin.size() != 0) {
-						for (int i = 0; i < Server.toAdmin.size(); i++) {
-							sms = Server.toAdmin.get(i);
-							String[] parts = sms.split(":");
-							System.out.println(parts[parts.length-1]);
-							
-							if (parts[parts.length-1].equals("all")) {
-								Server.toAdmin.remove(i);
-								for (Socket item : Server.listAdminSocket) {
-									DataOutputStream dos = new DataOutputStream(item.getOutputStream());
+					for (int i = 0; i < Server.toAdmin.size(); i++) {
+						sms = Server.toAdmin.get(i);
+						String[] parts = sms.split(":");
+						System.out.println(parts[parts.length-1]);
+						
+						if (parts[parts.length-1].equals("all")) {
+							Server.toAdmin.remove(i);
+							if (Server.toAdmin.size() > 0) {
+								i -= 1;
+							}
+							for (Socket item : Server.listAdminSocket) {
+								DataOutputStream dos = new DataOutputStream(item.getOutputStream());
+								dos.writeUTF(sms);
+							}
+						} else {
+							for (int j = 0; j < Server.listAdminClientName.size(); j++) {
+								System.out.println(Server.listAdminClientName.get(j));
+								if (Server.listAdminClientName.get(j).equals(parts[parts.length-1])) {
+									Server.toAdmin.remove(i);
+									if (Server.toAdmin.size() > 0) {
+										i -= 1;
+									}
+									DataOutputStream dos = new DataOutputStream(Server.listAdminSocket.get(j).getOutputStream());
 									dos.writeUTF(sms);
 								}
-							} else {
-								for (int j = 0; j < Server.listAdminClientName.size(); j++) {
-									System.out.println(Server.listAdminClientName.get(j));
-									if (Server.listAdminClientName.get(j).equals(parts[parts.length-1])) {
-										Server.toAdmin.remove(i);
-										DataOutputStream dos = new DataOutputStream(Server.listAdminSocket.get(j).getOutputStream());
-										dos.writeUTF(sms);
-									}
-								}
 							}
-							System.out.println(sms);
 						}
-//					}
+						System.out.println(sms);
+					}
 				} 
 				
 				if (Server.userCount != 0) {
-//					while (Server.toUser.size() != 0) {
-						for (int i = 0; i < Server.toUser.size(); i++) {
-							sms = Server.toUser.get(i);
-							String[] parts = sms.split(":");
-							System.out.println(parts[parts.length-1]);
-							
-							if (parts[parts.length-1].equals("all")) {
-								Server.toUser.remove(i);
-								for (Socket item : Server.listUserSocket) {
-									DataOutputStream dos = new DataOutputStream(item.getOutputStream());
+					for (int i = 0; i < Server.toUser.size(); i++) {
+						sms = Server.toUser.get(i);
+						String[] parts = sms.split(":");
+						System.out.println(parts[parts.length-1]);
+						
+						if (parts[parts.length-1].equals("all")) {
+							Server.toUser.remove(i);
+							if (Server.toUser.size() > 0) {
+								i -= 1;
+							}
+							for (Socket item : Server.listUserSocket) {
+								DataOutputStream dos = new DataOutputStream(item.getOutputStream());
+								dos.writeUTF(sms);
+							}
+						} else {
+							for (int j = 0; j < Server.listUserClientName.size(); j++) {
+								System.out.println(Server.listUserClientName.get(j));
+								if (Server.listUserClientName.get(j).equals(parts[parts.length-1])) {
+									Server.toUser.remove(i);
+									if (Server.toUser.size() > 0) {
+										i -= 1;
+									}
+									DataOutputStream dos = new DataOutputStream(Server.listUserSocket.get(j).getOutputStream());
 									dos.writeUTF(sms);
 								}
-							} else {
-								for (int j = 0; j < Server.listUserClientName.size(); j++) {
-									System.out.println(Server.listUserClientName.get(j));
-									if (Server.listUserClientName.get(j).equals(parts[parts.length-1])) {
-										Server.toUser.remove(i);
-										DataOutputStream dos = new DataOutputStream(Server.listUserSocket.get(j).getOutputStream());
-										dos.writeUTF(sms);
-									}
-								}
 							}
-							System.out.println(sms);
 						}
-//					}
+						System.out.println(sms);
+					}
 				}
 				
 				System.out.println("Server.toAdmin.size: " + Server.toAdmin.size());
