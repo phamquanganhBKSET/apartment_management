@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 
 public class AddVehicleController {
 	
+	private UserMainPageController mainController;
 	private Scene addVehicleScene;
 	Connection connection;
 	Statement statement;
@@ -76,7 +77,10 @@ public class AddVehicleController {
     @FXML
     private TextField ticket;
     
-
+    public void setMainController(UserMainPageController mainController) {
+    	this.mainController = mainController;
+    }
+    
     @FXML
     void setBicycle(MouseEvent event) {
     	if (bicycle.isSelected()) {
@@ -123,7 +127,7 @@ public class AddVehicleController {
 			ex.printStackTrace();
 		}
 	}
-
+	
     @FXML
     void actionAddVehicle(MouseEvent event) {
     	if (owner.getText().isEmpty()) {
@@ -141,35 +145,56 @@ public class AddVehicleController {
 			alert.setHeaderText("Vehicle type is empty!");
 			alert.showAndWait();
 		}
-    	else {
-    		// Add data into xe table
-    		try {
-    			LocalDate currentime = LocalDate.now();
-    			int month = currentime.getMonthValue();
-    			int year = currentime.getYear();
-    			String s = "insert into apartment_manager.xe (Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong, Ve_xe) "
-    					+ "values (\'" + owner.getText() + "\', " + roomNumber.getText() + ",\'" + vehicleType + "\', \'"
-    					+ licensePlates.getText() + "\', \'" + color.getText() + "\', \'" + String.valueOf(year)+"-"
-    					+ String.valueOf(month)+"-01\', 0," + ticket.getText() + ");";
-    			statement.executeUpdate (s);
-    			// Alert
-    			Alert alert = new Alert(AlertType.INFORMATION);
-    			alert.setHeaderText("Success!");
-    			alert.showAndWait();
-    			
-    			// Go back
-    			Scene currScene = (Scene)((Node) event.getSource()).getScene();
-    			Stage currStage = (Stage)currScene.getWindow();
-    			currStage.setScene(addVehicleScene);
-    			currStage.centerOnScreen();
-    			currStage.show();
-    			
-			} catch (Exception ex) {
-				// TODO Auto-generated catch block
-				ex.printStackTrace();
-			}
-		}
+//    	else {
+//    		// Add data into xe table
+//    		try {
+//    			LocalDate currentime = LocalDate.now();
+//    			int month = currentime.getMonthValue();
+//    			int year = currentime.getYear();
+//    			String s = "insert into apartment_manager.xe (Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong, Ve_xe) "
+//    					+ "values (\'" + owner.getText() + "\', " + roomNumber.getText() + ",\'" + vehicleType + "\', \'"
+//    					+ licensePlates.getText() + "\', \'" + color.getText() + "\', \'" + String.valueOf(year)+"-"
+//    					+ String.valueOf(month)+"-01\', 0," + ticket.getText() + ");";
+//    			statement.executeUpdate (s);
+//    			// Alert
+//    			Alert alert = new Alert(AlertType.INFORMATION);
+//    			alert.setHeaderText("Success!");
+//    			alert.showAndWait();
+//    			
+//    			// Go back
+//    			Scene currScene = (Scene)((Node) event.getSource()).getScene();
+//    			Stage currStage = (Stage)currScene.getWindow();
+//    			currStage.setScene(addVehicleScene);
+//    			currStage.centerOnScreen();
+//    			currStage.show();
+//    			
+//			} catch (Exception ex) {
+//				// TODO Auto-generated catch block
+//				ex.printStackTrace();
+//			}
+//		}
     	
+    	else {
+    		LocalDate currentime = LocalDate.now();
+    		int month = currentime.getMonthValue();
+    		int year = currentime.getYear();
+	    	
+	    	String message = owner.getText() + ":" + roomNumber.getText() + ":" + vehicleType + ":"
+	    				   + licensePlates.getText() + ":" + color.getText() + ":" + String.valueOf(year) + "-" + String.valueOf(month);
+	    	
+	    	mainController.setMessageToAdmin(message);
+	    	
+	    	Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setHeaderText("Please wait for admin's response!");
+			alert.showAndWait();
+			
+			// Go back
+			Scene currScene = (Scene)((Node) event.getSource()).getScene();
+			Stage currStage = (Stage)currScene.getWindow();
+			currStage.setScene(addVehicleScene);
+			currStage.centerOnScreen();
+			currStage.show();
+    	}
     }
 
     @FXML

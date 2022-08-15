@@ -30,6 +30,7 @@ import model.ModelXe;
 
 public class VehicleController {
 	
+	private UserMainPageController mainController;
 	private Scene vehicleScene;
 	
 	private double offset_x;
@@ -77,6 +78,10 @@ public class VehicleController {
     
     String room;
 
+    public void setMainController(UserMainPageController mainController) {
+    	this.mainController = mainController;
+    }
+    
     @FXML
     void addVehicle(MouseEvent e) {
     	try {
@@ -105,6 +110,7 @@ public class VehicleController {
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
 			controller.setScene(currScene);
+			controller.setMainController(mainController);
 			controller.setRoom(room);
 			currStage.show();
     	} catch (Exception ex) {

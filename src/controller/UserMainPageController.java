@@ -21,6 +21,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -36,9 +37,12 @@ import javafx.stage.StageStyle;
 import model.ModelDichVu;
 import model.ModelSummary;
 import model.ModelXe;
+import model.socket.SocketLibrary;
+import model.socket.UserClient;
 
 public class UserMainPageController {
 
+	private String mesageToAdmin = "";
 	private Connection connection;
 	private Statement statement;
 	
@@ -119,6 +123,14 @@ public class UserMainPageController {
 
     @FXML
     private Label water;
+    
+    public void setMessageToAdmin(String mesageToAdmin) {
+		this.mesageToAdmin = mesageToAdmin;
+	}
+	
+	public String getMessageToAdmin() {
+		return this.mesageToAdmin;
+	}
     
 	public void setUsername(String username) {
 		this.username.setText(username);
@@ -305,6 +317,7 @@ public class UserMainPageController {
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
 			controller.setScene(currScene);
+			controller.setMainController(this);
 			controller.load(connection, statement, room.getText());
 			currStage.show();
 		} catch (Exception ex) {
@@ -353,7 +366,8 @@ public class UserMainPageController {
 //	ArrayList<ModelSummary> listSummaries;
 	ObservableList<ModelSummary> listSummaries;
 	
-    public void load (String transUser) {    	
+    public void load (String transUser) {  
+    	
         try {
         	// Update display
 			String query = "select apartment_manager.chu_so_huu.Id_chu_so_huu, apartment_manager.chu_so_huu.Ten, apartment_manager.chu_so_huu.Email, apartment_manager.chu_so_huu.So_dien_thoai, apartment_manager.chu_so_huu.Gioi_tinh ,apartment_manager.phong.Ma_phong "
@@ -454,6 +468,15 @@ public class UserMainPageController {
 			e.printStackTrace();
 			Logger.getLogger(UserMainPageController.class.getName()).log(Level.SEVERE, null, e);
 		}
+        
+        try {
+			UserClient userCLient = new UserClient(SocketLibrary.host, SocketLibrary.port, transUser);
+			userCLient.setMainController(this);
+			System.out.println("User: " + transUser);
+			userCLient.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     }
     
     @FXML
@@ -465,6 +488,19 @@ public class UserMainPageController {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+    }
+    
+    public void handleNotify(String sms) {
+    	//From Admin:admin_username:Message:To:username
+		String parts[] = sms.split(":");
+		String message = parts[2];
+		String fromAdmin = parts[1];
+		
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("NOTIFY");
+		alert.setHeaderText("Admin " + fromAdmin + " has " + message + "ed your request!");
+		
+		alert.showAndWait();
     }
 
 }

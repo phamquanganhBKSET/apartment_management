@@ -959,10 +959,24 @@ public class AdminMainPageController implements Initializable {
 	}
 	
 	public void handleNotify(String sms) {
-		//From Admin:admin_username:Message:To:username
+		//From User:username:Ten_chu_xe:Ma_phong:Loai_xe:Bien_so_xe:Mau_sac:Thang:To:all
 		String parts[] = sms.split(":");
-		String message = parts[2];
+		
 		String toUser = parts[1];
+		String Ten_chu_xe = parts[2];
+		String Ma_phong = parts[3];
+		String Loai_xe = parts[4];
+		String Bien_so_xe = parts[5];
+		String Mau_sac = parts[6];
+		String Thang = parts[7];
+		
+		String message = "Add vehicle with infomation\n"
+				   + "+) Ten chu xe - " + Ten_chu_xe + "\n"
+				   + "+) Ma phong - " + Ma_phong + "\n"
+				   + "+) Loai xe - " + Loai_xe + "\n"
+				   + "+) Bien so xe - " + Bien_so_xe + "\n"
+				   + "+) Mau sac - " + Mau_sac + "\n"
+				   + "+) Thang - " + Thang;
 		
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 		alert.setTitle("NOTIFY");
@@ -980,6 +994,35 @@ public class AdminMainPageController implements Initializable {
 			System.out.println("Accept");
 			messageToUser = "Accept";
 			this.toUser = toUser;
+			
+			int ticketMax = 0;
+			
+			try {
+				String s = "select MAX(Ve_xe) from apartment_manager.xe";
+				ResultSet rs = statement.executeQuery(s);
+				if (rs.next()) {
+					ticketMax = rs.getInt(1) + 1;
+				}
+				else {
+					ticketMax = 1;
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			
+			try {
+				String s = "insert into apartment_manager.xe (Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong, Ve_xe) "
+						+ "values (\'" + Ten_chu_xe + "\', " + Ma_phong + ",\'" + Loai_xe + "\', \'"
+						+ Bien_so_xe + "\', \'" + Mau_sac + "\', \'" + Thang 
+						+"-01\', 0," + Integer.toString(ticketMax) + ");";
+				statement.executeUpdate (s);
+				
+				Alert alertSuccess = new Alert(AlertType.INFORMATION);
+				alertSuccess.setHeaderText("Successfully update vehicle for user " + toUser + "!");
+				alertSuccess.showAndWait();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 		} else {
 			System.out.println("Refuse");
 			messageToUser = "Refuse";
@@ -1016,7 +1059,7 @@ public class AdminMainPageController implements Initializable {
 		this.username = username;
 		
 		try {
-			AdminClient adminCLient = new AdminClient("localhost", SocketLibrary.port, username);
+			AdminClient adminCLient = new AdminClient(SocketLibrary.host, SocketLibrary.port, username);
 			adminCLient.setMainController(this);
 			System.out.println("Admin: " + username);
 			adminCLient.execute();
