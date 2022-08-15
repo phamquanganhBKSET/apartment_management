@@ -147,7 +147,7 @@
                         </HBox>
                         <HBox alignment="CENTER" prefHeight="29.0" prefWidth="253.0">
                            <children>
-                              <Label fx:id="peopleLabel" prefHeight="27.0" prefWidth="128.0" text="People" textFill="WHITE">
+                              <Label fx:id="peopleLabel" prefHeight="27.0" prefWidth="130.0" text="People" textFill="WHITE">
                                  <font>
                                     <Font name="Cambria" size="18.0" />
                                  </font>

@@ -182,6 +182,7 @@ public class ViewUserInfoController implements Initializable {
 			ID.setDisable(true);
 			
 			editID.setText("Edit");
+			mainController.setCurrUserID(newName);
 			
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Update information");
@@ -211,8 +212,8 @@ public class ViewUserInfoController implements Initializable {
 			
 			statement.executeUpdate(sqlString);
 			
-			mainController.updateDataUser();
 			mainController.updateDataRoom();
+			mainController.updateDataUser();
 			
 			Stage stage = (Stage) minimize.getScene().getWindow();
 			stage.close();

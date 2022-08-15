@@ -539,11 +539,22 @@ public class AdminMainPageController implements Initializable {
     
     public void updateDataUser() {
     	listHouseHolder.clear();
-		
+		boolean hasUser = false;
+    	
 		try {
 			listHouseHolder.addAll(getDataHH());
+			for (int i = 0; i < listHouseHolder.size(); i++) {
+				if (listHouseHolder.get(i).getUserName().equals(currUserID)) {
+					hasUser = true;
+					this.setChoosenUser(listHouseHolder.get(i));
+				}
+			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
+		}
+		
+		if (hasUser == false) {
+			this.setChoosenUser(listHouseHolder.get(0));
 		}
 		
 		numHouseHolders.setText("about " + listHouseHolder.size() + " householders");
@@ -591,6 +602,11 @@ public class AdminMainPageController implements Initializable {
     	
     	try {
 			listRoom.addAll(getData());
+			for (int i = 0; i < listRoom.size(); i++) {
+				if (listRoom.get(i).getRoomName().equals(currRoom.getRoomName())) {
+					this.setChoosenRoom(listRoom.get(i));
+				}
+			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
@@ -935,6 +951,10 @@ public class AdminMainPageController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void setCurrUserID(String currUserID) {
+		this.currUserID = currUserID;
 	}
 	
 	public void setLoginScene(Scene loginScene) {

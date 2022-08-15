@@ -85,10 +85,6 @@ public class NewPasswordController implements Initializable {
 					alert.setTitle("Change password Information");
 					alert.setHeaderText("Change password successed!");
 					alert.showAndWait();
-					
-					Scene currScene = (Scene)((Node) event.getSource()).getScene();
-					Stage currStage = (Stage)currScene.getWindow();
-					currStage.close();
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}

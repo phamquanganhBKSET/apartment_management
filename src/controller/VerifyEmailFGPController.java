@@ -38,6 +38,7 @@ public class VerifyEmailFGPController implements Initializable {
 	private String emailTo;
 	private String emailPass;
 	private Scene loginScene;
+	private boolean changePassUser;
 
 	@FXML
     private ResourceBundle resources;
@@ -79,8 +80,7 @@ public class VerifyEmailFGPController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		// TODO Auto-generated method stub
-		
+		changePassUser = false;
 	}
     
 	@FXML
@@ -129,6 +129,7 @@ public class VerifyEmailFGPController implements Initializable {
 					currStage.setResizable(false);
 					controller.setLoginScene(loginScene);
 					controller.setUsername(username);
+					controller.setChangePassUser(changePassUser);
 					currStage.show();
 				} catch(Exception ex) {
 					ex.printStackTrace();
@@ -173,6 +174,10 @@ public class VerifyEmailFGPController implements Initializable {
 	
 	public void setUsername(String username) {
 		this.username = username;
+	}
+	
+	public void setChangePassUser(boolean changePassUser) {
+		this.changePassUser = changePassUser;
 	}
 	
 	public void sendEmail(String emailFrom, String pass, String emailTo, String subject, String body) {

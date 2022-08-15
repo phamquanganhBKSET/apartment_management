@@ -146,15 +146,61 @@ public class ForgotPasswordController implements Initializable {
 					controller.setVerificationCode(vcode);
 					controller.setEmail(emailFrom, emailTo, emailPass);
 					controller.setUsername(userID);
+					controller.setChangePassUser(false);
 					currStage.show();
 				} catch(Exception ex) {
 					ex.printStackTrace();
 				}
 			} else {
-				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setTitle("Request reset password");
-				alert.setHeaderText("Username " + userID + " doesn't exist or isn't admin account!");
-				alert.showAndWait();
+				sqlString = "select * from apartment_manager.chu_so_huu where ID_chu_so_huu = \'" + userID + "\'";
+				rs = statement.executeQuery(sqlString);
+				if (rs.next()) {
+					emailTo = rs.getString(5);
+					
+					int vcode = verificationCode.nextInt((10000 - 100) + 1) + 100;
+					String subject = "Apartment Management - Reset password";
+					String body = "Your verification code is " + vcode;
+					this.sendEmail(this.emailFrom, this.emailPass, emailTo, subject, body);
+					
+					try {
+						Stage currStage = (Stage)((Node) e.getSource()).getScene().getWindow();
+						
+						FXMLLoader loader = new FXMLLoader();
+						loader.setLocation(getClass().getResource("/fxml/VerifyEmailFGP.fxml"));
+						Parent root = loader.load();
+						
+						VerifyEmailFGPController controller = loader.getController();
+						Scene scene = new Scene(root);
+						scene.getStylesheets().add(getClass().getResource("/css/verifyEmailFGP.css").toExternalForm());
+						
+						// Drag scene
+						scene.setOnMousePressed(event -> {
+				            offset_x = event.getSceneX();
+				            offset_y = event.getSceneY();
+				        });
+				        scene.setOnMouseDragged(event -> {
+				        	currStage.setX(event.getScreenX() - offset_x);
+				        	currStage.setY(event.getScreenY() - offset_y);
+				        });
+				        
+						currStage.setScene(scene);
+						currStage.centerOnScreen();
+						currStage.setResizable(false);
+						controller.setLoginScene(loginScene);
+						controller.setVerificationCode(vcode);
+						controller.setEmail(emailFrom, emailTo, emailPass);
+						controller.setUsername(userID);
+						controller.setChangePassUser(true);
+						currStage.show();
+					} catch(Exception ex) {
+						ex.printStackTrace();
+					}
+				} else {
+					Alert alert = new Alert(Alert.AlertType.INFORMATION);
+					alert.setTitle("Request reset password");
+					alert.setHeaderText("Username " + userID + " doesn't exist!");
+					alert.showAndWait();
+				}
 			}
 		} catch (SQLException e1) {
 			e1.printStackTrace();
