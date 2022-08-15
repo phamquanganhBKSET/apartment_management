@@ -77,7 +77,6 @@ public class AddElectricController {
 			ResultSet rs2 = statement.executeQuery(s);
 			rs2.next();
 			oldElecNum.setText(rs2.getString(1));
-			System.out.println("CO PHONG NE");
 		}
     }
 

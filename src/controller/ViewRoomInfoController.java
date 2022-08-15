@@ -448,7 +448,86 @@ public class ViewRoomInfoController implements Initializable {
 
     @FXML
     public void handleWater(ActionEvent event) {
+    	try {
+			Stage stage = new Stage();
+			stage.initStyle(StageStyle.UNDECORATED);
+			
+			String file;
 
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Select");
+			alert.setHeaderText("Do you want to see or add Water?");
+
+			ButtonType see = new ButtonType("See");
+			ButtonType add = new ButtonType("Add");
+			ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+			alert.getButtonTypes().setAll(see, add, cancel);
+
+			Optional<ButtonType> option = alert.showAndWait();
+
+			if (option.get() == see) {
+				file = "/fxml/Water.fxml";
+			} else if (option.get() == add) {
+				file = "/fxml/AddWater.fxml";
+			} else {
+				file = null;
+				return;
+			}
+			
+			Scene currScene = (Scene)((Node) event.getSource()).getScene();
+			Stage currStage = (Stage)currScene.getWindow();
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource(file));
+			Parent root = loader.load();
+			
+			Scene scene = new Scene(root);
+			
+			if (file.equals("/fxml/Water.fxml")) {
+				WaterController controller = loader.getController();
+				scene.getStylesheets().add(getClass().getResource("/css/table.css").toExternalForm());
+				// Drag scene
+				scene.setOnMousePressed(ev -> {
+		            offset_x = ev.getSceneX();
+		            offset_y = ev.getSceneY();
+		        });
+		        scene.setOnMouseDragged(ev -> {
+		        	currStage.setX(ev.getScreenX() - offset_x);
+		        	currStage.setY(ev.getScreenY() - offset_y);
+		        });
+		        
+				currStage.setScene(scene);
+				currStage.centerOnScreen();
+				currStage.setResizable(false);
+				controller.setScene(currScene);
+				controller.load(connection, statement, room.getText());
+				currStage.show();
+			} else {
+				AddWaterController controller = loader.getController();
+				scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
+
+				// Drag scene
+				scene.setOnMousePressed(ev -> {
+		            offset_x = ev.getSceneX();
+		            offset_y = ev.getSceneY();
+		        });
+		        scene.setOnMouseDragged(ev -> {
+		        	currStage.setX(ev.getScreenX() - offset_x);
+		        	currStage.setY(ev.getScreenY() - offset_y);
+		        });
+		        
+				currStage.setScene(scene);
+				currStage.centerOnScreen();
+				currStage.setResizable(false);
+				controller.setScene(currScene);
+				controller.load(connection, statement, room.getText());
+				currStage.show();
+			}
+
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
     
 	public void setRoomName(String roomName) {
