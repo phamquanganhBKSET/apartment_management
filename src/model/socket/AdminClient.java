@@ -3,8 +3,10 @@ package model.socket;
 import java.io.IOException;
 import java.net.Socket;
 
-public class AdminClient {
+import controller.AdminMainPageController;
 
+public class AdminClient {
+	private AdminMainPageController mainController;
 	private String host;
 	private int port;
 	private String clientName;
@@ -19,14 +21,18 @@ public class AdminClient {
 	public void execute() {
 		try {
 			Socket clientUser = new Socket(host, port);
-			ReadAdminClient read = new ReadAdminClient(clientUser, clientName);
+			ReadAdminClient read = new ReadAdminClient(clientUser, clientName, mainController);
 			read.start();
-			WriteAdminClient write = new WriteAdminClient(clientUser, clientName);
+			WriteAdminClient write = new WriteAdminClient(clientUser, clientName, mainController);
 			write.start();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	public void setMainController(AdminMainPageController mainController) {
+		this.mainController = mainController;
 	}
 
 //	public static void main(String[] args) {

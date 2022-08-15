@@ -27,6 +27,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -49,13 +50,17 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.HouseHolder;
 import model.Room;
+import model.socket.AdminClient;
+import model.socket.SocketLibrary;
 
 public class AdminMainPageController implements Initializable {
 	private String username;
 	private Connection connection;
 	private Statement statement;
-	Scene loginScene;
-	boolean inRoomPage = true;
+	private Scene loginScene;
+	private boolean inRoomPage = true;
+	private String messageToUser = "";
+	private String toUser = "";
 	
 	private double offset_x;
     private double offset_y;
@@ -953,6 +958,51 @@ public class AdminMainPageController implements Initializable {
 		}
 	}
 	
+	public void handleNotify(String sms) {
+		//From Admin:admin_username:Message:To:username
+		String parts[] = sms.split(":");
+		String message = parts[2];
+		String toUser = parts[1];
+		
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+		alert.setTitle("NOTIFY");
+		alert.setHeaderText("Request from user " + toUser + ": " + message);
+		alert.setContentText("Choose your option");
+		
+		ButtonType buttonTypeAccept = new ButtonType("Accept", ButtonBar.ButtonData.YES);
+		ButtonType buttonTypeRefuse = new ButtonType("Refuse", ButtonBar.ButtonData.NO);
+		
+		alert.getButtonTypes().setAll(buttonTypeAccept, buttonTypeRefuse);
+		
+		Optional<ButtonType> result = alert.showAndWait();
+		
+		if (result.get() == buttonTypeAccept) {
+			System.out.println("Accept");
+			messageToUser = "Accept";
+			this.toUser = toUser;
+		} else {
+			System.out.println("Refuse");
+			messageToUser = "Refuse";
+			this.toUser = toUser;
+		}
+	}
+	
+	public void setMessageToUser(String messageToUser) {
+		this.messageToUser = messageToUser;
+	}
+	
+	public String getMessageToUser() {
+		return this.messageToUser;
+	}
+	
+	public void setToUser(String toUser) {
+		this.toUser = toUser;
+	}
+	
+	public String getToUser() {
+		return this.toUser;
+	}
+	
 	public void setCurrUserID(String currUserID) {
 		this.currUserID = currUserID;
 	}
@@ -964,5 +1014,14 @@ public class AdminMainPageController implements Initializable {
 	public void setUsername(String username) {
 		this.username = new String();
 		this.username = username;
+		
+		try {
+			AdminClient adminCLient = new AdminClient("localhost", SocketLibrary.port, username);
+			adminCLient.setMainController(this);
+			System.out.println("Admin: " + username);
+			adminCLient.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

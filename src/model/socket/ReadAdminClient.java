@@ -4,14 +4,19 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import controller.AdminMainPageController;
+import javafx.application.Platform;
+
 public class ReadAdminClient extends Thread {
+	private AdminMainPageController mainController;
 	private String clientName;
 	private Socket adminClientSocket;
 
-	public ReadAdminClient(Socket adminClientSocket, String clientName) {
+	public ReadAdminClient(Socket adminClientSocket, String clientName, AdminMainPageController mainController) {
 		super();
 		this.adminClientSocket = adminClientSocket;
 		this.clientName = clientName;
+		this.mainController = mainController;
 	}
 	
 	@Override
@@ -22,7 +27,14 @@ public class ReadAdminClient extends Thread {
 			dis = new DataInputStream(adminClientSocket.getInputStream());
 			while(true) {
 				String sms = dis.readUTF();
-				System.out.println(sms);
+				
+				if(sms.length() > 1) {
+					System.out.println(sms);
+//					mainController.handleNotify(sms);
+					Platform.runLater(() -> {
+						mainController.handleNotify(sms);
+					});
+				}
 			}
 		} catch(IOException e) {
 			try {
@@ -32,5 +44,9 @@ public class ReadAdminClient extends Thread {
 				System.out.println("[AdminClient - " + clientName + "] Disconnect to server!");
 			}
 		}
+	}
+	
+	public void setMainController(AdminMainPageController mainController) {
+		this.mainController = mainController;
 	}
 }
