@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import javafx.beans.value.ChangeListener;
@@ -19,10 +20,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -171,7 +175,6 @@ public class ViewRoomInfoController implements Initializable {
     		newStatusText = "Full";
     	}
     }
-
     
     @FXML
     public void handleApply(ActionEvent event) {
@@ -349,8 +352,66 @@ public class ViewRoomInfoController implements Initializable {
     }
 
     @FXML
-    public void handleElectricity(ActionEvent event) {
+    public void handleElectricity(MouseEvent event) {
+    	try {
+			Stage stage = new Stage();
+			stage.initStyle(StageStyle.UNDECORATED);
+			
+			String file;
 
+			Alert alert = new Alert(AlertType.CONFIRMATION);
+			alert.setTitle("Select");
+			alert.setHeaderText("Do you want to see or add electricity?");
+
+			ButtonType see = new ButtonType("See");
+			ButtonType add = new ButtonType("Add");
+			ButtonType cancel = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+
+			alert.getButtonTypes().setAll(see, add, cancel);
+
+			Optional<ButtonType> option = alert.showAndWait();
+
+			if (option.get() == see) {
+				file = "/fxml/Electricity.fxml";
+			} else if (option.get() == add) {
+				file = "/fxml/AddElectricity.fxml";
+			} else {
+				file = null;
+				return;
+			}
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource(file));
+			Parent root = loader.load();
+			
+			if (file.equals("/fxml/Electricity.fxml")) {
+				ElectricityController controller = loader.getController();
+				controller.setMainController(this);
+			} else {
+				AddElectricController controller = loader.getController();
+				controller.setMainController(this);
+			}
+			
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
+			
+			// Drag scene
+			scene.setOnMousePressed(e -> {
+	            offset_x = e.getSceneX();
+	            offset_y = e.getSceneY();
+	        });
+	        scene.setOnMouseDragged(e -> {
+	        	stage.setX(e.getScreenX() - offset_x);
+	        	stage.setY(e.getScreenY() - offset_y);
+	        });
+	        
+			stage.setScene(scene);
+			stage.setResizable(false);
+			stage.centerOnScreen();
+			stage.show();
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
     }
 
     @FXML
