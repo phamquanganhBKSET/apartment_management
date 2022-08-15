@@ -62,7 +62,10 @@ public class AddElectricController {
     	this.statement = statement;
     	roomNumber.setText(room);
 		LocalDate currentime = LocalDate.now();
-		month.setText(currentime.toString());
+		int curMonth = currentime.getMonthValue();
+		int curYear = currentime.getYear();
+		String date = Integer.toString(curYear) + "-" +  Integer.toString(curMonth) + "-1";
+		month.setText(date);
 		String s = "select MAX(apartment_manager.dich_vu.Thang) from apartment_manager.dich_vu where apartment_manager.dich_vu.Ma_phong = " + room;
 		ResultSet rs = statement.executeQuery(s);
 		rs.next();

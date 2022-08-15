@@ -98,7 +98,7 @@ public class ModelDichVu {
 		else {
 			this.tienDien = 0;
 			this.tienNuoc = 0;
-			this.tienVS = (int)dichVu3.getDonGiaBac1();
+			this.tienVS = getSoMoi();
 		}
 	}
 	

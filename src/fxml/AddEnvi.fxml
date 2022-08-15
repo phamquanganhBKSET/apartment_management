@@ -8,24 +8,24 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="308.0" prefWidth="452.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddVehicleController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="349.0" prefWidth="452.0" style="-fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.AddEnviChargeController">
    <children>
-      <Label layoutX="82.0" layoutY="12.0" text="Add Envi Charge">
+      <Label layoutX="155.0" layoutY="16.0" text="Add Envi">
          <font>
-            <Font size="34.0" />
+            <Font size="36.0" />
          </font>
       </Label>
-      <ImageView fitHeight="36.0" fitWidth="36.0" layoutX="37.0" layoutY="183.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="36.0" fitWidth="36.0" layoutX="39.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../icon/earth.png" />
          </image>
       </ImageView>
-      <Button id="signUp" fx:id="add" layoutX="126.0" layoutY="255.0" mnemonicParsing="false" onMouseClicked="#actionAddVehicle" prefHeight="36.0" prefWidth="225.0" text="Add">
+      <Button id="signUp" fx:id="add" layoutX="113.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#actionAddEnvi" prefHeight="36.0" prefWidth="225.0" text="Add">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <ImageView fitHeight="50.0" fitWidth="54.0" layoutX="345.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="53.0" fitWidth="58.0" layoutX="312.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../icon/ecology.png" />
          </image>
@@ -55,7 +55,17 @@
             <Image url="@../../icon/key-chain.png" />
          </image>
       </ImageView>
-      <TextField id="fullName" fx:id="licensePlates" layoutX="97.0" layoutY="183.0" prefHeight="36.0" prefWidth="282.0" promptText="Envi Charge">
+      <TextField id="fullName" fx:id="enviCharge" layoutX="99.0" layoutY="233.0" prefHeight="36.0" prefWidth="282.0" promptText="Envi Charge">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </TextField>
+      <ImageView fitHeight="36.0" fitWidth="36.0" layoutX="39.0" layoutY="169.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../icon/calendar.png" />
+         </image>
+      </ImageView>
+      <TextField id="fullName" fx:id="month" layoutX="99.0" layoutY="169.0" prefHeight="36.0" prefWidth="282.0" promptText="Month">
          <font>
             <Font size="14.0" />
          </font>
