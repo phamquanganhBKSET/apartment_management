@@ -287,7 +287,7 @@
                               </Label>
                               <Pane prefHeight="39.0" prefWidth="12.0" />
                               <Pane prefHeight="39.0" prefWidth="15.0" />
-                              <Button fx:id="electricity" mnemonicParsing="false" onAction="#handleElectricity" prefHeight="25.0" prefWidth="78.0" stylesheets="@../css/viewAdminInfo.css" text="Electricity">
+                              <Button fx:id="electricity" mnemonicParsing="false" onMouseClicked="#handleElectricity" prefHeight="25.0" prefWidth="78.0" stylesheets="@../css/viewAdminInfo.css" text="Electricity">
                                  <font>
                                     <Font name="Cambria" size="12.0" />
                                  </font>
