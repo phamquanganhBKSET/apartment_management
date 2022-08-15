@@ -2,6 +2,7 @@ package model.socket;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.UUID;
 
 public class UserClient {
 
@@ -29,15 +30,15 @@ public class UserClient {
 		
 	}
 	
-//	public static void main(String[] args) {
-//		System.out.print("(User) Enter your username: ");
-//		String username = UUID.randomUUID().toString();
-//		try {
-//			UserClient userCLient = new UserClient("localhost", 1234, "test1");
-//			System.out.println("User: test");
-//			userCLient.execute();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public static void main(String[] args) {
+		System.out.print("(User) Enter your username: ");
+		String username = UUID.randomUUID().toString();
+		try {
+			UserClient userCLient = new UserClient("localhost", 1234, "test1");
+			System.out.println("User: test");
+			userCLient.execute();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }
