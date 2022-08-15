@@ -586,6 +586,7 @@ public class ViewRoomInfoController implements Initializable {
 			currStage.centerOnScreen();
 			currStage.setResizable(false);
 			controller.setScene(currScene);
+			controller.disableAdd(true);
 			controller.load(connection, statement, room.getText());
 			currStage.show();
 		} catch (Exception ex) {

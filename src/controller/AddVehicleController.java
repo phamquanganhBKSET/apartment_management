@@ -31,7 +31,7 @@ public class AddVehicleController {
 	public void setScene(Scene addVehicleScene) {
 		this.addVehicleScene = addVehicleScene;
 	}
-	
+
 
     @FXML
     private ResourceBundle resources;
@@ -76,6 +76,7 @@ public class AddVehicleController {
     
     @FXML
     private TextField ticket;
+    
     
     public void setMainController(UserMainPageController mainController) {
     	this.mainController = mainController;

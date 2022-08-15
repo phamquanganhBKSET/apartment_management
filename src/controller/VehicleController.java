@@ -77,6 +77,13 @@ public class VehicleController {
     private TableView<ModelXe> tableXe;
     
     String room;
+    
+	
+	public void disableAdd(boolean dis) {
+		if (dis) {
+			add.setDisable(true);
+		}
+	}
 
     public void setMainController(UserMainPageController mainController) {
     	this.mainController = mainController;
