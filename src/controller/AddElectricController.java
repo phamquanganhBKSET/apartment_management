@@ -28,77 +28,96 @@ public class AddElectricController {
 	Connection connection;
 	Statement statement;
 	
-	private ViewRoomInfoController mainController;
-
+	
 	public void setScene(Scene addElecScene) {
 		this.addElecScene = addElecScene;
 	}
 
 	@FXML
-	private ResourceBundle resources;
-
-	@FXML
-	private URL location;
-	
-	@FXML
-	private Button add;
-
-	@FXML
-	private ImageView back;
-
-	@FXML
-	private Label close;
+    private Button add;
 
     @FXML
-    private TextField electricNumber;
+    private ImageView back;
 
-	@FXML
-	private Label minimize;
+    @FXML
+    private Label close;
 
-	@FXML
-	private TextField roomNumber;
-	
-	@FXML
-	private TextField soMoi;
-	
-	public void setMainController(ViewRoomInfoController mainController) {
-    	this.mainController = mainController;
+    @FXML
+    private Label minimize;
+
+    @FXML
+    private TextField month;
+
+    @FXML
+    private TextField newElecNum;
+
+    @FXML
+    private TextField oldElecNum;
+
+    @FXML
+    private TextField roomNumber;
+    
+    void load(Connection connection, Statement statement, String room) throws SQLException {
+    	this.connection = connection;
+    	this.statement = statement;
+    	roomNumber.setText(room);
+		LocalDate currentime = LocalDate.now();
+		month.setText(currentime.toString());
+		String s = "select MAX(apartment_manager.dich_vu.Thang) from apartment_manager.dich_vu where apartment_manager.dich_vu.Ma_phong = " + room;
+		ResultSet rs = statement.executeQuery(s);
+		rs.next();
+		System.out.println(rs.getString(1));
+		if (rs.getString(1) == null) {
+			oldElecNum.setText("0");
+		}
+		else {
+			s = "select apartment_manager.dich_vu.So_moi from apartment_manager.dich_vu where Ma_phong = " + room 
+					+ " and Ma_dich_vu = 1 and Thang = \'" + rs.getString(1) + "\'";
+			System.out.println(s);
+			ResultSet rs2 = statement.executeQuery(s);
+			rs2.next();
+			oldElecNum.setText(rs2.getString(1));
+			System.out.println("CO PHONG NE");
+		}
     }
+
 
 	@FXML
 	void actionAddElectric(MouseEvent event) {
-		if (roomNumber.getText().isEmpty()) {
+		if (newElecNum.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
-			alert.setHeaderText("Room Number is empty!");
+			alert.setHeaderText("New Electric Number is empty!");
 			alert.showAndWait();
 		}
 		else {
 			// Add data into dich_vu table
-			try {
-				LocalDate currentime = LocalDate.now();
-				int month = currentime.getMonthValue();
-				int year = currentime.getYear();
-				String query = "select apartment_manager.dich_vu.So_moi from apartment_manager.dich_vu(Ma_phong, Ma_dich_vu, So_cu, So_moi, Thang, Da_dong) where apartment_manager.dich_vu.Ma_dich_vu=1 and apartment_manager.dich_vu.Thang=month-1";
-				ResultSet rs = statement.executeQuery(query);
-				int soCu = rs.getInt(3);
-				String s = "insert into apartment_manager.dich_vu(Ma_phong, Ma_dich_vu, So_cu, So_moi, Thang, Da_dong) "
-						+ "values (\'" + roomNumber.getText() + "\', 1, \'" + soCu + soMoi.getText() + "\', \'" +String.valueOf(year) + "-"
-						+ String.valueOf(month) + "-01\', 0,)";
-				statement.executeUpdate(s);
+			if ((Integer.valueOf(newElecNum.getText())) < Integer.valueOf(oldElecNum.getText())) {
 				// Alert
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setHeaderText("Success!");
+				Alert alert = new Alert(AlertType.ERROR);
+				alert.setHeaderText("Check Electric Number!");
 				alert.showAndWait();
+			}
+			else {
+				try {
+					String s = "insert into apartment_manager.dich_vu(Ma_phong, Ma_dich_vu, So_cu, So_moi, Thang, Da_dong) "
+							+ "values (" + roomNumber.getText() + ", 1, " + oldElecNum.getText() + ", " + newElecNum.getText() + ", \'" 
+							+ month.getText() + "\', 0)";
+					statement.executeUpdate(s);
+					// Alert
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setHeaderText("Success!");
+					alert.showAndWait();
 
-				// Go back
-				Scene currScene = (Scene) ((Node) event.getSource()).getScene();
-				Stage currStage = (Stage) currScene.getWindow();
-				currStage.setScene(addElecScene);
-				currStage.centerOnScreen();
-				currStage.show();
+					// Go back
+					Scene currScene = (Scene) ((Node) event.getSource()).getScene();
+					Stage currStage = (Stage) currScene.getWindow();
+					currStage.setScene(addElecScene);
+					currStage.centerOnScreen();
+					currStage.show();
 
-			} catch (Exception ex) {
-				ex.printStackTrace();
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
 			}
 		}
 
@@ -119,7 +138,8 @@ public class AddElectricController {
 
 	@FXML
 	void handleClose(MouseEvent event) {
-		System.exit(0);
+		Stage stage = (Stage) minimize.getScene().getWindow();
+		stage.close();
 	}
 
 	@FXML
@@ -130,14 +150,9 @@ public class AddElectricController {
 
 	@FXML
 	void initialize() {
-		try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root",
-					library.password);
-			statement = connection.createStatement();
-			roomNumber.setDisable(true);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		roomNumber.setDisable(true);
+		month.setDisable(true);
+		oldElecNum.setDisable(true);
 	}
 
 }

@@ -44,11 +44,11 @@ public class ElectricityController {
 		this.electricScene = electricScene;
 	}
 	
-	private ViewRoomInfoController mainController;
-	
-	public void setMainController(ViewRoomInfoController mainController) {
-    	this.mainController = mainController;
-    }	
+//	private ViewRoomInfoController mainController;
+//	
+//	public void setMainController(ViewRoomInfoController mainController) {
+//    	this.mainController = mainController;
+//    }	
 
     @FXML
     private ResourceBundle resources;

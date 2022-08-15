@@ -16,6 +16,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -380,35 +381,56 @@ public class ViewRoomInfoController implements Initializable {
 				return;
 			}
 			
+			Scene currScene = (Scene)((Node) event.getSource()).getScene();
+			Stage currStage = (Stage)currScene.getWindow();
+			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource(file));
 			Parent root = loader.load();
 			
+			Scene scene = new Scene(root);
+			
 			if (file.equals("/fxml/Electricity.fxml")) {
 				ElectricityController controller = loader.getController();
-				controller.setMainController(this);
+				scene.getStylesheets().add(getClass().getResource("/css/table.css").toExternalForm());
+				// Drag scene
+				scene.setOnMousePressed(ev -> {
+		            offset_x = ev.getSceneX();
+		            offset_y = ev.getSceneY();
+		        });
+		        scene.setOnMouseDragged(ev -> {
+		        	currStage.setX(ev.getScreenX() - offset_x);
+		        	currStage.setY(ev.getScreenY() - offset_y);
+		        });
+		        
+				currStage.setScene(scene);
+				currStage.centerOnScreen();
+				currStage.setResizable(false);
+				controller.setScene(currScene);
+				controller.load(connection, statement, room.getText());
+				currStage.show();
 			} else {
 				AddElectricController controller = loader.getController();
-				controller.setMainController(this);
+				scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
+
+				// Drag scene
+				scene.setOnMousePressed(ev -> {
+		            offset_x = ev.getSceneX();
+		            offset_y = ev.getSceneY();
+		        });
+		        scene.setOnMouseDragged(ev -> {
+		        	currStage.setX(ev.getScreenX() - offset_x);
+		        	currStage.setY(ev.getScreenY() - offset_y);
+		        });
+		        
+				currStage.setScene(scene);
+				currStage.centerOnScreen();
+				currStage.setResizable(false);
+				controller.setScene(currScene);
+				controller.load(connection, statement, room.getText());
+				currStage.show();
 			}
-			
-			Scene scene = new Scene(root);
-			scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
-			
-			// Drag scene
-			scene.setOnMousePressed(e -> {
-	            offset_x = e.getSceneX();
-	            offset_y = e.getSceneY();
-	        });
-	        scene.setOnMouseDragged(e -> {
-	        	stage.setX(e.getScreenX() - offset_x);
-	        	stage.setY(e.getScreenY() - offset_y);
-	        });
-	        
-			stage.setScene(scene);
-			stage.setResizable(false);
-			stage.centerOnScreen();
-			stage.show();
+
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
