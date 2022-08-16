@@ -136,18 +136,21 @@ public class UserMainPageController {
 		this.username.setText(username);
 	}
 
+    // Function Change password, function will be excuted when hyperlink change_password is clicked
     @FXML
-    public void changePass(ActionEvent e) {
+    public void changePass(ActionEvent e) {	
     	try {
     		Stage stage = new Stage();
 	    	stage.initStyle(StageStyle.UNDECORATED);
-			
+			// Load ChangePassword scene
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/fxml/ChangePassword.fxml"));
 			Parent root = loader.load();
 			
+			// Declare controller to control operation of the page
 			ChangePasswordController controller = loader.getController();
 			Scene scene = new Scene(root);
+			// Link fxml file with css file to display
 			scene.getStylesheets().add(getClass().getResource("/css/newPassword.css").toExternalForm());
 			
 			// Drag scene
@@ -163,23 +166,29 @@ public class UserMainPageController {
 			stage.setScene(scene);
 			stage.centerOnScreen();
 			stage.setResizable(false);
+			// Set username for ChangePasswordController
 			controller.setUsername(username.getText());
+			// Show new Stage
 			stage.show();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
     }
 
+	
+    // Function edit profile, function will be excuted when edit button is clicked 
     @FXML
     void editProfile(ActionEvent e) {
     	try {
 			Scene currScene = (Scene)((Node) e.getSource()).getScene();
 			Stage currStage = (Stage)currScene.getWindow();
 			
+			// // Load ChangePassword scene
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/fxml/EditInfor.fxml"));
 			Parent root = loader.load();
-			
+		
+			// Declare controller to control operation of the page
 			EditUserInforController controller = loader.getController();
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
@@ -205,6 +214,7 @@ public class UserMainPageController {
 		}
     }
     
+    // FUnction set color for button when holding mouse on button
     @FXML
     void holdButton(MouseEvent event) {
     	if (gender != null && gender.equals("Nu")) {
@@ -212,6 +222,7 @@ public class UserMainPageController {
 		}
     }
     
+    // Function set color for button when not holding mouse on button
     @FXML
     void exitButton(MouseEvent event) {
     	if (gender != null && gender.equals("Nu")) {
@@ -219,6 +230,7 @@ public class UserMainPageController {
     	}
     }
 
+    // Switch to Electricity scene when electricity is clicked
     @FXML
     void viewElec(MouseEvent e) {
     	try {
@@ -254,6 +266,7 @@ public class UserMainPageController {
 		}
     }
 
+    // Switch to Environment scene when environment is clicked
     @FXML
     void viewEnvi(MouseEvent e) {
     	try {
@@ -289,6 +302,7 @@ public class UserMainPageController {
 		}
     }
 
+    // Switch to Vehicle scene when Vehicle is clicked
     @FXML
     void viewVeh(MouseEvent e) {
     	try {
@@ -324,7 +338,8 @@ public class UserMainPageController {
 			ex.printStackTrace();
 		}
     }
-
+	
+    // Switch to Environment scene when environment is clicked
     @FXML
     void viewWater(MouseEvent e) {
     	try {
@@ -370,6 +385,7 @@ public class UserMainPageController {
     	
         try {
         	// Update display
+		// Query data from database then add to arraylist
 			String query = "select apartment_manager.chu_so_huu.Id_chu_so_huu, apartment_manager.chu_so_huu.Ten, apartment_manager.chu_so_huu.Email, apartment_manager.chu_so_huu.So_dien_thoai, apartment_manager.chu_so_huu.Gioi_tinh ,apartment_manager.phong.Ma_phong "
 					+ "from apartment_manager.chu_so_huu, apartment_manager.phong "
 					+ "where apartment_manager.chu_so_huu.Id_chu_so_huu = apartment_manager.phong.Id_chu_so_huu and apartment_manager.chu_so_huu.Id_chu_so_huu = \'" + transUser + "\'";
@@ -391,7 +407,7 @@ public class UserMainPageController {
 			}
 			
 			// Add data to listDichVu and listSummaries		
-			// Just add date and room to listSummaries
+			// Just add date and room to listSummaries, if date is the same -> not add to dateArrayList
 			query = "select * from apartment_manager.dich_vu where apartment_manager.dich_vu.Ma_phong = " + room.getText() + " order by apartment_manager.dich_vu.Thang desc;";
 			rs = statement.executeQuery(query);
 			listDichVu = new ArrayList<>();
@@ -418,7 +434,7 @@ public class UserMainPageController {
 				listXe.add(new ModelXe(rs.getString(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getString(5), rs.getDate(6), rs.getBoolean(7), rs.getInt(8)));
 			}
 			
-			// Update data for listSummaries
+			// Update data for listSummaries to díplay on table
 			for (ModelSummary sum : listSummaries) {
 				for (ModelDichVu dv : listDichVu) {
 					if (sum.getThang().compareTo(dv.getThang()) == 0) {
@@ -455,6 +471,7 @@ public class UserMainPageController {
 				System.out.println("----------------------------");
 			}
 	    	
+		// link each columns to the corresponding variable of listSummary
 	    	col_month.setCellValueFactory(new PropertyValueFactory<>("thang"));
 	    	col_room.setCellValueFactory(new PropertyValueFactory<>("room"));
 	    	col_elec_bill.setCellValueFactory(new PropertyValueFactory<>("electricityBill"));
@@ -469,7 +486,8 @@ public class UserMainPageController {
 			Logger.getLogger(UserMainPageController.class.getName()).log(Level.SEVERE, null, e);
 		}
         
-        try {
+        try {		
+			// Socket handling
 			UserClient userCLient = new UserClient(SocketLibrary.host, SocketLibrary.port, transUser);
 			userCLient.setMainController(this);
 			System.out.println("User: " + transUser);
@@ -490,6 +508,8 @@ public class UserMainPageController {
 		}
     }
     
+
+    // Notify handle function for SOcket
     public void handleNotify(String sms) {
     	//From Admin:admin_username:Message:To:username
 		String parts[] = sms.split(":");
