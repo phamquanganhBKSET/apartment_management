@@ -42,6 +42,9 @@ public class VehicleController {
 
     @FXML
     private Button add;
+    
+    @FXML
+    private Button delete;
 
     @FXML
     private Hyperlink back;
@@ -124,6 +127,42 @@ public class VehicleController {
     		ex.printStackTrace();
     	}
    }
+    
+    @FXML
+    void deleteVehicle(MouseEvent e) {
+    	try {
+	    	Scene currScene = (Scene)((Node) e.getSource()).getScene();
+			Stage currStage = (Stage)currScene.getWindow();
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("/fxml/DelVehicle.fxml"));
+			Parent root = loader.load();
+			
+			DelVehicleController controller = loader.getController();
+			Scene scene = new Scene(root);
+			scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
+			
+			// Drag scene
+			scene.setOnMousePressed(event -> {
+	            offset_x = event.getSceneX();
+	            offset_y = event.getSceneY();
+	        });
+	        scene.setOnMouseDragged(event -> {
+	        	currStage.setX(event.getScreenX() - offset_x);
+	        	currStage.setY(event.getScreenY() - offset_y);
+	        });
+	        
+			currStage.setScene(scene);
+			currStage.centerOnScreen();
+			currStage.setResizable(false);
+			controller.setScene(currScene);
+			controller.setMainController(mainController);
+			controller.setRoom(room);
+			currStage.show();
+    	} catch (Exception ex) {
+    		ex.printStackTrace();
+    	}
+    }
 
     @FXML
     void goBack(MouseEvent event) {

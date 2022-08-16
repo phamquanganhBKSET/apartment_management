@@ -48,7 +48,8 @@
                         <Image url="@../../icon/motorcycle.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="add" layoutX="557.0" layoutY="36.0" mnemonicParsing="false" onMouseClicked="#addVehicle" text="Add" />
+                  <Button fx:id="add" layoutX="27.0" layoutY="44.0" mnemonicParsing="false" onMouseClicked="#addVehicle" text="Add" />
+                  <Button fx:id="delete" layoutX="544.0" layoutY="42.0" mnemonicParsing="false" onMouseClicked="#deleteVehicle" text="Delete" />
                </children>
             </AnchorPane>
             <LineChart fx:id="lineChart" prefWidth="609.0">
