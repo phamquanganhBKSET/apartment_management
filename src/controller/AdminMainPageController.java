@@ -1014,7 +1014,7 @@ public class AdminMainPageController implements Initializable {
 				String s = "insert into apartment_manager.xe (Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong, Ve_xe) "
 						+ "values (\'" + Ten_chu_xe + "\', " + Ma_phong + ",\'" + Loai_xe + "\', \'"
 						+ Bien_so_xe + "\', \'" + Mau_sac + "\', \'" + Thang 
-						+"-01\', 0," + Integer.toString(ticketMax) + ");";
+						+"-01\', 1," + Integer.toString(ticketMax) + ");";
 				statement.executeUpdate (s);
 				
 				Alert alertSuccess = new Alert(AlertType.INFORMATION);
