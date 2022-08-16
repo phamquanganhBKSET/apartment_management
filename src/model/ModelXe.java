@@ -14,6 +14,7 @@ public class ModelXe {
 	boolean daDong;
 	int tienXe;
 	CheckBox select;
+	int veXe;
 	
 	public ModelXe(String tenChuXe, int maPhong, String loaiXe, String bienSoXe, String mauSac, Date thang, boolean daDong, int tienXe) {
 		this.tenChuXe = tenChuXe;
@@ -27,6 +28,21 @@ public class ModelXe {
 		this.select = new CheckBox();
 		select.setSelected(daDong);
 		select.setDisable(true);
+	}
+	
+	public ModelXe(int veXe, String tenChuXe, int maPhong, String loaiXe, String bienSoXe, String mauSac, Date thang, boolean daDong, int tienXe) {
+		this.veXe = veXe;
+		this.tenChuXe = tenChuXe;
+		this.maPhong = maPhong;
+		this.loaiXe = loaiXe;
+		this.bienSoXe = bienSoXe;
+		this.mauSac = mauSac;
+		this.thang = thang;
+		this.daDong = daDong;
+	}
+	
+	public int getVeXe() {
+		return veXe;
 	}
 	
 	public int getTienXe() {

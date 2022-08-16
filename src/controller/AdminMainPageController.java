@@ -10,7 +10,13 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+//import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -49,6 +55,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.HouseHolder;
+import model.ModelSummary;
+import model.ModelXe;
 import model.Room;
 import model.socket.AdminClient;
 import model.socket.SocketLibrary;
@@ -166,6 +174,55 @@ public class AdminMainPageController implements Initializable {
 
     @FXML
     private GridPane gridFilterUser;
+    
+    @FXML
+    private Button updateVehMoney;
+    
+    @FXML
+    void actionUPdate(ActionEvent event) {
+		Calendar cal = Calendar.getInstance();
+		int res = cal.getActualMaximum(Calendar.DATE);
+		LocalDate currentime = LocalDate.now();
+        int curDay = currentime.getDayOfMonth();
+        int curMonth = currentime.getMonthValue();
+        int curYear = currentime.getYear();
+        System.out.println(curYear);
+        System.out.println(curMonth);
+        System.out.println(curDay);
+        int nextMonth = 0;
+        int nextYear = curYear;
+        if (curDay == 16) {
+        	if (curMonth == 12) {
+				nextMonth = 1;
+				nextYear = curYear + 1;
+			}
+        	else {
+        		nextMonth = curMonth + 1;
+        		nextYear = curYear;
+        	}
+        	ArrayList<ModelXe> listXe = new ArrayList<>();
+        	String query = "select * from apartment_manager.xe where Thang = \'" + curYear + "-" + curMonth + "-1\'";
+        	System.out.println(query);
+			try {
+				Date date2 = Date.valueOf("" + curYear + "-" + curMonth + "-1");
+				ResultSet rs = statement.executeQuery(query);
+				while (rs.next()) {
+					listXe.add(new ModelXe(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6), date2, false, 0));
+				}
+				for (ModelXe i : listXe) {
+					String s = "insert into apartment_manager.xe (Ve_xe, Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong) " +
+								" values (" + i.getVeXe() + ", \'" + i.getTenChuXe() + "\', " + i.getMaPhong() + ", \'" + i.getLoaiXe() + "\', \'" 
+								+ i.getBienSoXe() + "\', \'" + i.getMauSac() + "\', \'" + nextYear+"-"+nextMonth+"-"+"1" + "\', " + i.getDaDong() + ")";
+					System.out.println(s);
+					statement.executeUpdate("SET FOREIGN_KEY_CHECKS=0;");
+					statement.executeUpdate(s);
+				}
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+		}
+    }
     
     private ObservableList<String> filterList = FXCollections.observableArrayList("All", "Empty Rooms", "Full Rooms");
     
@@ -956,80 +1013,129 @@ public class AdminMainPageController implements Initializable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		 
 	}
 	
 	public void handleNotify(String sms) {
-		//From User:username:Ten_chu_xe:Ma_phong:Loai_xe:Bien_so_xe:Mau_sac:Thang:To:all
 		String parts[] = sms.split(":");
-		
 		String toUser = parts[1];
-		String Ten_chu_xe = parts[2];
-		String Ma_phong = parts[3];
-		String Loai_xe = parts[4];
-		String Bien_so_xe = parts[5];
-		String Mau_sac = parts[6];
-		String Thang = parts[7];
-		
-		String message = "Add vehicle with infomation\n"
-				   + "+) Ten chu xe - " + Ten_chu_xe + "\n"
-				   + "+) Ma phong - " + Ma_phong + "\n"
-				   + "+) Loai xe - " + Loai_xe + "\n"
-				   + "+) Bien so xe - " + Bien_so_xe + "\n"
-				   + "+) Mau sac - " + Mau_sac + "\n"
-				   + "+) Thang - " + Thang;
-		
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-		alert.setTitle("NOTIFY");
-		alert.setHeaderText("Request from user " + toUser + ": " + message);
-		alert.setContentText("Choose your option");
-		
-		ButtonType buttonTypeAccept = new ButtonType("Accept", ButtonBar.ButtonData.YES);
-		ButtonType buttonTypeRefuse = new ButtonType("Refuse", ButtonBar.ButtonData.NO);
-		
-		alert.getButtonTypes().setAll(buttonTypeAccept, buttonTypeRefuse);
-		
-		Optional<ButtonType> result = alert.showAndWait();
-		
-		if (result.get() == buttonTypeAccept) {
-			System.out.println("Accept");
-			messageToUser = "Accept";
-			this.toUser = toUser;
+		if (parts[2].equals("delete")) {
+			//From User:username:delete:ticket:To:all
+			String ticket = parts[3];
+			String sqlString = "select * from apartment_manager.xe where Ve_xe = " + ticket;
 			
-			int ticketMax = 0;
-			
+			boolean hasDebt = false;
+			ResultSet rs;
 			try {
-				String s = "select MAX(Ve_xe) from apartment_manager.xe";
-				ResultSet rs = statement.executeQuery(s);
-				if (rs.next()) {
-					ticketMax = rs.getInt(1) + 1;
-				}
-				else {
-					ticketMax = 1;
-				}
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-			
-			try {
-				String s = "insert into apartment_manager.xe (Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong, Ve_xe) "
-						+ "values (\'" + Ten_chu_xe + "\', " + Ma_phong + ",\'" + Loai_xe + "\', \'"
-						+ Bien_so_xe + "\', \'" + Mau_sac + "\', \'" + Thang 
-						+"-01\', 1," + Integer.toString(ticketMax) + ");";
-				statement.executeUpdate (s);
+				rs = statement.executeQuery(sqlString);
 				
-				Alert alertSuccess = new Alert(AlertType.INFORMATION);
-				alertSuccess.setHeaderText("Successfully update vehicle for user " + toUser + "!");
-				alertSuccess.showAndWait();
+				while(rs.next()) {
+					if (rs.getBoolean(8) == false) {
+						hasDebt = true;
+					}
+				}
+				
+				String message = "Delete vehicle has ticket " + ticket;
+				if (hasDebt) {
+					message += " (still owe money)";
+				}
+				
+				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+				alert.setTitle("NOTIFY");
+				alert.setHeaderText("Request from user " + toUser + ": " + message);
+				alert.setContentText("Choose your option");
+				
+				ButtonType buttonTypeAccept = new ButtonType("Accept", ButtonBar.ButtonData.YES);
+				ButtonType buttonTypeRefuse = new ButtonType("Refuse", ButtonBar.ButtonData.NO);
+				
+				alert.getButtonTypes().setAll(buttonTypeAccept, buttonTypeRefuse);
+				
+				Optional<ButtonType> result = alert.showAndWait();
+				
+				if (result.get() == buttonTypeAccept) {
+					System.out.println("Accept");
+					messageToUser = "Accept";
+					this.toUser = toUser;
+					
+					String s = "delete from apartment_manager.xe where Ve_xe = " + ticket;
+					statement.executeUpdate (s);
+				} else {
+					System.out.println("Refuse");
+					messageToUser = "Refuse";
+					this.toUser = toUser;
+				}
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		} else {
-			System.out.println("Refuse");
-			messageToUser = "Refuse";
-			this.toUser = toUser;
+			//From User:username:Ten_chu_xe:Ma_phong:Loai_xe:Bien_so_xe:Mau_sac:Thang:To:all
+			String Ten_chu_xe = parts[2];
+			String Ma_phong = parts[3];
+			String Loai_xe = parts[4];
+			String Bien_so_xe = parts[5];
+			String Mau_sac = parts[6];
+			String Thang = parts[7];
+			
+			String message = "Add vehicle with infomation\n"
+					   + "+) Ten chu xe - " + Ten_chu_xe + "\n"
+					   + "+) Ma phong - " + Ma_phong + "\n"
+					   + "+) Loai xe - " + Loai_xe + "\n"
+					   + "+) Bien so xe - " + Bien_so_xe + "\n"
+					   + "+) Mau sac - " + Mau_sac + "\n"
+					   + "+) Thang - " + Thang;
+			
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+			alert.setTitle("NOTIFY");
+			alert.setHeaderText("Request from user " + toUser + ": " + message);
+			alert.setContentText("Choose your option");
+			
+			ButtonType buttonTypeAccept = new ButtonType("Accept", ButtonBar.ButtonData.YES);
+			ButtonType buttonTypeRefuse = new ButtonType("Refuse", ButtonBar.ButtonData.NO);
+			
+			alert.getButtonTypes().setAll(buttonTypeAccept, buttonTypeRefuse);
+			
+			Optional<ButtonType> result = alert.showAndWait();
+			
+			if (result.get() == buttonTypeAccept) {
+				System.out.println("Accept");
+				messageToUser = "Accept";
+				this.toUser = toUser;
+				
+				int ticketMax = 0;
+				
+				try {
+					String s = "select MAX(Ve_xe) from apartment_manager.xe";
+					ResultSet rs = statement.executeQuery(s);
+					if (rs.next()) {
+						ticketMax = rs.getInt(1) + 1;
+					}
+					else {
+						ticketMax = 1;
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+				
+				try {
+					String s = "insert into apartment_manager.xe (Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong, Ve_xe) "
+							+ "values (\'" + Ten_chu_xe + "\', " + Ma_phong + ",\'" + Loai_xe + "\', \'"
+							+ Bien_so_xe + "\', \'" + Mau_sac + "\', \'" + Thang 
+							+"-01\', 1," + Integer.toString(ticketMax) + ");";
+					statement.executeUpdate (s);
+					
+					Alert alertSuccess = new Alert(AlertType.INFORMATION);
+					alertSuccess.setHeaderText("Successfully update vehicle for user " + toUser + "!");
+					alertSuccess.showAndWait();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} else {
+				System.out.println("Refuse");
+				messageToUser = "Refuse";
+				this.toUser = toUser;
+			}
 		}
 	}
-	
 	public void setMessageToUser(String messageToUser) {
 		this.messageToUser = messageToUser;
 	}

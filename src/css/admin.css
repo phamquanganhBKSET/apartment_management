@@ -12,6 +12,16 @@
 	-fx-background-radius: 30;
 }
 
+.update-button {
+	-fx-background-color: #FAEBD7;
+	-fx-background-radius: 30;
+}
+
+.update-button:hover {
+	-fx-background-color: #F5F5DC;
+	-fx-background-radius: 30;
+}
+
 .right-bar {
 	-fx-background-color: #D3D3D3;
 }
