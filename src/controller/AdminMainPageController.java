@@ -221,6 +221,10 @@ public class AdminMainPageController implements Initializable {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
+	    	// Alert
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setHeaderText("Success!");
+			alert.showAndWait();
 		}
     }
     

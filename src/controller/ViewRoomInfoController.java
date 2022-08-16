@@ -560,6 +560,7 @@ public class ViewRoomInfoController implements Initializable {
     
     @FXML
     public void handleVehicle(ActionEvent e) {
+    	
     	try {
 			Scene currScene = (Scene)((Node) e.getSource()).getScene();
 			Stage currStage = (Stage)currScene.getWindow();
