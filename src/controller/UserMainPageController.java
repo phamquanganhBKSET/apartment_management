@@ -498,7 +498,12 @@ public class UserMainPageController {
 		
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("NOTIFY");
-		alert.setHeaderText("Admin " + fromAdmin + " has " + message + "ed your request!");
+		
+		if (message.equals("Accept")) {
+			alert.setHeaderText("Admin " + fromAdmin + " has accepted your request!");
+		} else {
+			alert.setHeaderText("Admin " + fromAdmin + " has refused your request!");
+		}
 		
 		alert.showAndWait();
     }

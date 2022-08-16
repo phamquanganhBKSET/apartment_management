@@ -19,7 +19,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
 public class DelVehicleController {
-
 	
 	private UserMainPageController mainController;
 	private Scene delVehicleScene;
@@ -68,7 +67,19 @@ public class DelVehicleController {
 			alert.showAndWait();
 		}
     	else {
+    		String message = "delete:" + ticket.getText();
+    		mainController.setMessageToAdmin(message);
     		
+    		Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setHeaderText("Please wait for admin's response!");
+			alert.showAndWait();
+			
+			// Go back
+			Scene currScene = (Scene)((Node) event.getSource()).getScene();
+			Stage currStage = (Stage)currScene.getWindow();
+			currStage.setScene(delVehicleScene);
+			currStage.centerOnScreen();
+			currStage.show();
     	}
     }
 

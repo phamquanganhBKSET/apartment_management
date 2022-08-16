@@ -88,6 +88,12 @@ public class VehicleController {
 		}
 	}
 
+	public void disableDelete(boolean dis) {
+		if (dis) {
+			delete.setDisable(true);
+		}
+	}
+	
     public void setMainController(UserMainPageController mainController) {
     	this.mainController = mainController;
     }
