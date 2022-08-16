@@ -1,5 +1,6 @@
 package model;
 
+// Class store values for room table
 public class Room {
 	private String roomName;
 	private String imgSrc;

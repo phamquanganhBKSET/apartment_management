@@ -9,6 +9,7 @@ import java.sql.Statement;
 import controller.library;
 import javafx.scene.control.CheckBox;
 
+// Class store values in Ma_dich_vu table and calculate money
 public class ModelDichVu {
 	int maPhong;
 	int maDichVu;

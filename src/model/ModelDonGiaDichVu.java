@@ -1,5 +1,6 @@
 package model;
 
+// Class store values in Don_gia_dich_vu table
 public class ModelDonGiaDichVu {
 	double maDichVu;
 	String tenDichVu;

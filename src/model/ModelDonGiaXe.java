@@ -1,5 +1,6 @@
 package model;
 
+// Class store values in Don_gia_xe table
 public class ModelDonGiaXe {
 	String loaiXe;
 	int donGiaXe;

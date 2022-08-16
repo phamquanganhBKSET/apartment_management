@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import javafx.scene.control.CheckBox;
 
+// Class store values for xe table
 public class ModelXe {
 	String tenChuXe;
 	int maPhong;

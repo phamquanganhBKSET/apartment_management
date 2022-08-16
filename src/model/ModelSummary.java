@@ -2,6 +2,7 @@ package model;
 
 import java.sql.Date;
 
+// Class summary for summary table of usermainpage, store electricity, water, environment bills for each month
 public class ModelSummary {
 	Date thang;
 	int room;
