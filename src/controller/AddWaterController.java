@@ -54,6 +54,7 @@ public class AddWaterController {
         private TextField roomNumber;
         
         
+        // Function load data from sql to display in textfileds    
         void load(Connection connection, Statement statement, String room) throws SQLException {
             this.connection = connection;
             this.statement = statement;
@@ -80,6 +81,7 @@ public class AddWaterController {
 	        }
         }
 
+        // Add new Water when add button is clicked
         @FXML
         void actionAddWater(MouseEvent event) {
             if (newNum.getText().isEmpty()) {
@@ -120,6 +122,7 @@ public class AddWaterController {
 	        }
         }
 
+    // Go to previous stage when button goback is clicked
     @FXML
     void goBack(MouseEvent event) {
         try {
@@ -133,12 +136,14 @@ public class AddWaterController {
         }
     }
 
+    // Close stage when X is clicked
     @FXML
     void handleClose(MouseEvent event) {
         Stage stage = (Stage) minimize.getScene().getWindow();
         stage.close();
     }
 
+    // Minimize stage when - is clicked
     @FXML
     void handleMinimize(MouseEvent event) {
         Stage stage = (Stage) minimize.getScene().getWindow();

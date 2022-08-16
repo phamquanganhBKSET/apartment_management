@@ -59,6 +59,8 @@ public class DelVehicleController {
 		roomNumber.setText(room);
 	}
 
+
+	// Function send request delete vehicle from user to admin through server
     @FXML
     void actionDelVehicle(MouseEvent event) {
     	if (ticket.getText().isEmpty()) {
@@ -83,6 +85,7 @@ public class DelVehicleController {
     	}
     }
 
+    // Go to previous stage when button goback is clicked
     @FXML
     void goBack(MouseEvent event) {
     	try {
@@ -96,11 +99,13 @@ public class DelVehicleController {
 		}
     }
 
+    // Close stage when X is clicked
     @FXML
     void handleClose(MouseEvent event) {
     	System.exit(0);
     }
 
+    // Minimize stage when - is clicked
     @FXML
     void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();

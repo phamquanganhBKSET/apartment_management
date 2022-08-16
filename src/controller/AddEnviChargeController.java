@@ -49,10 +49,11 @@ public class AddEnviChargeController {
     @FXML
     private TextField roomNumber;
     
-    
+    // Function load data from sql to display in textfileds    
     void load(Connection connection, Statement statement, String room) throws SQLException {
         this.connection = connection;
         this.statement = statement;
+        // Set text for month textfild
         roomNumber.setText(room);
         LocalDate currentime = LocalDate.now();
         int curMonth = currentime.getMonthValue();
@@ -62,6 +63,7 @@ public class AddEnviChargeController {
     }
 
 
+    // Add new Environment charge when add button is clicked
     @FXML
     void actionAddEnvi(MouseEvent event) {
     	if (enviCharge.getText().isEmpty()) {
@@ -71,6 +73,7 @@ public class AddEnviChargeController {
 	        }
 	        else {
 	                try {
+                      // Add data into dich_vu table then switch to previous stage
 	                    String s = "insert into apartment_manager.dich_vu(Ma_phong, Ma_dich_vu, So_cu, So_moi, Thang, Da_dong) "
 	                            + "values (" + roomNumber.getText() + ", 1, 0" + ", " + enviCharge.getText() + ", \'" 
 	                            + month.getText() + "\', 0)";
@@ -93,6 +96,8 @@ public class AddEnviChargeController {
 	            }
     }
 
+
+    // Go to previous stage when button goback is clicked
     @FXML
     void goBack(MouseEvent event) {
       try {
@@ -106,12 +111,14 @@ public class AddEnviChargeController {
       }
     }
 
+  // Close stage when X is clicked
     @FXML
     void handleClose(MouseEvent event) {
       Stage stage = (Stage) minimize.getScene().getWindow();
       stage.close();
     }
 
+  // Minimize stage when - is clicked
     @FXML
     void handleMinimize(MouseEvent event) {
       Stage stage = (Stage) minimize.getScene().getWindow();

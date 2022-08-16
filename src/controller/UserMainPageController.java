@@ -471,7 +471,7 @@ public class UserMainPageController {
 				System.out.println("----------------------------");
 			}
 	    	
-		// link each columns to the corresponding variable of listSummary
+			// link each columns to the corresponding variable of listSummary
 	    	col_month.setCellValueFactory(new PropertyValueFactory<>("thang"));
 	    	col_room.setCellValueFactory(new PropertyValueFactory<>("room"));
 	    	col_elec_bill.setCellValueFactory(new PropertyValueFactory<>("electricityBill"));

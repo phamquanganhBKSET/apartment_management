@@ -65,6 +65,7 @@ public class WaterController {
 	@FXML
 	private LineChart<?, ?> lineChart;
 
+	// Go to previous stage when button goback is clicked
 	@FXML
 	void goBack(MouseEvent event) {
 		try {
@@ -80,6 +81,7 @@ public class WaterController {
 
 	ObservableList<ModelDichVu> listWater;
 
+	// Function to load data from sql to display in textfileds    
 	void load(Connection connection, Statement statement, String phong) {
 		try {
 			// Add data to listDichVu and listSummaries
@@ -94,6 +96,7 @@ public class WaterController {
 						rs.getBoolean(6)));
 			}
 
+			// link each columns to the corresponding variable of listSummary
 			col_month.setCellValueFactory(new PropertyValueFactory<>("thang"));
 			col_oldNum.setCellValueFactory(new PropertyValueFactory<>("soCu"));
 			col_newNum.setCellValueFactory(new PropertyValueFactory<>("soMoi"));

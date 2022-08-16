@@ -29,6 +29,7 @@ public class AddElectricController {
 	Statement statement;
 	
 	
+	// Function set scene
 	public void setScene(Scene addElecScene) {
 		this.addElecScene = addElecScene;
 	}
@@ -56,17 +57,21 @@ public class AddElectricController {
 
     @FXML
     private TextField roomNumber;
-    
+
+		// Function to load data from sql to display in textfileds    
     void load(Connection connection, Statement statement, String room) throws SQLException {
     	this.connection = connection;
     	this.statement = statement;
     	roomNumber.setText(room);
+    	// Get currunt Date, month, year
 		LocalDate currentime = LocalDate.now();
 		int curMonth = currentime.getMonthValue();
 		int curYear = currentime.getYear();
 		String date = Integer.toString(curYear) + "-" +  Integer.toString(curMonth) + "-1";
+		// Set text for month textfild
 		month.setText(date);
 		String s = "select MAX(apartment_manager.dich_vu.Thang) from apartment_manager.dich_vu where apartment_manager.dich_vu.Ma_phong = " + room;
+		// Query data to display in tables
 		ResultSet rs = statement.executeQuery(s);
 		rs.next();
 		System.out.println(rs.getString(1));
@@ -84,6 +89,7 @@ public class AddElectricController {
     }
 
 
+    // Add new Number Electricity when add button is clicked
 	@FXML
 	void actionAddElectric(MouseEvent event) {
 		if (newElecNum.getText().isEmpty()) {
@@ -93,6 +99,7 @@ public class AddElectricController {
 		}
 		else {
 			// Add data into dich_vu table
+			// If new number < oldNumber -> Alert ERROR
 			if ((Integer.valueOf(newElecNum.getText())) < Integer.valueOf(oldElecNum.getText())) {
 				// Alert
 				Alert alert = new Alert(AlertType.ERROR);
@@ -101,6 +108,7 @@ public class AddElectricController {
 			}
 			else {
 				try {
+					// Add data into dich_vu table then switch to previous stage
 					String s = "insert into apartment_manager.dich_vu(Ma_phong, Ma_dich_vu, So_cu, So_moi, Thang, Da_dong) "
 							+ "values (" + roomNumber.getText() + ", 1, " + oldElecNum.getText() + ", " + newElecNum.getText() + ", \'" 
 							+ month.getText() + "\', 0)";
@@ -125,6 +133,7 @@ public class AddElectricController {
 
 	}
 
+	// Go to previous stage when button goback is clicked
 	@FXML
 	void goBack(MouseEvent event) {
 		try {
@@ -138,12 +147,14 @@ public class AddElectricController {
 		}
 	}
 
+	// Close stage when X is clicked
 	@FXML
 	void handleClose(MouseEvent event) {
 		Stage stage = (Stage) minimize.getScene().getWindow();
 		stage.close();
 	}
 
+	// Minimize stage when - is clicked
 	@FXML
 	void handleMinimize(MouseEvent event) {
 		Stage stage = (Stage) minimize.getScene().getWindow();

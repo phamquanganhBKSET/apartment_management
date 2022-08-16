@@ -59,6 +59,7 @@ public class EnviController {
 	@FXML
 	private LineChart<?, ?> lineChart;
 
+	// Go to previous stage when button goback is clicked
     @FXML
     void goBack(MouseEvent event) {
     	try {
@@ -74,6 +75,7 @@ public class EnviController {
     
     ObservableList<ModelDichVu> listEnvi;
 
+	// Function to load data from sql to display in textfileds    
 	void load(Connection connection, Statement statement, String phong) {
 		try {
 			// Add data to listDichVu and listSummaries
@@ -88,6 +90,7 @@ public class EnviController {
 						rs.getBoolean(6)));
 			}
 
+			// link each columns to the corresponding variable of listSummary
 			col_month.setCellValueFactory(new PropertyValueFactory<>("thang"));
 			col_total.setCellValueFactory(new PropertyValueFactory<>("tienVS"));
 			col_paid.setCellValueFactory(new PropertyValueFactory<>("select"));

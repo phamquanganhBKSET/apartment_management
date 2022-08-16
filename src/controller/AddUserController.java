@@ -70,22 +70,26 @@ public class AddUserController implements Initializable{
     @FXML
     private TextField numPeople;
 
+
     public void setMainController(AdminMainPageController mainController) {
     	this.mainController = mainController;
     }
-    
+
+    // Close the stage when X is clicked    
     @FXML
     private void handleClose(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
     	stage.close();
     }
     
+    // Minimize the Stage when - is clicked
     @FXML
     private void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
         stage.setIconified(true);
     }
     
+    // if male is clicked -> untick female clicked
     @FXML
     void maleClicked(MouseEvent event) {
     	if (male.isSelected()) {
@@ -93,7 +97,9 @@ public class AddUserController implements Initializable{
 			gender = "Nam";
 		}
     }
-    
+
+
+    // if femle is clicked -> untick male
     @FXML
     void femaleClicked(MouseEvent event) {
     	if (female.isSelected()) {
@@ -107,6 +113,7 @@ public class AddUserController implements Initializable{
 
     }
     
+    // Function Signup new User account
     @FXML
     void ActionSignUp(MouseEvent event) {
     	if (username.getText().isEmpty()) {
@@ -144,12 +151,14 @@ public class AddUserController implements Initializable{
     		try {
     			String query = "select Id_chu_so_huu from Chu_so_huu where Id_chu_so_huu = \'" + username.getText() + "\'";
     			ResultSet rs = stmt.executeQuery(query);
+                // if user name already exits -> WARNING
     			if (rs.next()) {
     				Alert alert = new Alert(AlertType.WARNING);
     				alert.setHeaderText("Username already exists!");
     				alert.showAndWait();
 				}
     			else {
+                    // Insert new user account into database
     				query = "select * from phong where Ma_phong = \'" + roomNumber.getText() + "\'";
         			rs = stmt.executeQuery(query);
     				if (rs.next()) {

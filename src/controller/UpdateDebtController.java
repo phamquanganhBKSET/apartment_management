@@ -80,10 +80,12 @@ public class UpdateDebtController {
     @FXML
     private Button find;
     
+    // Update room
     void load(String room)  {
     	this.room = room;
     }
     
+    // Find data throw Date then set to textfields
     @FXML
     void findData(ActionEvent event) {
     	if (month.getText().isEmpty()) {
@@ -97,6 +99,8 @@ public class UpdateDebtController {
 			alert.showAndWait();
 		}
     	else {
+
+    		// Query data throw room and date
 	    	String s = "select Ma_dich_vu, Da_dong from apartment_manager.dich_vu where Ma_phong = " + room 
 	    			+ " and Thang = \'" + year.getText() + "-" + month.getText() + "-1\'";
 	    	System.out.println(s);
@@ -104,6 +108,7 @@ public class UpdateDebtController {
 	    			+ " and Thang = \'" + year.getText() + "-" + month.getText() + "-1\'";
 	    	System.out.println(s2);
 	    	try {
+	    		// Set text to textfield
 				ResultSet rs = statement.executeQuery(s);
 				while (rs.next()) {
 					int index = rs.getInt(1);
@@ -139,6 +144,7 @@ public class UpdateDebtController {
     	}
     }
 
+    // Function Update data for database
     @FXML
     void actionUpdate(MouseEvent event) throws SQLException {
     	String veh = "false";
@@ -180,6 +186,7 @@ public class UpdateDebtController {
 		}
     }
 
+	// Go to previous stage when button goback is clicked
     @FXML
     void goBack(MouseEvent event) {
     	try {
@@ -193,11 +200,13 @@ public class UpdateDebtController {
 		}
     }
 
+	// Close stage when X is clicked
     @FXML
     void handleClose(MouseEvent event) {
     	System.exit(0);
     }
 
+	// Minimize stage when - is clicked
     @FXML
     void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();

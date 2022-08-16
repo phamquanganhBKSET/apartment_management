@@ -28,6 +28,7 @@ public class AddVehicleController {
 	Connection connection;
 	Statement statement;
 	
+	// Function set scene
 	public void setScene(Scene addVehicleScene) {
 		this.addVehicleScene = addVehicleScene;
 	}
@@ -82,6 +83,7 @@ public class AddVehicleController {
     	this.mainController = mainController;
     }
     
+    // If bicycle is tick -> untick car and motor
     @FXML
     void setBicycle(MouseEvent event) {
     	if (bicycle.isSelected()) {
@@ -91,6 +93,7 @@ public class AddVehicleController {
 		}
     }
 
+    // If car is tick -> untick bycicle and motor
     @FXML
     void setCar(MouseEvent event) {
     	if (car.isSelected()) {
@@ -100,6 +103,7 @@ public class AddVehicleController {
 		}
     }
 
+    // If motor is tick -> untick bycicle and car
     @FXML
     void setMotor(MouseEvent event) {
     	if (motorcycle.isSelected()) {
@@ -111,6 +115,7 @@ public class AddVehicleController {
     
     int ticketMax;
     
+	// Function to load data from sql to display in textfileds    
 	public void setRoom(String room) {
 		roomNumber.setText(room);
 		try {
@@ -129,6 +134,7 @@ public class AddVehicleController {
 		}
 	}
 	
+	// Function request a new vehicle from user and send to admin throw server
     @FXML
     void actionAddVehicle(MouseEvent event) {
     	if (owner.getText().isEmpty()) {
@@ -198,6 +204,7 @@ public class AddVehicleController {
     	}
     }
 
+	// Go to previous stage when button goback is clicked
     @FXML
     void goBack(MouseEvent event) {
     	try {
@@ -211,11 +218,13 @@ public class AddVehicleController {
 		}
     }
 
+	// Close stage when X is clicked
     @FXML
     void handleClose(MouseEvent event) {
     	System.exit(0);
     }
 
+	// Minimize stage when X is clicked
     @FXML
     void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();

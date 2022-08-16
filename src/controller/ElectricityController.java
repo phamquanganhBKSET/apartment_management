@@ -81,6 +81,7 @@ public class ElectricityController {
     @FXML
     private LineChart<?, ?> lineChart;
 
+	// Go to previous stage when button goback is clicked
     @FXML
     void goBack(MouseEvent event) {
     	try {
@@ -95,6 +96,7 @@ public class ElectricityController {
     }
     
     ObservableList<ModelDichVu> listElec;
+	// Function to load data from sql to display in textfileds    
     void load(Connection connection, Statement statement, String phong) {
     	try {
 			// Add data to listDichVu and listSummaries		
@@ -106,7 +108,8 @@ public class ElectricityController {
 			while (rs.next()) {
 				listElec.add(new ModelDichVu(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4), rs.getDate(5), rs.getBoolean(6)));
 			}
-				    	
+			
+			// link each columns to the corresponding variable of listSummary
 	    	col_month.setCellValueFactory(new PropertyValueFactory<>("thang"));
 	    	col_oldNum.setCellValueFactory(new PropertyValueFactory<>("soCu"));
 	    	col_newNum.setCellValueFactory(new PropertyValueFactory<>("soMoi"));

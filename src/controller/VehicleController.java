@@ -81,13 +81,14 @@ public class VehicleController {
     
     String room;
     
-	
+	// If previous scene is adminMainPage -> disable add new data button
 	public void disableAdd(boolean dis) {
 		if (dis) {
 			add.setDisable(true);
 		}
 	}
 
+	// If previous scene is adminMainPage -> disable delete data button
 	public void disableDelete(boolean dis) {
 		if (dis) {
 			delete.setDisable(true);
@@ -98,6 +99,7 @@ public class VehicleController {
     	this.mainController = mainController;
     }
     
+    // switch to Add Vehicle scene
     @FXML
     void addVehicle(MouseEvent e) {
     	try {
@@ -108,6 +110,7 @@ public class VehicleController {
 			loader.setLocation(getClass().getResource("/fxml/AddVehicle.fxml"));
 			Parent root = loader.load();
 			
+			// Link fxml file with css file
 			AddVehicleController controller = loader.getController();
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
@@ -134,6 +137,7 @@ public class VehicleController {
     	}
    }
     
+    // switch to Delete Vehicle scene
     @FXML
     void deleteVehicle(MouseEvent e) {
     	try {
@@ -170,6 +174,7 @@ public class VehicleController {
     	}
     }
 
+	// Go to previous stage when button goback is clicked
     @FXML
     void goBack(MouseEvent event) {
     	try {
@@ -183,6 +188,7 @@ public class VehicleController {
 		}
     }
     
+	// Function to load data from sql to display in textfileds    
     void load (Connection connection, Statement statement, String phong) {
     	try {
     		this.room = phong;
@@ -216,6 +222,7 @@ public class VehicleController {
 				sum.updateTotal();
 			}
 			
+			// link each columns to the corresponding variable of listSummary
 	    	col_carOwner.setCellValueFactory(new PropertyValueFactory<>("tenChuXe"));
 	    	col_room.setCellValueFactory(new PropertyValueFactory<>("maPhong"));
 	    	col_type.setCellValueFactory(new PropertyValueFactory<>("loaiXe"));

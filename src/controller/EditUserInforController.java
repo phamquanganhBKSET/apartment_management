@@ -107,6 +107,7 @@ public class EditUserInforController {
         				alert.showAndWait();
 					}
     				else {
+    					// Update data for database
     					statement.executeUpdate("SET FOREIGN_KEY_CHECKS=0");
     					statement.executeUpdate("Update Chu_so_huu set Id_chu_so_huu = \'" + username.getText() + "\', CCCD = \'"
     							+ citizenID.getText() + "\', Ten = \'" + fullName.getText() + "\', So_dien_thoai = \'" + phoneNumber.getText()
@@ -126,6 +127,7 @@ public class EditUserInforController {
     					loader.setLocation(getClass().getResource("/fxml/UserMainPage.fxml"));
     					Parent root = loader.load();
     					
+    					// Link fxml file with css file
     					UserMainPageController controller = loader.getController();
     					Scene scene = new Scene(root);
     					scene.getStylesheets().add(getClass().getResource("/css/admin.css").toExternalForm());
@@ -147,6 +149,7 @@ public class EditUserInforController {
     				}
 				}
     			else {
+    				// Update data for database
     				statement.executeUpdate("SET FOREIGN_KEY_CHECKS=0");
 					statement.executeUpdate("Update Chu_so_huu set Id_chu_so_huu = \'" + username.getText() + "\', CCCD = \'"
 							+ citizenID.getText() + "\', Ten = \'" + fullName.getText() + "\', So_dien_thoai = \'" + phoneNumber.getText()
@@ -165,6 +168,7 @@ public class EditUserInforController {
 					loader.setLocation(getClass().getResource("/fxml/UserMainPage.fxml"));
 					Parent root = loader.load();
 					
+					// link fxml file with css file			
 					UserMainPageController controller = loader.getController();
 					Scene scene = new Scene(root);
 					scene.getStylesheets().add(getClass().getResource("/css/admin.css").toExternalForm());
@@ -191,6 +195,7 @@ public class EditUserInforController {
 		}
     }
     
+	// Function to load data from sql to display in textfileds    
     void load(String passUser) {
     	try {
 			// Add data to listDichVu and listSummaries		
@@ -219,6 +224,7 @@ public class EditUserInforController {
 		}
     }
 
+	// Go to previous stage when button goback is clicked
     @FXML
     void goBack(MouseEvent event) {
     	try {
@@ -232,17 +238,20 @@ public class EditUserInforController {
 		}
     }
 
+	// Close stage when X is clicked
     @FXML
     private void handleClose(MouseEvent event) {
     	System.exit(0);
     }
     
+	// Minimize stage when - is clicked
     @FXML
     private void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
         stage.setIconified(true);
     }
 
+    // if male is clicked -> untick female
     @FXML
     void maleClicked(MouseEvent event) {
     	if (male.isSelected()) {
@@ -251,6 +260,7 @@ public class EditUserInforController {
 		}
     }
     
+    // if femail is clicked -> unclick male
     @FXML
     void femaleClicked(MouseEvent event) {
     	if (female.isSelected()) {
