@@ -180,16 +180,17 @@ public class ViewUserInfoController implements Initializable {
 			username = newName;
 			ID.setText(newName);
 			ID.setDisable(true);
+			userIDText.setText(newName);
 			
 			editID.setText("Edit");
+			mainController.updateDataRoom();
+			mainController.updateDataUser();
 			mainController.setCurrUserID(newName);
 			
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Update information");
 			alert.setHeaderText("Successfully update!");
 			alert.showAndWait();
-			
-			mainController.updateDataUser();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
