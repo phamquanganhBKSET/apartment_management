@@ -28,13 +28,13 @@ public class ReadUserClient extends Thread {
 		DataInputStream dis = null;
 		
 		try {
-			dis = new DataInputStream(userClientSocket.getInputStream());
+			dis = new DataInputStream(userClientSocket.getInputStream()); // Input stream to socket
 			while(true) {
-				String sms = dis.readUTF();
+				String sms = dis.readUTF(); // Read data from socket
 				
-				if(sms.length() > 1) {
+				if(sms.length() > 1) { // If sms is not empty
 					System.out.println(sms);
-					Platform.runLater(() -> {
+					Platform.runLater(() -> { // Notify admin
 						mainController.handleNotify(sms);
 					});
 				}
@@ -42,7 +42,7 @@ public class ReadUserClient extends Thread {
 		} catch(IOException e) {
 			try {
 				dis.close();
-				userClientSocket.close();
+				userClientSocket.close(); // Close socket
 			} catch(IOException ex) {
 				System.out.println("[UserClient - " + clientName + "] Disconnect to server!");
 			}

@@ -30,11 +30,13 @@ public class RoomItemController implements Initializable {
     
     private RoomItemListener roomItemListener;
     
+    // Room listener
     @FXML
     private void handleMouseClicked(MouseEvent event) {
     	roomItemListener.onClickListener(room);
     }
     
+    // Set data of room item
     public void setData(Room room, RoomItemListener roomItemListener) {
     	this.room = room;
     	this.roomItemListener = roomItemListener;

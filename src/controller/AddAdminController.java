@@ -55,13 +55,13 @@ public class AddAdminController implements Initializable {
     }
     
     @FXML
-    private void handleClose(MouseEvent event) {
+    private void handleClose(MouseEvent event) { // Close window
     	Stage stage = (Stage) minimize.getScene().getWindow();
     	stage.close();
     }
     
     @FXML
-    private void handleMinimize(MouseEvent event) {
+    private void handleMinimize(MouseEvent event) { // Minimize window
     	Stage stage = (Stage) minimize.getScene().getWindow();
         stage.setIconified(true);
     }
@@ -73,16 +73,19 @@ public class AddAdminController implements Initializable {
     
     @FXML
     void ActionSignUp(MouseEvent event) {
+    	// Alert if username field is empty
     	if (username.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Username is empty!");
 			alert.showAndWait();
 		}
+    	// Alert if password field is empty
     	else if (password.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Password is empty!");
 			alert.showAndWait();
 		}
+    	// Alert if email field is empty
     	else if (email.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Email is empty!");
@@ -91,6 +94,7 @@ public class AddAdminController implements Initializable {
       	else {
     		// Add data into admin
     		try {
+    			// Check if username has existed
     			String query = "select ID_admin from admin where ID_admin = \'" + username.getText() + "\'";
     			ResultSet rs = stmt.executeQuery(query);
     			if (rs.next()) {
@@ -99,6 +103,7 @@ public class AddAdminController implements Initializable {
     				alert.showAndWait();
 				}
     			else {
+    				// Insert new record to database
     				stmt.executeUpdate ("Insert into admin" 
         		       + "(ID_admin, So_dien_thoai, Email, Password)"
     				   + "Values(\'" + username.getText() + "\',\'" + phoneNumber.getText() + "\',\'" 
@@ -119,7 +124,6 @@ public class AddAdminController implements Initializable {
     			}
 
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -127,12 +131,11 @@ public class AddAdminController implements Initializable {
     
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-    	// TODO Auto-generated method stub
 		try {
+			// COnnect database
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			stmt = conn.createStatement();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }

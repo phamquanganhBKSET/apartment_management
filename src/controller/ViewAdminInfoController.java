@@ -71,18 +71,21 @@ public class ViewAdminInfoController implements Initializable {
     @FXML
     private TextField phone;
 
+    // Close window
     @FXML
     public void handleClose(MouseEvent e) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
     	stage.close();
     }
     
+    // Minimize window
     @FXML
     public void handleMinimize(MouseEvent e) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
         stage.setIconified(true);
     }
     
+    // Handle change password
     @FXML
     public void handleChangePassword(ActionEvent e) {
     	try {
@@ -93,6 +96,7 @@ public class ViewAdminInfoController implements Initializable {
 			loader.setLocation(getClass().getResource("/fxml/ChangePassAdmin.fxml"));
 			Parent root = loader.load();
 			
+			// Go to change password page for admin
 			ChangePassAdminController controller = loader.getController();
 			Scene scene = new Scene(root);
 			scene.getStylesheets().add(getClass().getResource("/css/newPassword.css").toExternalForm());
@@ -117,6 +121,7 @@ public class ViewAdminInfoController implements Initializable {
     	}
     }
 
+    // Edit email information - button on action
     @FXML
     public void handleEditEmail(ActionEvent event) {
     	if (editEmail.getText().equals("Edit")) {
@@ -130,6 +135,7 @@ public class ViewAdminInfoController implements Initializable {
     	}
     }
 
+    // Edit username information - button on action
     @FXML
     public void handleEditName(ActionEvent event) {
     	if (editName.getText().equals("Edit")) {
@@ -143,6 +149,7 @@ public class ViewAdminInfoController implements Initializable {
     	}
     }
 
+    // Edit phone number information - button on action
     @FXML
     public void handleEditPhone(ActionEvent event) {
     	if (editPhone.getText().equals("Edit")) {
@@ -156,12 +163,14 @@ public class ViewAdminInfoController implements Initializable {
     	}
     }
     
+    // Apply edited information
     @FXML
     public void handleApply(ActionEvent event) {
     	String newName = name.getText();
     	String newEmail = email.getText();
     	String newPhone = phone.getText();
     	
+    	// If any field is empty
     	if (newName.equals(username) & newEmail.equals(emailAdmin) & newPhone.equals(phoneAdmin)) {
     		return;
     	} else if (newName.equals("") | newEmail.equals("") | newPhone.equals("")) {
@@ -177,7 +186,7 @@ public class ViewAdminInfoController implements Initializable {
     		String sqlString = "select * from admin";
 			ResultSet rs = statement.executeQuery(sqlString);
 			
-			while (rs.next()) {
+			while (rs.next()) { // If new username has existed
 				if (rs.getString(1).equals(newName) & (!newName.equals(username))) {
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
 					alert.setTitle("Error");
@@ -188,6 +197,7 @@ public class ViewAdminInfoController implements Initializable {
 				}
 			}
 			
+			// Update new information to table admin in database
 			sqlString = "update admin "
 					 + "set ID_admin = \'" + newName + "\', "
 					 + "so_dien_thoai = " + newPhone + ", "
@@ -220,11 +230,13 @@ public class ViewAdminInfoController implements Initializable {
     	this.username = username;
     	name.setText(username);
     	try {
+    		// Connect to database
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			statement = connection.createStatement();
 			
 			String sqlString;
 			
+			// Get admin's information
 			sqlString = "select * from admin where ID_admin = \'" + username + "\'";
 			ResultSet rs = statement.executeQuery(sqlString);
 			if (rs.next()) {
@@ -244,12 +256,18 @@ public class ViewAdminInfoController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		apply.setDisable(true);
+		
+		// Check if username field is not empty
 		name.textProperty().addListener((observable, oldValue, newValue) -> {
 			apply.setDisable(newValue.trim().isEmpty());
 		});
+		
+		// Check if email field is not empty
 		email.textProperty().addListener((observable, oldValue, newValue) -> {
 			apply.setDisable(newValue.trim().isEmpty());
 		});
+		
+		// Check if phone number field is not empty
 		phone.textProperty().addListener((observable, oldValue, newValue) -> {
 			apply.setDisable(newValue.trim().isEmpty());
 		});

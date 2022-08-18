@@ -30,11 +30,13 @@ public class HouseHolderItemController implements Initializable {
     
     private HouseHolderItemListener houseHolderItemListener;
 
+    // Householder listener
     @FXML
     void handleMouseClicked(MouseEvent event) {
     	houseHolderItemListener.onClickListener(houseHolder);
     }
 	
+    // Set data of householder item
     public void setData(HouseHolder houseHolder, HouseHolderItemListener houseHolderItemListener) {
     	this.houseHolder = houseHolder;
     	this.houseHolderItemListener = houseHolderItemListener;

@@ -50,18 +50,21 @@ public class ChangePassAdminController implements Initializable {
     @FXML
     private PasswordField oldPassword;
 
+    // Change admin's password
     @FXML
     public void handleChangePassword(ActionEvent event) {
     	String oldPass = oldPassword.getText();
     	String newPass = newPassword.getText();
     	String confirmPass = confirmNewPassword.getText();
     	
+    	// Get information of current admin
     	String sqlString = "select * from admin where ID_admin = \'" + username + "\' ";
     	try {
     		ResultSet rs = statement.executeQuery(sqlString);
     		rs.next();
     		String currPass = rs.getString(4);
     		
+    		// If old password is not true
     		if (!currPass.equals(oldPass)) {
     			Alert alert = new Alert(Alert.AlertType.INFORMATION);
     			alert.setTitle("Error");
@@ -74,8 +77,10 @@ public class ChangePassAdminController implements Initializable {
 			e1.printStackTrace();
 		}
     	
+    	// If new password and confirmed password are the same
     	if (newPass.equals(confirmPass)) {
     		try {
+    			// Update new password to database
     			sqlString = "update apartment_manager.admin "
       			 		  + "set password = \'" + newPass + "\' "
       			 		  + "where ID_admin = \'" + this.username + "\' ";
@@ -101,12 +106,14 @@ public class ChangePassAdminController implements Initializable {
     	}
     }
 
+    // Close window
     @FXML
     public void handleClose(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
     	stage.close();
     }
 
+    // Minimize window
     @FXML
     public void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
@@ -120,14 +127,19 @@ public class ChangePassAdminController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		changePassword.setDisable(true);
+		
+		// Check if new password field is not empty
 		newPassword.textProperty().addListener((observable, oldValue, newValue) -> {
 			changePassword.setDisable(newValue.trim().isEmpty());
 		});
+		
+		// Check if old password field is not empty
 		oldPassword.textProperty().addListener((observable, oldValue, newValue) -> {
 			changePassword.setDisable(newValue.trim().isEmpty());
 		});
 		
 		try {
+			// Connect to database
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			statement = connection.createStatement();
 		} catch (SQLException e) {

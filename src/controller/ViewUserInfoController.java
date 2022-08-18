@@ -118,25 +118,28 @@ public class ViewUserInfoController implements Initializable {
     @FXML
     private Label userIDText;
 
+    // Close window
     @FXML
     public void handleClose(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
         stage.close();
     }
 
+    // Minimize window
     @FXML
     public void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
         stage.setIconified(true);
     }
 
+    // Apply edited information
     @FXML
     public void handleApply(ActionEvent event) {
     	String newName = ID.getText();
     	
     	if (newName.equals(username)) {
     		return;
-    	} else if (newName.equals("")) {
+    	} else if (newName.equals("")) { // If ID field is empty
     		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Error");
 			alert.setHeaderText("Edit failed!");
@@ -149,6 +152,7 @@ public class ViewUserInfoController implements Initializable {
     		String sqlString = "select * from chu_so_huu";
 			ResultSet rs = statement.executeQuery(sqlString);
 			
+			// If new username has existed
 			while (rs.next()) {
 				if (rs.getString(1).equals(newName) & (!newName.equals(username))) {
 					Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -162,6 +166,7 @@ public class ViewUserInfoController implements Initializable {
 			
 			System.out.println(username);
 			
+			// Update new information to table user in database
 			sqlString = "SET FOREIGN_KEY_CHECKS=0;";
 			statement.executeUpdate(sqlString);
 			
@@ -196,9 +201,11 @@ public class ViewUserInfoController implements Initializable {
 		}
     }
     
+    // Delete user
     @FXML
     public void handleDelete(ActionEvent e) {
     	try {
+    		// Delete user from table chu_so_huu and table phong in database
 	    	String sqlString = "SET FOREIGN_KEY_CHECKS=0;";
 			statement.executeUpdate(sqlString);
 			
@@ -223,12 +230,14 @@ public class ViewUserInfoController implements Initializable {
     	}
     }
 
+    // Handle reset password for user
     @FXML
     public void handleChangePassword(ActionEvent e) {
     	try {
 	    	Stage stage = new Stage();
 	    	stage.initStyle(StageStyle.UNDECORATED);
 	    	
+	    	// Go to reset passwrod page for user
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/fxml/NewPassword.fxml"));
 			Parent root = loader.load();
@@ -258,6 +267,7 @@ public class ViewUserInfoController implements Initializable {
     	}
     }
 
+    // Edit ID information - button on action
     @FXML
     public void handleEditID(ActionEvent event) {
     	apply.setDisable(false);
@@ -281,6 +291,7 @@ public class ViewUserInfoController implements Initializable {
     		String imgSrc = "";
         	String color = "";
         	
+        	// Connect to database and get data for this user
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			statement = connection.createStatement();
 			

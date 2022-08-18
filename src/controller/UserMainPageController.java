@@ -486,8 +486,8 @@ public class UserMainPageController {
 			Logger.getLogger(UserMainPageController.class.getName()).log(Level.SEVERE, null, e);
 		}
         
-        try {		
-			// Socket handling
+        try {
+        	// Create new user client (new socket) and connect to server
 			UserClient userCLient = new UserClient(SocketLibrary.host, SocketLibrary.port, transUser);
 			userCLient.setMainController(this);
 			System.out.println("User: " + transUser);

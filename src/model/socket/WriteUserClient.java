@@ -12,6 +12,7 @@ public class WriteUserClient extends Thread {
 		private String clientName;
 		private Socket userClientSocket;
 
+		// Constructor
 		public WriteUserClient(Socket userClientSocket, String clientName, UserMainPageController mainController) {
 			super();
 			this.userClientSocket = userClientSocket;
@@ -24,18 +25,18 @@ public class WriteUserClient extends Thread {
 			DataOutputStream dos = null;
 			
 			try {
-				dos = new DataOutputStream(userClientSocket.getOutputStream());
+				dos = new DataOutputStream(userClientSocket.getOutputStream()); // Output stream
 				dos.writeUTF("Create User:" + clientName);
 				while(true) {
 					try {
-						Thread.sleep(1000);
+						Thread.sleep(1000); // Delay 1000 ms
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
 					
-					if (this.mainController.getMessageToAdmin().length() > 1) {
+					if (this.mainController.getMessageToAdmin().length() > 1) { // Send message to user: From User:username:Message:To:all
 						dos.writeUTF("From User:" + clientName + ":" + mainController.getMessageToAdmin() + ":To:all");
-						Platform.runLater(() -> {
+						Platform.runLater(() -> { // Reset message
 							mainController.setMessageToAdmin("");
 						});
 					}
@@ -43,7 +44,7 @@ public class WriteUserClient extends Thread {
 			} catch(IOException e) {
 				try {
 					dos.close();
-					userClientSocket.close();
+					userClientSocket.close(); // Close client socket
 				} catch(IOException ex) {
 					System.out.println("[UserClient - " + clientName + "] Disconnect to server!");
 				}

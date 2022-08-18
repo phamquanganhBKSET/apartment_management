@@ -12,6 +12,7 @@ public class ReadAdminClient extends Thread {
 	private String clientName;
 	private Socket adminClientSocket;
 
+	// Constructor
 	public ReadAdminClient(Socket adminClientSocket, String clientName, AdminMainPageController mainController) {
 		super();
 		this.adminClientSocket = adminClientSocket;
@@ -24,14 +25,13 @@ public class ReadAdminClient extends Thread {
 		DataInputStream dis = null;
 		
 		try {
-			dis = new DataInputStream(adminClientSocket.getInputStream());
+			dis = new DataInputStream(adminClientSocket.getInputStream()); // Input stream to socket
 			while(true) {
-				String sms = dis.readUTF();
+				String sms = dis.readUTF(); // Read data from socket
 				
-				if(sms.length() > 1) {
+				if(sms.length() > 1) { // If sms is not empty
 					System.out.println(sms);
-//					mainController.handleNotify(sms);
-					Platform.runLater(() -> {
+					Platform.runLater(() -> { // Notify admin
 						mainController.handleNotify(sms);
 					});
 				}
@@ -39,7 +39,7 @@ public class ReadAdminClient extends Thread {
 		} catch(IOException e) {
 			try {
 				dis.close();
-				adminClientSocket.close();
+				adminClientSocket.close(); // Close socket
 			} catch(IOException ex) {
 				System.out.println("[AdminClient - " + clientName + "] Disconnect to server!");
 			}

@@ -62,11 +62,13 @@ public class ForgotPasswordController implements Initializable {
     @FXML
     private Button requestReset;
 
+    // Close window
     @FXML
     void handleClose(MouseEvent event) {
     	System.exit(0);
     }
 
+    // Minimize window
     @FXML
     void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
@@ -76,11 +78,14 @@ public class ForgotPasswordController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		requestReset.setDisable(true);
+		
+		// Check if username field is not empty
 		username.textProperty().addListener((observable, oldValue, newValue) -> {
 			requestReset.setDisable(newValue.trim().isEmpty());
 		});
 		
 		try {
+			// Connect to database
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			statement = connection.createStatement();
 		} catch (SQLException e) {
@@ -88,6 +93,7 @@ public class ForgotPasswordController implements Initializable {
 		}
 	}
 	
+	// Back to login page
 	@FXML
 	public void handleBack(ActionEvent e) {
 		try {
@@ -101,6 +107,7 @@ public class ForgotPasswordController implements Initializable {
 		}
 	}
 	
+	// If request reset password
 	@FXML
 	public void handleRequestReset(MouseEvent e) {
 		Random verificationCode = new Random();
@@ -110,9 +117,10 @@ public class ForgotPasswordController implements Initializable {
 		
 		try {
 			ResultSet rs = statement.executeQuery(sqlString);
-			if (rs.next()) {
+			if (rs.next()) { // If admin
 				emailTo = rs.getString(3);
 				
+				// Send verification code to email
 				int vcode = verificationCode.nextInt((10000 - 100) + 1) + 100;
 				String subject = "Apartment Management - Reset password";
 				String body = "Your verification code is " + vcode;
@@ -121,6 +129,7 @@ public class ForgotPasswordController implements Initializable {
 				try {
 					Stage currStage = (Stage)((Node) e.getSource()).getScene().getWindow();
 					
+					// Go to verification email page
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/fxml/VerifyEmailFGP.fxml"));
 					Parent root = loader.load();
@@ -151,12 +160,13 @@ public class ForgotPasswordController implements Initializable {
 				} catch(Exception ex) {
 					ex.printStackTrace();
 				}
-			} else {
+			} else { // Else if user
 				sqlString = "select * from apartment_manager.chu_so_huu where ID_chu_so_huu = \'" + userID + "\'";
 				rs = statement.executeQuery(sqlString);
 				if (rs.next()) {
 					emailTo = rs.getString(5);
 					
+					// Send verification code to email
 					int vcode = verificationCode.nextInt((10000 - 100) + 1) + 100;
 					String subject = "Apartment Management - Reset password";
 					String body = "Your verification code is " + vcode;
@@ -169,6 +179,7 @@ public class ForgotPasswordController implements Initializable {
 						loader.setLocation(getClass().getResource("/fxml/VerifyEmailFGP.fxml"));
 						Parent root = loader.load();
 						
+						// Go to verification email page
 						VerifyEmailFGPController controller = loader.getController();
 						Scene scene = new Scene(root);
 						scene.getStylesheets().add(getClass().getResource("/css/verifyEmailFGP.css").toExternalForm());
@@ -211,12 +222,15 @@ public class ForgotPasswordController implements Initializable {
 		this.loginScene = loginScene;
 	}
 	
+	// Send email
 	public void sendEmail(String emailFrom, String pass, String emailTo, String subject, String body) {
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com"); // SMTP host
 		properties.put("mail.smtp.port", "587"); //TLS Port
 		properties.put("mail.smtp.auth", "true"); //enable authentication
 		properties.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+		
+		// Email authentication
 		Authenticator auth = new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(emailFrom, pass);
@@ -235,6 +249,8 @@ public class ForgotPasswordController implements Initializable {
             msg.setText(body, "UTF-8");
             msg.setSentDate(new Date());
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailTo, false));
+            
+            // Send email through transport layer
             Transport.send(msg);
             System.out.println("Gui mail thanh cong: " + body);
             

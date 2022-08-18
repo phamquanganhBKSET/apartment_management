@@ -26,7 +26,7 @@ public class NewPasswordController implements Initializable {
 	private Connection connection;
 	private Statement statement;
 	
-	private boolean changePassUser = false;
+	private boolean changePassUser = false; // Specify reset password for admin or for user
 	
 	@FXML
     private ResourceBundle resources;
@@ -55,6 +55,7 @@ public class NewPasswordController implements Initializable {
     @FXML
     private PasswordField newPassword;
 
+    // Back to login page
     @FXML
     public void handleBack(ActionEvent event) {
     	try {
@@ -68,14 +69,17 @@ public class NewPasswordController implements Initializable {
 		}
     }
 
+    // Handle reset password (old password is not needed)
     @FXML
     public void handleChangePassword(ActionEvent event) {
     	String newPass = newPassword.getText();
     	String confirmPass = confirmNewPassword.getText();
     	
+    	// If change password for user
     	if (changePassUser) {
-    		if (newPass.equals(confirmPass)) {
+    		if (newPass.equals(confirmPass)) { // If new password and confirmed password are the same
 	    		try {
+	    			// Update table chu_so_huu in database
 	    			String sqlString = "update apartment_manager.chu_so_huu "
 	      			 		 		 + "set password = \'" + newPass + "\' "
 	      			 		 		 + "where ID_chu_so_huu = \'" + this.username + "\' ";
@@ -88,7 +92,7 @@ public class NewPasswordController implements Initializable {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-	    	} else {
+	    	} else { // Confirmed password is different from new password
 	    		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 				alert.setTitle("Change password Information");
 				alert.setHeaderText("Change Password failed!");
@@ -96,9 +100,10 @@ public class NewPasswordController implements Initializable {
 				alert.showAndWait();
 				return;
 	    	}
-    	} else {
-	    	if (newPass.equals(confirmPass)) {
+    	} else { // If change password for admin
+	    	if (newPass.equals(confirmPass)) { // If new password and confirmed password are the same
 	    		try {
+	    			// Update table admin in database
 	    			String sqlString = "update apartment_manager.admin "
 	      			 		 		 + "set password = \'" + newPass + "\' "
 	      			 		 		 + "where ID_admin = \'" + this.username + "\' ";
@@ -121,7 +126,7 @@ public class NewPasswordController implements Initializable {
 				} catch (SQLException e) {
 					e.printStackTrace();
 				}
-	    	} else {
+	    	} else { // Confirmed password is different from new password
 	    		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 				alert.setTitle("Change password Information");
 				alert.setHeaderText("Change Password failed!");
@@ -132,12 +137,14 @@ public class NewPasswordController implements Initializable {
     	}
     }
 
+    // Close window
     @FXML
     public void handleClose(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
     	stage.close();
     }
 
+    // Minimize window
     @FXML
     public void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
@@ -159,6 +166,8 @@ public class NewPasswordController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		changePassword.setDisable(true);
+		
+		// Check if new password field is not empty
 		newPassword.textProperty().addListener((observable, oldValue, newValue) -> {
 			changePassword.setDisable(newValue.trim().isEmpty());
 		});

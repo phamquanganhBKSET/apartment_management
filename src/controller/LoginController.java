@@ -76,12 +76,13 @@ public class LoginController implements Initializable {
     @FXML
     private ImageView hide;
 
-    
+    // Close window
     @FXML
     private void handleClose(MouseEvent event) {
     	System.exit(0);
     }
     
+    // Minimize window
     @FXML
     private void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
@@ -94,19 +95,24 @@ public class LoginController implements Initializable {
 		password.setVisible(true);
 		passwordText.setVisible(false);
 		login.setDisable(true);
+		
+		// Check if username field is not empty
 		username.textProperty().addListener((observable, oldValue, newValue) -> {
 			login.setDisable(newValue.trim().isEmpty());
 		});
 		
+		// Check if last username is remembered
 		if (Preferences.userRoot().get("userID", null) != null) {
 			username.setText(Preferences.userRoot().get("userID", null));
 		}
 		
+		// Check if last password is remembered
 		if (Preferences.userRoot().get("pass", null) != null) {
 			password.setText(Preferences.userRoot().get("pass", null));
 		}
 		
 		try {
+			// Connect to database
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			statement = connection.createStatement();
 		} catch (SQLException e) {
@@ -114,12 +120,14 @@ public class LoginController implements Initializable {
 		}
 	}
 	
+	// Handle forgot password
 	@FXML
 	public void handleForgotPassword(ActionEvent e) {
 		try {
 			Scene currScene = (Scene)((Node) e.getSource()).getScene();
 			Stage currStage = (Stage)currScene.getWindow();
 			
+			// Go to forgot password page
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/fxml/ForgotPassword.fxml"));
 			Parent root = loader.load();
@@ -148,6 +156,7 @@ public class LoginController implements Initializable {
 		}
 	}
 	
+	// Show password
 	@FXML
 	public void handleShow(MouseEvent event) {
 		show.setVisible(false);
@@ -161,6 +170,7 @@ public class LoginController implements Initializable {
 		showPass = false;
 	}
 	
+	// Hide password
 	@FXML
 	public void handleHide(MouseEvent event) {
 		hide.setVisible(false);
@@ -174,6 +184,7 @@ public class LoginController implements Initializable {
 		showPass = true;
 	}
 	
+	// Handle login
 	@FXML
 	public void handleLogin(ActionEvent e) throws IOException {
 		String userID = username.getText();
@@ -183,11 +194,13 @@ public class LoginController implements Initializable {
 		} else {
 			pass = password.getText();
 		}
+		
+		// Check from admin table
 		String sqlString = "select * from apartment_manager.admin where ID_admin = \'" + userID + "\'";
 		
 		try {
 			ResultSet rs = statement.executeQuery(sqlString);
-			if (rs.next()) {
+			if (rs.next()) { // If admin
 				String passw = rs.getString(4);
 				if (pass.equals(passw)) {
 					
@@ -198,6 +211,7 @@ public class LoginController implements Initializable {
 					loader.setLocation(getClass().getResource("/fxml/AdminMainPage.fxml"));
 					Parent root = loader.load();
 					
+					// Go to admin main page
 					AdminMainPageController controller = loader.getController();
 					Scene scene = new Scene(root);
 					scene.getStylesheets().add(getClass().getResource("/css/admin.css").toExternalForm());
@@ -214,7 +228,6 @@ public class LoginController implements Initializable {
 			        
 					currStage.setScene(scene);
 					currStage.centerOnScreen();
-					controller.setLoginScene(currScene);
 					controller.setUsername(userID);
 					currStage.show();
 					
@@ -236,10 +249,10 @@ public class LoginController implements Initializable {
 					alert.setContentText("Username or Password is wrong!");
 					alert.showAndWait();
 				}
-			} else {
+			} else { // Else if not admin -> check from user table
 				sqlString = "select * from apartment_manager.chu_so_huu where ID_chu_so_huu = \'" + userID + "\'";
 				rs = statement.executeQuery(sqlString);
-				if (rs.next()) {
+				if (rs.next()) { // If user
 					String passw = rs.getString(7);
 					if (pass.equals(passw)) {
 						Scene currScene = (Scene)((Node) e.getSource()).getScene();
@@ -281,7 +294,7 @@ public class LoginController implements Initializable {
 					            pref.put("pass", _pass_);
 					        }
 					    }
-					} else {
+					} else { // No user
 						Alert alert = new Alert(Alert.AlertType.INFORMATION);
 						alert.setTitle("Login Information");
 						alert.setHeaderText("Login failed!");

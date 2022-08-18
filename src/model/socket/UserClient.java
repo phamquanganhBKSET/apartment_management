@@ -11,6 +11,7 @@ public class UserClient {
 	private int port;
 	private String clientName;
 	
+	// Constructor
 	public UserClient(String host, int port, String clientName) {
 		super();
 		this.host = host;
@@ -22,11 +23,14 @@ public class UserClient {
 		this.mainController = mainController;
 	}
 	
+	// Run admin client
 	public void execute() {
 		try {
 			Socket clientUser = new Socket(host, port);
+			// Read thread
 			ReadUserClient read = new ReadUserClient(clientUser, clientName, mainController);
-			read.start();
+			read.start(); // Start read thread
+			// Write thread
 			WriteUserClient write = new WriteUserClient(clientUser, clientName, mainController);
 			write.start();
 		} catch (IOException e) {
@@ -34,16 +38,4 @@ public class UserClient {
 		}
 		
 	}
-	
-//	public static void main(String[] args) {
-//		System.out.print("(User) Enter your username: ");
-//		String username = UUID.randomUUID().toString();
-//		try {
-//			UserClient userCLient = new UserClient("localhost", 1234, "test1");
-//			System.out.println("User: test");
-//			userCLient.execute();
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
 }

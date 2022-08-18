@@ -38,7 +38,7 @@ public class VerifyEmailFGPController implements Initializable {
 	private String emailTo;
 	private String emailPass;
 	private Scene loginScene;
-	private boolean changePassUser;
+	private boolean changePassUser; // Specify reset password for admin or for user
 
 	@FXML
     private ResourceBundle resources;
@@ -67,11 +67,13 @@ public class VerifyEmailFGPController implements Initializable {
     @FXML
     private TextField verifyCode;
 
+    // Close window
     @FXML
     void handleClose(MouseEvent event) {
     	System.exit(0);
     }
 
+    // Minimize window
     @FXML
     void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
@@ -83,6 +85,7 @@ public class VerifyEmailFGPController implements Initializable {
 		changePassUser = false;
 	}
     
+	// Back to login page
 	@FXML
 	public void handleBack(ActionEvent e) {
 		try {
@@ -96,16 +99,18 @@ public class VerifyEmailFGPController implements Initializable {
 		}
 	}
 	
+	// Handle verify verification code
 	@FXML
 	public void handleVerify(ActionEvent e) {
 		try {
 			int vcode = Integer.parseInt(verifyCode.getText());
 			System.out.println("vcode: " + vcode);
-			if (vcode == this.verificationCode) {
+			if (vcode == this.verificationCode) { // Verification code is true
 				System.out.println("Verification code is true!");
 				try {
 					Stage currStage = (Stage)((Node) e.getSource()).getScene().getWindow();
 					
+					// Go to reset password page
 					FXMLLoader loader = new FXMLLoader();
 					loader.setLocation(getClass().getResource("/fxml/NewPassword.fxml"));
 					Parent root = loader.load();
@@ -134,13 +139,13 @@ public class VerifyEmailFGPController implements Initializable {
 				} catch(Exception ex) {
 					ex.printStackTrace();
 				}
-			} else {
+			} else { // Verification code is not true
 				Alert alert = new Alert(Alert.AlertType.INFORMATION);
 				alert.setTitle("Check verification code");
 				alert.setHeaderText("Verification code is not true!");
 				alert.showAndWait();
 			}
-		} catch (NumberFormatException ex) {
+		} catch (NumberFormatException ex) { // Number format error
 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Number format alert");
 			alert.setHeaderText("The number you just entered is not an integer!");
@@ -149,6 +154,7 @@ public class VerifyEmailFGPController implements Initializable {
 		}
 	}
 	
+	// Send email again if requested
 	@FXML
 	public void handleSendAgain(ActionEvent e) {
 		Random random = new Random();
@@ -180,12 +186,15 @@ public class VerifyEmailFGPController implements Initializable {
 		this.changePassUser = changePassUser;
 	}
 	
+	// Send email
 	public void sendEmail(String emailFrom, String pass, String emailTo, String subject, String body) {
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", "smtp.gmail.com"); // SMTP host
 		properties.put("mail.smtp.port", "587"); //TLS Port
 		properties.put("mail.smtp.auth", "true"); //enable authentication
 		properties.put("mail.smtp.starttls.enable", "true"); //enable STARTTLS
+		
+		// Email authentication
 		Authenticator auth = new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(emailFrom, pass);
@@ -204,6 +213,8 @@ public class VerifyEmailFGPController implements Initializable {
             msg.setText(body, "UTF-8");
             msg.setSentDate(new Date());
             msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse(emailTo, false));
+            
+            // Send email through transport layer
             Transport.send(msg);
             System.out.println("Gui mail thanh cong: " + body);
             

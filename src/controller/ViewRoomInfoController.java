@@ -152,6 +152,7 @@ public class ViewRoomInfoController implements Initializable {
     @FXML
     private Button update;
     
+    // Update vehicle fee for all rooms to new month
     @FXML
     void handleUpdate(ActionEvent e) {
     	try {
@@ -187,18 +188,21 @@ public class ViewRoomInfoController implements Initializable {
 		}
     }
 
+    // Close window
     @FXML
     public void handleClose(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
         stage.close();
     }
 
+    // Minimize window
     @FXML
     public void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
         stage.setIconified(true);
     }
 
+    // Handle when empty radio button is selected
     @FXML
     void handleEmpty(MouseEvent event) {
     	if (empty.isSelected()) {
@@ -207,6 +211,7 @@ public class ViewRoomInfoController implements Initializable {
     	}
     }
 
+    // Handle when full radio button is selected
     @FXML
     void handleFull(MouseEvent event) {
     	if (full.isSelected()) {
@@ -215,11 +220,13 @@ public class ViewRoomInfoController implements Initializable {
     	}
     }
     
+    // Apply edited information
     @FXML
     public void handleApply(ActionEvent event) {
     	String newType = type.getText();
     	String newOwnerID = ownerID.getText();
     	
+    	// If any field is empty
     	if (newType.equals("") | newOwnerID.equals("") | people.getText().equals("")) {
     		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 			alert.setTitle("Error");
@@ -236,6 +243,7 @@ public class ViewRoomInfoController implements Initializable {
 			String sqlString = "SET FOREIGN_KEY_CHECKS=0;";
 			statement.executeUpdate(sqlString);
 			
+			// If username has not existed
 			sqlString = "select ID_chu_so_huu from chu_so_huu where ID_chu_so_huu = \'" + newOwnerID + "\'";
 			ResultSet rs = statement.executeQuery(sqlString);
 			if (rs.next() == false) {
@@ -247,6 +255,7 @@ public class ViewRoomInfoController implements Initializable {
 			}
 			
 			else {
+				// Update room to empty
 				if (newStatusInt == 1) {
 					sqlString = "update apartment_manager.phong "
 							 + "set ID_chu_so_huu = null, "
@@ -266,7 +275,7 @@ public class ViewRoomInfoController implements Initializable {
 					peopleRoom = Integer.toString(0);
 					people.setText(peopleRoom);
 					people.setDisable(true);
-				} else {
+				} else { // Update edited information of the room if newStatusInt == 0
 					sqlString = "update apartment_manager.phong "
 							 + "set ID_chu_so_huu = \'" + newOwnerID + "\', "
 							 + "So_nguoi = " + newPeople + ", "
@@ -287,6 +296,7 @@ public class ViewRoomInfoController implements Initializable {
 					people.setDisable(true);
 				}
 				
+				// Update GUI
 				statusRoom = newStatusText;
 				if (statusRoom.equals("Empty")) {
 					empty.setSelected(true);
@@ -313,6 +323,7 @@ public class ViewRoomInfoController implements Initializable {
 				alert.setHeaderText("Successfully update!");
 				alert.showAndWait();
 				
+				// Update choosen card and data of list rooms in admin main page
 				this.updateChosenCard();
 				mainController.updateDataRoom();
 			}
@@ -321,6 +332,7 @@ public class ViewRoomInfoController implements Initializable {
 		}
     }
 
+    // Edit owner ID information - button on action
     @FXML
     public void handleEditOwnerID(ActionEvent event) {
     	apply.setDisable(false);
@@ -336,6 +348,7 @@ public class ViewRoomInfoController implements Initializable {
     	}
     }
 
+    // Edit number of people information - button on action
     @FXML
     public void handleEditPeople(ActionEvent event) {
     	apply.setDisable(false);
@@ -351,6 +364,7 @@ public class ViewRoomInfoController implements Initializable {
     	}
     }
 
+    // Edit room status information - button on action
     @FXML
     public void handleEditStatus(ActionEvent event) {
     	apply.setDisable(false);
@@ -686,11 +700,13 @@ public class ViewRoomInfoController implements Initializable {
     	room.setDisable(true);
     	
     	try {
+    		// Connect database
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			statement = connection.createStatement();
 			
 			String sqlString;
 			
+			// Get data of this room from table Phong in database
 			sqlString = "select * from phong where Ma_phong = \'" + roomName + "\'";
 			ResultSet rs = statement.executeQuery(sqlString);
 			if (rs.next()) {
@@ -730,6 +746,7 @@ public class ViewRoomInfoController implements Initializable {
 		}
     }
 	
+	// Update choosen card information
 	public void updateChosenCard() {
 		if (statusRoom.equals("Empty")) {
 			this.color = "F08080";

@@ -119,6 +119,7 @@ public class AddVehicleController {
 	public void setRoom(String room) {
 		roomNumber.setText(room);
 		try {
+			// Get max value of Ve_xe from table Xe in database
 			String s = "select MAX(Ve_xe) from apartment_manager.xe";
 			ResultSet rs = statement.executeQuery(s);
 			if (rs.next()) {
@@ -129,7 +130,6 @@ public class AddVehicleController {
 			}
 			ticket.setText(String.valueOf(ticketMax));
 		} catch (Exception ex) {
-			// TODO: handle exception
 			ex.printStackTrace();
 		}
 	}
@@ -137,60 +137,38 @@ public class AddVehicleController {
 	// Function request a new vehicle from user and send to admin throw server
     @FXML
     void actionAddVehicle(MouseEvent event) {
+    	// Alert if owner field is empty
     	if (owner.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Owner is empty!");
 			alert.showAndWait();
 		}
+    	// Alert if roomNumber field is empty
     	else if (roomNumber.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Room Number is empty!");
 			alert.showAndWait();
 		}
+    	// Alert if vehicleType field is empty
     	else if (vehicleType == "") {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Vehicle type is empty!");
 			alert.showAndWait();
 		}
-//    	else {
-//    		// Add data into xe table
-//    		try {
-//    			LocalDate currentime = LocalDate.now();
-//    			int month = currentime.getMonthValue();
-//    			int year = currentime.getYear();
-//    			String s = "insert into apartment_manager.xe (Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong, Ve_xe) "
-//    					+ "values (\'" + owner.getText() + "\', " + roomNumber.getText() + ",\'" + vehicleType + "\', \'"
-//    					+ licensePlates.getText() + "\', \'" + color.getText() + "\', \'" + String.valueOf(year)+"-"
-//    					+ String.valueOf(month)+"-01\', 0," + ticket.getText() + ");";
-//    			statement.executeUpdate (s);
-//    			// Alert
-//    			Alert alert = new Alert(AlertType.INFORMATION);
-//    			alert.setHeaderText("Success!");
-//    			alert.showAndWait();
-//    			
-//    			// Go back
-//    			Scene currScene = (Scene)((Node) event.getSource()).getScene();
-//    			Stage currStage = (Stage)currScene.getWindow();
-//    			currStage.setScene(addVehicleScene);
-//    			currStage.centerOnScreen();
-//    			currStage.show();
-//    			
-//			} catch (Exception ex) {
-//				// TODO Auto-generated catch block
-//				ex.printStackTrace();
-//			}
-//		}
     	
     	else {
+    		// Get current time
     		LocalDate currentime = LocalDate.now();
     		int month = currentime.getMonthValue();
     		int year = currentime.getYear();
 	    	
+    		// Set message which is sent to server
 	    	String message = owner.getText() + ":" + roomNumber.getText() + ":" + vehicleType + ":"
 	    				   + licensePlates.getText() + ":" + color.getText() + ":" + String.valueOf(year) + "-" + String.valueOf(month);
 	    	
 	    	mainController.setMessageToAdmin(message);
 	    	
+	    	// Alert wait
 	    	Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setHeaderText("Please wait for admin's response!");
 			alert.showAndWait();
@@ -234,6 +212,7 @@ public class AddVehicleController {
     @FXML
     void initialize() {
 		try {
+			// Connect to database
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			statement = connection.createStatement();
 			roomNumber.setDisable(true);

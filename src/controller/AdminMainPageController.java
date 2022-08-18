@@ -65,7 +65,6 @@ public class AdminMainPageController implements Initializable {
 	private String username;
 	private Connection connection;
 	private Statement statement;
-	private Scene loginScene;
 	private boolean inRoomPage = true;
 	private String messageToUser = "";
 	private String toUser = "";
@@ -178,6 +177,7 @@ public class AdminMainPageController implements Initializable {
     @FXML
     private Button updateVehMoney;
     
+    // Update vehicle fee for new month
     @FXML
     void actionUPdate(ActionEvent event) {
 		Calendar cal = Calendar.getInstance();
@@ -200,16 +200,20 @@ public class AdminMainPageController implements Initializable {
         		nextMonth = curMonth + 1;
         		nextYear = curYear;
         	}
+        	
+        	// Get list vehicle
         	ArrayList<ModelXe> listXe = new ArrayList<>();
         	String query = "select * from apartment_manager.xe where Thang = \'" + curYear + "-" + curMonth + "-1\'";
         	System.out.println(query);
 			try {
+				// Get date time
 				Date date2 = Date.valueOf("" + curYear + "-" + curMonth + "-1");
 				ResultSet rs = statement.executeQuery(query);
 				while (rs.next()) {
 					listXe.add(new ModelXe(rs.getInt(1), rs.getString(2), rs.getInt(3), rs.getString(4), rs.getString(5), rs.getString(6), date2, false, 0));
 				}
 				for (ModelXe i : listXe) {
+					// Insert new record to table Xe in database
 					String s = "insert into apartment_manager.xe (Ve_xe, Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong) " +
 								" values (" + i.getVeXe() + ", \'" + i.getTenChuXe() + "\', " + i.getMaPhong() + ", \'" + i.getLoaiXe() + "\', \'" 
 								+ i.getBienSoXe() + "\', \'" + i.getMauSac() + "\', \'" + nextYear+"-"+nextMonth+"-"+"1" + "\', " + i.getDaDong() + ")";
@@ -218,9 +222,9 @@ public class AdminMainPageController implements Initializable {
 					statement.executeUpdate(s);
 				}
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} 
+			}
+			
 	    	// Alert
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setHeaderText("Success!");
@@ -228,13 +232,16 @@ public class AdminMainPageController implements Initializable {
 		}
     }
     
+    // List filter for rooms
     private ObservableList<String> filterList = FXCollections.observableArrayList("All", "Empty Rooms", "Full Rooms");
     
+    // List filter for householders
     private ObservableList<String> filterListHH = FXCollections.observableArrayList("All", "Male", "Female");
     
     private Room currRoom;
     private String currUserID;
     
+    // Listener for room card
     private RoomItemListener roomItemListener = new RoomItemListener() {
 		@Override
 		public void onClickListener(Room room) {
@@ -242,6 +249,7 @@ public class AdminMainPageController implements Initializable {
 		}
 	};
     
+	// Listener for householder card
     private HouseHolderItemListener houseHolderItemListener = new HouseHolderItemListener() {
 		@Override
 		public void onClickListener(HouseHolder houseHolder) {
@@ -249,23 +257,29 @@ public class AdminMainPageController implements Initializable {
 		}
 	};
 	
+	// List room
     private List<Room> listRoom = new ArrayList<>();
     
+    // List householder
     private List<HouseHolder> listHouseHolder = new ArrayList<>();
     
+    // Close window
     @FXML
     private void handleClose(MouseEvent event) {
     	System.exit(0);
     }
     
+    // Minimize window
     @FXML
     private void handleMinimize(MouseEvent event) {
     	Stage stage = (Stage) minimize.getScene().getWindow();
         stage.setIconified(true);
     }
     
+    // Switch from room page to householder page
     @FXML
     void handleHouseHoldersManage(MouseEvent event) {
+    	// Set text for textfields in choosen card
     	filter.setPromptText("Filter");
     	typeLabel.setText("Citizen ID");
     	ownerIDLabel.setText("Phone");
@@ -274,6 +288,8 @@ public class AdminMainPageController implements Initializable {
     	typeName.setText("User ID");
     	filter.setItems(filterListHH);
     	setChoosenUser(listHouseHolder.get(0));
+    	
+    	// Set visible for 4 lists
     	gridPane.setVisible(false);
     	gridPane.setDisable(true);
     	gridPaneHH.setVisible(true);
@@ -284,8 +300,10 @@ public class AdminMainPageController implements Initializable {
 		gridFilterRoom.setDisable(true);
     }
     
+    // Switch from householder page to room page
     @FXML
     void handleRoomsManage(MouseEvent event) {
+    	// Set text for textfields in choosen card
     	filter.setPromptText("Filter");
     	typeLabel.setText("Type");
     	ownerIDLabel.setText("Owner ID");
@@ -294,6 +312,8 @@ public class AdminMainPageController implements Initializable {
     	typeName.setText("Room ID");
     	filter.setItems(filterList);
     	setChoosenRoom(listRoom.get(0));
+    	
+    	// Set visible for 4 lists
     	gridPaneHH.setVisible(false);
     	gridPaneHH.setDisable(true);
     	gridPane.setVisible(true);
@@ -304,11 +324,13 @@ public class AdminMainPageController implements Initializable {
 		gridFilterRoom.setDisable(true);
     }
     
+    // Search rooms and householders
     @FXML
     void handleSearch(ActionEvent event) {
     	String searchString = searchText.getText();
+    	// If in room page
     	if (inRoomPage) {
-    		for (Room room : listRoom) {
+    		for (Room room : listRoom) { // Search in list rooms
     			if (room.getRoomName().equals(searchString)) {
     				this.setChoosenRoom(room);
     				return;
@@ -320,8 +342,8 @@ public class AdminMainPageController implements Initializable {
 			alert.setHeaderText("Searching failed!");
 			alert.setContentText("There aren't any room with ID: " + searchString + "!");
 			alert.showAndWait();
-    	} else {
-    		for (HouseHolder houseHolder : listHouseHolder) {
+    	} else { // If in householder page
+    		for (HouseHolder houseHolder : listHouseHolder) { // Search in list householders
     			if (houseHolder.getUserName().equals(searchString)) {
     				this.setChoosenUser(houseHolder);
     				return;
@@ -336,8 +358,10 @@ public class AdminMainPageController implements Initializable {
     	}
     }
     
+    // "Enter" key pressed when in search box
     @FXML
     public void handleEnterSearch(KeyEvent event) {
+    	// Search similar to the previous function
     	if (event.getCode() == KeyCode.ENTER) {
     		String searchString = searchText.getText();
         	if (inRoomPage) {
@@ -370,7 +394,9 @@ public class AdminMainPageController implements Initializable {
     	}
     }
     
+    // SHow filter room
     public void showFilterRoom(boolean status) {
+    	// Set visible for 4 lists
     	gridPane.setVisible(false);
     	gridPane.setDisable(true);
 		gridFilterRoom.setVisible(true);
@@ -385,6 +411,8 @@ public class AdminMainPageController implements Initializable {
 			for (int i = 0; i < listRoom.size(); i++) {
 				if (listRoom.get(i).getStatus() == status) {
 					FXMLLoader loader = new FXMLLoader();
+					
+					// Load room item
 					loader.setLocation(getClass().getResource("/fxml/RoomItem.fxml"));
 					
 					AnchorPane anchorPane = loader.load();
@@ -418,7 +446,9 @@ public class AdminMainPageController implements Initializable {
 		}
     }
     
+    // Show filter householder
     public void showFilterUser(String gender) {
+    	// Set visible for 4 lists
     	gridPaneHH.setVisible(false);
     	gridPaneHH.setDisable(true);
 		gridFilterUser.setVisible(true);
@@ -433,6 +463,8 @@ public class AdminMainPageController implements Initializable {
 			for (int i = 0; i < listHouseHolder.size(); i++) {
 				if (listHouseHolder.get(i).getGender() != null && listHouseHolder.get(i).getGender().equals(gender)) {
 					FXMLLoader loader = new FXMLLoader();
+					
+					// Load householder item
 					loader.setLocation(getClass().getResource("/fxml/HouseHolderItem.fxml"));
 					
 					AnchorPane anchorPane = loader.load();
@@ -466,13 +498,16 @@ public class AdminMainPageController implements Initializable {
 		}
     }
     
+    // Handle filter: rooms or householders
     @FXML
     public void handleFilter(ActionEvent event) {
     	int result = 0;
     	String filterValue = filter.getValue();
     	if (filterValue != null) {
+    		// If in room page
 	    	if (inRoomPage) {
 	    		if (filterValue.equals("All")) {
+	    			// Get all rooms
 	    			resultFilter.setVisible(false);
 	    	    	gridPane.setVisible(true);
 	    	    	gridPane.setDisable(false);
@@ -482,6 +517,7 @@ public class AdminMainPageController implements Initializable {
 	    	    	gridFilterUser.setDisable(true);
 	    		}
 	    		else if (filterValue.equals("Empty Rooms")) {
+	    			// Get empty rooms
 		    		for (Room room : listRoom) {
 		    			if (room.getStatus() == true) {
 		    				result++;
@@ -491,6 +527,7 @@ public class AdminMainPageController implements Initializable {
 		    		resultFilter.setText("Result: " + result);
 		    		this.showFilterRoom(true);
 	    		} else {
+	    			// Get full rooms
 	    			for (Room room : listRoom) {
 		    			if (room.getStatus() == false) {
 		    				result++;
@@ -500,8 +537,9 @@ public class AdminMainPageController implements Initializable {
 		    		resultFilter.setText("Result: " + result);
 		    		this.showFilterRoom(false);
 	    		}
-	    	} else {
+	    	} else { // If in householder page
 				if (filterValue.equals("All")) {
+					// Get all householders
 					resultFilter.setVisible(false);
 					gridPaneHH.setVisible(true);
 	    	    	gridPaneHH.setDisable(false);
@@ -511,6 +549,7 @@ public class AdminMainPageController implements Initializable {
 	    	    	gridFilterUser.setDisable(true);
 				}
 	    		else if (filterValue.equals("Male")) {
+	    			// Get householders who are male
 	    			for (HouseHolder houseHolder : listHouseHolder) {
 		    			if (houseHolder.getGender() != null && houseHolder.getGender().equals("Nam")) {
 		    				result++;
@@ -520,6 +559,7 @@ public class AdminMainPageController implements Initializable {
 		    		resultFilter.setText("Result: " + result);
 		    		this.showFilterUser("Nam");
 	    		} else {
+	    			// Get householders who are female
 	    			for (HouseHolder houseHolder : listHouseHolder) {
 		    			if (houseHolder.getGender() != null && houseHolder.getGender().equals("Nu")) {
 		    				result++;
@@ -531,6 +571,7 @@ public class AdminMainPageController implements Initializable {
 	    		}
 	    	}
     	} else {
+    		// Set visible for 4 lists
     		gridFilterRoom.setVisible(false);
         	gridFilterRoom.setDisable(false);
         	gridFilterUser.setVisible(false);
@@ -540,14 +581,17 @@ public class AdminMainPageController implements Initializable {
     	}
     }
     
+    // Add user
     @FXML
     void handleAddUser(MouseEvent event) {
     	try {
+    		// Go to add user page
 			Stage stage = new Stage();
 			stage.initStyle(StageStyle.UNDECORATED);
 			
 			String file;
 
+			// Choose type of user you want to add
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Select");
 			alert.setHeaderText("What type of user do you want to add?");
@@ -569,6 +613,7 @@ public class AdminMainPageController implements Initializable {
 				return;
 			}
 			
+			// Load add admin page
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource(file));
 			Parent root = loader.load();
@@ -603,10 +648,12 @@ public class AdminMainPageController implements Initializable {
     	}
     }
     
+    // Update data of users when add, edit or delete users
     public void updateDataUser() {
     	listHouseHolder.clear();
 		boolean hasUser = false;
     	
+		// Get list householders
 		try {
 			listHouseHolder.addAll(getDataHH());
 			for (int i = 0; i < listHouseHolder.size(); i++) {
@@ -623,11 +670,13 @@ public class AdminMainPageController implements Initializable {
 			this.setChoosenUser(listHouseHolder.get(0));
 		}
 		
+		// Count number of householders
 		numHouseHolders.setText("about " + listHouseHolder.size() + " householders");
 		
 		int column = 0;
 		int row = 1;
 		
+		// View list householders
 		try {
 			for (int i = 0; i < listHouseHolder.size(); i++) {
 				FXMLLoader loader = new FXMLLoader();
@@ -663,9 +712,11 @@ public class AdminMainPageController implements Initializable {
 		}
     }
     
+    // Update data of rooms when add, edit or delete rooms
     public void updateDataRoom() {
     	listRoom.clear();
     	
+    	// Get list rooms
     	try {
 			listRoom.addAll(getData());
 			for (int i = 0; i < listRoom.size(); i++) {
@@ -677,11 +728,13 @@ public class AdminMainPageController implements Initializable {
 			e1.printStackTrace();
 		}
 		
+    	// Count number of rooms
     	numRooms.setText("about " + listRoom.size() + " rooms");
 		
 		int column = 0;
 		int row = 1;
 		
+		// View list rooms
 		try {
 			for (int i = 0; i < listRoom.size(); i++) {
 				FXMLLoader loader = new FXMLLoader();
@@ -718,12 +771,14 @@ public class AdminMainPageController implements Initializable {
 		
     }
     
+    // Edit current admin account's information 
     @FXML
     void handleEditMyAccount(ActionEvent e) {
     	try {
     		Stage stage = new Stage();
     		stage.initStyle(StageStyle.UNDECORATED);
     		
+    		// Go to view admin information page
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("/fxml/ViewAdminInfo.fxml"));
 			Parent root = loader.load();
@@ -757,13 +812,16 @@ public class AdminMainPageController implements Initializable {
     	
     }
     
+    // View user or room information
     @FXML
     void handleViewInfo(MouseEvent e) {
+    	// If in room page
     	if (inRoomPage) {
     		try {
 	    		Stage stage = new Stage();
 		    	stage.initStyle(StageStyle.UNDECORATED);
 		    	
+		    	// Go to view room information page
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/fxml/ViewRoomInfo.fxml"));
 				Parent root = loader.load();
@@ -793,11 +851,12 @@ public class AdminMainPageController implements Initializable {
     		} catch(Exception ex) {
     			ex.printStackTrace();
     		}
-    	} else {
+    	} else { // If in householder page
     		try {
 	    		Stage stage = new Stage();
 		    	stage.initStyle(StageStyle.UNDECORATED);
 		    	
+		    	// Go to view room information page
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("/fxml/ViewUserInfo.fxml"));
 				Parent root = loader.load();
@@ -828,11 +887,13 @@ public class AdminMainPageController implements Initializable {
     	}
     }
     
+    // Get list rooms' data
     private List<Room> getData() throws SQLException {
     	List<Room> listRoom = new ArrayList<>();
     	Room room;
     	int i = 1;
     	
+    	// Select data from table Phong in database
     	String sqlString = "select * from apartment_manager.phong";
 		ResultSet rs = statement.executeQuery(sqlString);
     	while(rs.next()) {
@@ -859,10 +920,12 @@ public class AdminMainPageController implements Initializable {
     	return listRoom;
     }
     
+    // Get list householders' data
     private List<HouseHolder> getDataHH() throws SQLException {
     	List<HouseHolder> listHouseHolder = new ArrayList<>();
     	HouseHolder houseHolder;
     	
+    	// Select data from table Chu_so_huu in database
     	String sqlString = "select * from apartment_manager.chu_so_huu";
 		ResultSet rs = statement.executeQuery(sqlString);
     	while(rs.next()) {
@@ -886,6 +949,7 @@ public class AdminMainPageController implements Initializable {
     	return listHouseHolder;
     }
     
+    // Set information for choosen room card
     private void setChoosenRoom(Room room) {
     	currRoom = room;
     	roomName.setText(room.getRoomName());
@@ -897,6 +961,7 @@ public class AdminMainPageController implements Initializable {
     	numPeople.setText(Integer.toString(room.getPeople()));
     }
     
+    // Set information for choosen householder card
     private void setChoosenUser(HouseHolder houseHolder) {
     	currUserID = houseHolder.getUserName();
     	roomName.setText(houseHolder.getUserName());
@@ -910,6 +975,7 @@ public class AdminMainPageController implements Initializable {
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		// Set visible for 4 lists
 		resultFilter.setVisible(false);
 		gridPaneHH.setVisible(false);
     	gridPane.setVisible(true);
@@ -921,32 +987,38 @@ public class AdminMainPageController implements Initializable {
     	myAccount.setText("My Account");
 		
     	try {
+    		// COnnnect database
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			statement = connection.createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
     	
+    	// Go to room page by default
 		filter.setItems(filterList);
 		try {
 			listRoom.addAll(getData());
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		// Set choosen room card is room 101 by default
 		setChoosenRoom(listRoom.get(0));
 		
+		// Get information for list householders
 		try {
 			listHouseHolder.addAll(getDataHH());
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
 		
+		// Number of rooms and number of householders
 		numRooms.setText("about " + listRoom.size() + " rooms");
 		numHouseHolders.setText("about " + listHouseHolder.size() + " householders");
 		
 		int column = 0;
 		int row = 1;
 		
+		// Get data for list rooms and view list rooms' data 
 		try {
 			for (int i = 0; i < listRoom.size(); i++) {
 				FXMLLoader loader = new FXMLLoader();
@@ -983,7 +1055,8 @@ public class AdminMainPageController implements Initializable {
 			
 		column = 0;
 		row = 1;
-			
+		
+		// Get data for list householders but not view 
 		try {
 			for (int i = 0; i < listHouseHolder.size(); i++) {
 				FXMLLoader loader = new FXMLLoader();
@@ -1020,16 +1093,22 @@ public class AdminMainPageController implements Initializable {
 		 
 	}
 	
+	// Handle if there are at least one notify (request)
 	public void handleNotify(String sms) {
 		String parts[] = sms.split(":");
 		String toUser = parts[1];
+		// If request is delete vehicle
 		if (parts[2].equals("delete")) {
 			//From User:username:delete:ticket:To:all
+			
+			// Separate fields from message received from server
 			String ticket = parts[3];
 			String sqlString = "select * from apartment_manager.xe where Ve_xe = " + ticket;
 			
 			boolean hasDebt = false;
 			ResultSet rs;
+			
+			// Check if debt is not 0
 			try {
 				rs = statement.executeQuery(sqlString);
 				
@@ -1044,6 +1123,7 @@ public class AdminMainPageController implements Initializable {
 					message += " (still owe money)";
 				}
 				
+				// View request
 				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
 				alert.setTitle("NOTIFY");
 				alert.setHeaderText("Request from user " + toUser + ": " + message);
@@ -1054,6 +1134,7 @@ public class AdminMainPageController implements Initializable {
 				
 				alert.getButtonTypes().setAll(buttonTypeAccept, buttonTypeRefuse);
 				
+				// Get button type
 				Optional<ButtonType> result = alert.showAndWait();
 				
 				if (result.get() == buttonTypeAccept) {
@@ -1071,8 +1152,10 @@ public class AdminMainPageController implements Initializable {
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		} else {
+		} else { // If request is add vehicle
 			//From User:username:Ten_chu_xe:Ma_phong:Loai_xe:Bien_so_xe:Mau_sac:Thang:To:all
+			
+			// Separate fields from message received from server
 			String Ten_chu_xe = parts[2];
 			String Ma_phong = parts[3];
 			String Loai_xe = parts[4];
@@ -1080,6 +1163,7 @@ public class AdminMainPageController implements Initializable {
 			String Mau_sac = parts[6];
 			String Thang = parts[7];
 			
+			// View request
 			String message = "Add vehicle with infomation\n"
 					   + "+) Ten chu xe - " + Ten_chu_xe + "\n"
 					   + "+) Ma phong - " + Ma_phong + "\n"
@@ -1098,6 +1182,7 @@ public class AdminMainPageController implements Initializable {
 			
 			alert.getButtonTypes().setAll(buttonTypeAccept, buttonTypeRefuse);
 			
+			// Get button type
 			Optional<ButtonType> result = alert.showAndWait();
 			
 			if (result.get() == buttonTypeAccept) {
@@ -1108,6 +1193,7 @@ public class AdminMainPageController implements Initializable {
 				int ticketMax = 0;
 				
 				try {
+					// Get max of Ve_xe from table Xe in database
 					String s = "select MAX(Ve_xe) from apartment_manager.xe";
 					ResultSet rs = statement.executeQuery(s);
 					if (rs.next()) {
@@ -1121,6 +1207,7 @@ public class AdminMainPageController implements Initializable {
 				}
 				
 				try {
+					// Insert new record to table Xe in database
 					String s = "insert into apartment_manager.xe (Ten_chu_xe, Ma_phong, Loai_xe, Bien_so_xe, Mau_sac, Thang, Da_dong, Ve_xe) "
 							+ "values (\'" + Ten_chu_xe + "\', " + Ma_phong + ",\'" + Loai_xe + "\', \'"
 							+ Bien_so_xe + "\', \'" + Mau_sac + "\', \'" + Thang 
@@ -1160,15 +1247,12 @@ public class AdminMainPageController implements Initializable {
 		this.currUserID = currUserID;
 	}
 	
-	public void setLoginScene(Scene loginScene) {
-		this.loginScene = loginScene;
-	}
-	
 	public void setUsername(String username) {
 		this.username = new String();
 		this.username = username;
 		
 		try {
+			// Create new admin client (new socket) and connect to server
 			AdminClient adminCLient = new AdminClient(SocketLibrary.host, SocketLibrary.port, username);
 			adminCLient.setMainController(this);
 			System.out.println("Admin: " + username);

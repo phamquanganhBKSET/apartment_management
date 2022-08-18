@@ -116,31 +116,37 @@ public class AddUserController implements Initializable{
     // Function Signup new User account
     @FXML
     void ActionSignUp(MouseEvent event) {
+    	// Alert if username field is empty
     	if (username.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Username is empty!");
 			alert.showAndWait();
 		}
+    	// Alert if citizenID field is empty
     	else if (citizenID.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Citizen ID is empty!");
 			alert.showAndWait();
 		}
+    	// Alert if fullName field is empty
     	else if (fullName.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Full name is empty!");
 			alert.showAndWait();
 		}
+    	// Alert if password field is empty
     	else if (password.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Password is empty!");
 			alert.showAndWait();
 		}
+    	// Alert if roomNumber field is empty
     	else if (roomNumber.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Room number is empty!");
 			alert.showAndWait();
 		}
+    	// Alert if numPeople field is empty
     	else if (numPeople.getText().isEmpty()) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setHeaderText("Number of people is empty!");
@@ -162,6 +168,7 @@ public class AddUserController implements Initializable{
     				query = "select * from phong where Ma_phong = \'" + roomNumber.getText() + "\'";
         			rs = stmt.executeQuery(query);
     				if (rs.next()) {
+    					// Alert if this room is full
     					if (rs.getInt(5) == 0) {
 	    					Alert alert = new Alert(AlertType.WARNING);
 	        				alert.setHeaderText("Room " + roomNumber.getText() + " is full now!");
@@ -170,12 +177,14 @@ public class AddUserController implements Initializable{
     					else {
     						stmt.executeUpdate("SET FOREIGN_KEY_CHECKS=0;");
     						
+    						// Insert new record to table chu_so_huu
     	    				stmt.executeUpdate ("Insert into Chu_so_huu" 
     	        		       + "(Id_chu_so_huu, CCCD, Ten, So_dien_thoai, Email, Gioi_tinh, Password)"
     	    				   + "Values(\'" + username.getText() + "\',\'" + citizenID.getText() + "\',\'"
     	    				   + fullName.getText() + "\',\'" + phoneNumber.getText() + "\',\'" + email.getText() + "\',\'"
     	    				   + gender + "\',\'" + password.getText() +"\');");
     	    				
+    	    				// Update record of table phong
     	    				stmt.executeUpdate ("Update Phong "
     	 	        		       + "set Id_chu_so_huu = \'" + username.getText() + "\', So_nguoi = " + numPeople.getText() + ", Trang_thai_phong = 0 "
     	 	        		       + "where Ma_phong = " + roomNumber.getText());
@@ -209,7 +218,6 @@ public class AddUserController implements Initializable{
     
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-    	// TODO Auto-generated method stub
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/apartment_manager", "root", library.password);
 			stmt = conn.createStatement();
