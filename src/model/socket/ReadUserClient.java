@@ -30,6 +30,12 @@ public class ReadUserClient extends Thread {
 		try {
 			dis = new DataInputStream(userClientSocket.getInputStream()); // Input stream to socket
 			while(true) {
+				try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
 				String sms = dis.readUTF(); // Read data from socket
 				
 				if(sms.length() > 1) { // If sms is not empty

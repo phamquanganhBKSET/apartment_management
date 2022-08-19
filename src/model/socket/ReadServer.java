@@ -9,6 +9,7 @@ public class ReadServer extends Thread {
 	private Socket serverSocket;
 	private String sms;
 
+	// Constructor
 	public ReadServer(Socket serverSocket) {
 		super();
 		this.serverSocket = serverSocket;
@@ -19,7 +20,10 @@ public class ReadServer extends Thread {
 		DataInputStream dis = null;
 		
 		try {
-			dis = new DataInputStream(serverSocket.getInputStream());
+			dis = new DataInputStream(serverSocket.getInputStream()); // Input stream
+			
+			// First check if there are any messages that were not sent before
+			// Send those first then read data from unput stream after that
 			while(true) {
 				if (Server.adminCount != 0) {
 					for (int i = 0; i < Server.toAdmin.size(); i++) {
@@ -88,8 +92,8 @@ public class ReadServer extends Thread {
 				System.out.println("Server.toAdmin.size: " + Server.toAdmin.size());
 				System.out.println("Server.toUser.size: " + Server.toUser.size());
 				
-				sms = dis.readUTF();
-				String[] parts = sms.split(":");
+				sms = dis.readUTF(); // Read data from input stream
+				String[] parts = sms.split(":"); // Separate fields of message
 				
 				if (sms.contains("Create User:")) { //From User:username:Message:To:admin_username or From User:username:Message:To:all
     				Server.listUserSocket.add(serverSocket);
@@ -105,16 +109,16 @@ public class ReadServer extends Thread {
     				continue;
     			}
 				
-				if (parts[0].equals("From User")) {
+				if (parts[0].equals("From User")) { // If the message is from user
 					System.out.println(sms);
-					if (Server.adminCount != 0) {
-						if (parts[parts.length-1].equals("all")) {
+					if (Server.adminCount != 0) { // If there are some admins online
+						if (parts[parts.length-1].equals("all")) { // Send to all admins
 							for (Socket item : Server.listAdminSocket) {
 								DataOutputStream dos = new DataOutputStream(item.getOutputStream());
 								dos.writeUTF(sms);
 							}
 						} else {
-							for (int i = 0; i < Server.listAdminClientName.size(); i++) {
+							for (int i = 0; i < Server.listAdminClientName.size(); i++) {// Send to only one admin
 								if (Server.listAdminClientName.get(i).equals(parts[parts.length-1])) {
 									DataOutputStream dos = new DataOutputStream(Server.listAdminSocket.get(i).getOutputStream());
 									dos.writeUTF(sms);
@@ -122,19 +126,20 @@ public class ReadServer extends Thread {
 							}
 						}
 					} else {
+						// If there are not any admins online 
 						System.out.println("There aren't any admins -> put sms to queue!");
 						Server.toAdmin.add(sms);
 					}
-				} else {
+				} else { // If the message is from admin
 					System.out.println(sms);
 					if (Server.userCount != 0) {
-						if (parts[parts.length-1].equals("all")) {
+						if (parts[parts.length-1].equals("all")) { // Send to all users
 							for (Socket item : Server.listUserSocket) {
 								DataOutputStream dos = new DataOutputStream(item.getOutputStream());
 								dos.writeUTF(sms);
 							}
 						} else {
-							for (int i = 0; i < Server.listUserClientName.size(); i++) {
+							for (int i = 0; i < Server.listUserClientName.size(); i++) { // Send to only one user
 								if (Server.listUserClientName.get(i).equals(parts[parts.length-1])) {
 									DataOutputStream dos = new DataOutputStream(Server.listUserSocket.get(i).getOutputStream());
 									dos.writeUTF(sms);
@@ -151,6 +156,7 @@ public class ReadServer extends Thread {
 			try {
 				dis.close();
 				
+				// Close sockets for admins
 				for(int i = 0; i < Server.listAdminSocket.size(); i++) {
 					if (serverSocket.getPort() == Server.listAdminSocket.get(i).getPort()) {
 						Server.listAdminSocket.remove(i);
@@ -162,6 +168,7 @@ public class ReadServer extends Thread {
 					}
 				}
 				
+				// Close sockets for users
 				for(int i = 0; i < Server.listUserSocket.size(); i++) {
 					if (serverSocket.getPort() == Server.listUserSocket.get(i).getPort()) {
 						Server.listUserSocket.remove(i);
