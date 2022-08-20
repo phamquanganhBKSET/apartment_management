@@ -389,6 +389,7 @@ public class ViewRoomInfoController implements Initializable {
     	}
     }
 
+    // Edit room type information
     @FXML
     public void handleEditType(ActionEvent event) {
     	apply.setDisable(false);
@@ -404,6 +405,7 @@ public class ViewRoomInfoController implements Initializable {
     	}
     }
 
+    // Handle electrical information of the room
     @FXML
     public void handleElectricity(MouseEvent event) {
     	try {
@@ -412,6 +414,7 @@ public class ViewRoomInfoController implements Initializable {
 			
 			String file;
 
+			// Choose see or add electricity
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Select");
 			alert.setHeaderText("Do you want to see or add electricity?");
@@ -442,6 +445,7 @@ public class ViewRoomInfoController implements Initializable {
 			
 			Scene scene = new Scene(root);
 			
+			// Electricity information page
 			if (file.equals("/fxml/Electricity.fxml")) {
 				ElectricityController controller = loader.getController();
 				scene.getStylesheets().add(getClass().getResource("/css/table.css").toExternalForm());
@@ -462,6 +466,7 @@ public class ViewRoomInfoController implements Initializable {
 				controller.load(connection, statement, room.getText());
 				currStage.show();
 			} else {
+				// Add electricity information page
 				AddElectricController controller = loader.getController();
 				scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
 
@@ -488,6 +493,7 @@ public class ViewRoomInfoController implements Initializable {
     	}
     }
 
+    // Handle envi charge information of the room
     @FXML
     public void handleEnvi(ActionEvent event) {
     	try {
@@ -496,9 +502,10 @@ public class ViewRoomInfoController implements Initializable {
 			
 			String file;
 
+			// Choose see or add envi charge
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Select");
-			alert.setHeaderText("Do you want to see or add Water?");
+			alert.setHeaderText("Do you want to see or add Envi?");
 
 			ButtonType see = new ButtonType("See");
 			ButtonType add = new ButtonType("Add");
@@ -526,6 +533,7 @@ public class ViewRoomInfoController implements Initializable {
 			
 			Scene scene = new Scene(root);
 			
+			// Envi charge information page
 			if (file.equals("/fxml/EnviCharge.fxml")) {
 				EnviController controller = loader.getController();
 				scene.getStylesheets().add(getClass().getResource("/css/table.css").toExternalForm());
@@ -546,6 +554,7 @@ public class ViewRoomInfoController implements Initializable {
 				controller.load(connection, statement, room.getText());
 				currStage.show();
 			} else {
+				// Add envi charge information page
 				AddEnviChargeController controller = loader.getController();
 				scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
 
@@ -572,6 +581,7 @@ public class ViewRoomInfoController implements Initializable {
     	}
     }
     
+    // Handle vehicle information of the room
     @FXML
     public void handleVehicle(ActionEvent e) {
     	
@@ -610,6 +620,7 @@ public class ViewRoomInfoController implements Initializable {
 		}
     }
 
+    // Handle water information of the room
     @FXML
     public void handleWater(ActionEvent event) {
     	try {
@@ -618,6 +629,7 @@ public class ViewRoomInfoController implements Initializable {
 			
 			String file;
 
+			// Choose see or add water
 			Alert alert = new Alert(AlertType.CONFIRMATION);
 			alert.setTitle("Select");
 			alert.setHeaderText("Do you want to see or add Water?");
@@ -648,6 +660,7 @@ public class ViewRoomInfoController implements Initializable {
 			
 			Scene scene = new Scene(root);
 			
+			// Water information page
 			if (file.equals("/fxml/Water.fxml")) {
 				WaterController controller = loader.getController();
 				scene.getStylesheets().add(getClass().getResource("/css/table.css").toExternalForm());
@@ -668,6 +681,7 @@ public class ViewRoomInfoController implements Initializable {
 				controller.load(connection, statement, room.getText());
 				currStage.show();
 			} else {
+				// Add water information page
 				AddWaterController controller = loader.getController();
 				scene.getStylesheets().add(getClass().getResource("/css/AddAdmin.css").toExternalForm());
 
